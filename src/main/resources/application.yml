@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: labor
+    password: password
+    url: jdbc:mysql://49.235.79.112:3306/labor_manage?characterEncoding=utf-8&useSSL=false&serverTimezone=GMT
+  jpa:
+    show-sql: true
+#logging:
+#  pattern:
+#    console: "%d - %msg%n"
+#  path: /var/log/tomcat/
+#  file: /var/log/tomcat/sell.log
+server:
+  port: 8808
+  servlet:
+    context-path: /labor
