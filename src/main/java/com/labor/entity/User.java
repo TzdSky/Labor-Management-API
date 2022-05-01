@@ -7,6 +7,7 @@ import java.util.Date;
  * @date 2022/5/1
  */
 public class User {
+     private static final long serialVersionUID = 1L;
      //主键标识
      private Long id;
 
