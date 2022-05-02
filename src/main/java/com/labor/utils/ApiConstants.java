@@ -48,6 +48,9 @@ public class ApiConstants {
 	public final static int ERROR_403 = 403;
 	public final static String ERROR_403_TEXT = "必传参数未填写!";
 
+	//重复用户
+	public final static String ERROR_REPEAT_TEXT = "当前用户已存在!";
+
 	//默认的用户名
 	public final static String DEFAULT_USERNAME = "admin";
 }

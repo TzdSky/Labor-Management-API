@@ -14,4 +14,7 @@ public interface UserService {
 
      boolean insertNewUser(User user);
 
+     int getRecordsByCardNumber(int certificate_type, int certificate_number);
+
+     void deleteUserByID(Long id);
 }

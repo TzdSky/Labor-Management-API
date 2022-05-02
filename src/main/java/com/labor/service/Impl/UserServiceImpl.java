@@ -33,4 +33,14 @@ public class UserServiceImpl implements UserService {
     public boolean insertNewUser(User user) {
         return userMapper.inertNewUser(user) ==1 ? true:false;
     }
+
+    @Override
+    public int getRecordsByCardNumber(int certificate_type, int certificate_number) {
+        return userMapper.getRecordsByCardNumber(certificate_type, certificate_number);
+    }
+
+    @Override
+    public void deleteUserByID(Long id) {
+         userMapper.deleteUserByID(id);
+    }
 }
