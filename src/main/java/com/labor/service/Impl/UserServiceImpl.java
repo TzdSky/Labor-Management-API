@@ -28,4 +28,9 @@ public class UserServiceImpl implements UserService {
         IPage<User> iPage = userMapper.getUserList(page);
         return iPage;
     }
+
+    @Override
+    public boolean insertNewUser(User user) {
+        return userMapper.inertNewUser(user) ==1 ? true:false;
+    }
 }

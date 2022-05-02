@@ -11,4 +11,7 @@ import java.util.Map;
  */
 public interface UserService {
     IPage<User> getUserList(Map<String, Object> map);
+
+     boolean insertNewUser(User user);
+
 }

@@ -9,7 +9,7 @@ import java.util.Date;
 public class User {
      private static final long serialVersionUID = 1L;
      //主键标识
-     private Long id;
+     private Long ID;
 
      //姓名
      private String name;
@@ -96,12 +96,12 @@ public class User {
      //修改时间
      private Date updateAt;
 
-     public Long getId() {
-          return id;
+     public Long getID() {
+          return ID;
      }
 
-     public void setId(Long id) {
-          this.id = id;
+     public void setID(Long ID) {
+          this.ID = ID;
      }
 
      public String getName() {
