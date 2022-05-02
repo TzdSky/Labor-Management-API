@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.Map;
-import org.springframework.http.MediaType;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import org.apache.ibatis.annotations.Param;
 
 
 /**
@@ -49,11 +47,49 @@ public class UserController {
     public ResultModel<String>  insertUser(@RequestBody User user){
         ResultModel<String> resultModel = new ResultModel<>();
         logger.info("insertUser:===>start");
-         user.setCreateAt(new Date());
-         resultModel.setData(userService.insertNewUser(user)?"新增成功":"新增失败");
-         resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
-         resultModel.setCode(ManageConstants.SUCCESS_200);
+        /**
+         * 新增前做判断
+         */
+        if(user != null) {
+            int records = userService.getRecordsByCardNumber(user.getCertificateType(), user.getCertificateNumber());
+            if(records > 0) {
+                resultModel.setText(ManageConstants.ERROR_REPEAT_TEXT);
+                resultModel.setCode(ManageConstants.ERROR_500);
+            } else {
+                user.setCreateAt(new Date());
+                resultModel.setData(userService.insertNewUser(user)?"新增成功":"新增失败");
+                resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
+                resultModel.setCode(ManageConstants.SUCCESS_200);
+            }
+
+        }
         logger.info("insertUser:===>end");
         return resultModel;
     }
+
+    /**
+     * 根据id删除用户
+     * @param id
+     */
+    @GetMapping(value = "/deleteUser")
+    public ResultModel<String> deleteUser(@Param("id") long id){
+        logger.info("deleteUser:===>start");
+        ResultModel<String> resultModel = new ResultModel<>();
+        try {
+            userService.deleteUserByID(id);
+        } catch (Exception e) {
+            logger.info("deleteUser:===>error ："+e);
+            e.printStackTrace();
+            resultModel.setText(ManageConstants.ERROR_205_TEXT);
+            resultModel.setCode(ManageConstants.ERROR_205);
+            return resultModel;
+        }
+        resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
+        resultModel.setCode(ManageConstants.SUCCESS_200);
+        logger.info("deleteUser:===>end");
+        return resultModel;
+    }
+
+
+
 }

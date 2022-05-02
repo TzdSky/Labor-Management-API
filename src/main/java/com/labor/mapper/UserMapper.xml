@@ -11,4 +11,13 @@
         INSERT INTO user (`name`, `certificate_type`, `certificate_number`, `gender`, `nation`, `birthday`, `address`, `project_name`, `company`, `goup_code`, `work_type`, `user_type`, `is_sick`, `phone`, `card_number`, `is_contract`, `contract_name`, `contract_number`, `work_age`, `work_certificate`, `health`, `danger_operate`, `irregular_record`, `criticism`, `absence_work`, `creater`, `create_at`, `update_at`)
          VALUES (#{name}, #{certificateType}, #{certificateNumber}, #{gender}, #{nation}, #{birthday}, #{address}, #{projectName}, #{company}, #{goupCode}, #{workType}, #{userType}, #{isSick}, #{phone}, #{cardNumber}, #{isContract}, #{contractName}, #{contractNumber}, #{workAge}, #{workCertificate}, #{health}, #{dangerOperate}, #{irregularRecord}, #{criticism}, #{absenceWork}, #{creater}, #{createAt}, #{updateAt});
     </insert>
+
+
+    <select id="getRecordsByCardNumber" resultType="java.lang.Integer">
+        select count(1) from user where certificate_type = #{certificate_type} and certificate_number = #{certificate_number}
+    </select>
+    
+    <delete id="deleteUserByID">
+        delete from user where ID = #{id}
+    </delete>
 </mapper>
