@@ -29,10 +29,12 @@ public class UserController {
     @ResponseBody
     public ResultModel<IPage<User>> getUserList(@RequestBody Map<String,Object> map) {
         ResultModel<IPage<User>> result = new ResultModel<>();
+        logger.info("findUser:===>start");
           IPage<User> page=userService.getUserList(map);
           result.setCode(ManageConstants.SUCCESS_200);
           result.setText(ManageConstants.SUCCESS_200_TEXT);
           result.setData(page);
+        logger.info("findUser:===>end");
           return result;
     }
 

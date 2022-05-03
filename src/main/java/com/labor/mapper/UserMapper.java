@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.labor.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author BoCong
@@ -12,7 +13,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
-    IPage<User> getUserList(Page<User> page);
+
 
     int inertNewUser(User user);
 
@@ -31,4 +32,6 @@ public interface UserMapper extends BaseMapper<User> {
      * 根据id删除
      */
     void deleteUserByID(Long id);
+
+    IPage<User> getUserList(Page<User> page, @Param("name")String name, @Param("phone")Integer phone, @Param("certificateNumber")Integer certificateNumber, @Param("groupName")String groupName,@Param("workType") String workType);
 }

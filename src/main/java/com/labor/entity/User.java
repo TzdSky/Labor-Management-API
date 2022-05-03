@@ -39,7 +39,7 @@ public class User {
      private String company;
 
      //所属班组
-     private String goupCode;
+     private String goupName;
 
      //工种
      private String workType;
@@ -176,12 +176,12 @@ public class User {
           this.company = company;
      }
 
-     public String getGoupCode() {
-          return goupCode;
+     public String getGoupName() {
+          return goupName;
      }
 
-     public void setGoupCode(String goupCode) {
-          this.goupCode = goupCode;
+     public void setGoupName(String goupName) {
+          this.goupName = goupName;
      }
 
      public String getWorkType() {
