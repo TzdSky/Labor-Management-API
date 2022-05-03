@@ -1,7 +1,10 @@
 package com.labor.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.labor.entity.Group;
+import com.labor.entity.Subcontract;
 import com.labor.entity.User;
+import com.labor.service.GroupService;
 import com.labor.service.UserService;
 import com.labor.utils.ManageConstants;
 import com.labor.utils.ResultModel;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,6 +29,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private GroupService groupService;
     @RequestMapping(value = "/getUserList",method = RequestMethod.POST)
     @ResponseBody
     public ResultModel<IPage<User>> getUserList(@RequestBody Map<String,Object> map) {
@@ -36,6 +42,34 @@ public class UserController {
           result.setData(page);
         logger.info("findUser:===>end");
           return result;
+    }
+
+    /**
+     *  获取公司
+     * @return
+     */
+    @GetMapping("/getCompany")
+    public ResultModel<List<Subcontract>> getCompany() {
+        ResultModel<List<Subcontract>> result = new ResultModel<>();
+        List<Subcontract> subcontractList=userService.getSubcontractList();
+        result.setCode(ManageConstants.SUCCESS_200);
+        result.setText(ManageConstants.SUCCESS_200_TEXT);
+        result.setData(subcontractList);
+        return result;
+    }
+
+    /**
+     *  获取公司
+     * @return
+     */
+    @GetMapping("/getGroupName")
+    public ResultModel<List<Group>> getGroupName(String companyId) {
+        ResultModel<List<Group>> result = new ResultModel<>();
+        List<Group> groupList=groupService.getGroupNameByCom(companyId);
+        result.setCode(ManageConstants.SUCCESS_200);
+        result.setText(ManageConstants.SUCCESS_200_TEXT);
+        result.setData(groupList);
+        return result;
     }
 
 

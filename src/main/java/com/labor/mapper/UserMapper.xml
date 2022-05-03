@@ -36,4 +36,8 @@
     <delete id="deleteUserByID">
         delete from t_user where ID = #{id}
     </delete>
+
+    <select id="getSubcontractList" resultType="com.labor.entity.Subcontract">
+        select id,company_name from t_subcontract
+    </select>
 </mapper>

@@ -3,9 +3,12 @@ package com.labor.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.labor.entity.Subcontract;
 import com.labor.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author BoCong
@@ -34,4 +37,6 @@ public interface UserMapper extends BaseMapper<User> {
     void deleteUserByID(Long id);
 
     IPage<User> getUserList(Page<User> page, @Param("name")String name, @Param("phone")Integer phone, @Param("certificateNumber")Integer certificateNumber, @Param("groupName")String groupName,@Param("workType") String workType);
+
+    List<Subcontract> getSubcontractList();
 }

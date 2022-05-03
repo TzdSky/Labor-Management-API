@@ -1,6 +1,10 @@
 package com.labor.mapper;
 
+import com.labor.entity.Group;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author BoCong
@@ -8,4 +12,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface GroupMapper {
+    List<Group> getGroupNameByCom(@Param("companyId") String companyId);
 }

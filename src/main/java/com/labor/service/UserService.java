@@ -1,8 +1,10 @@
 package com.labor.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.labor.entity.Subcontract;
 import com.labor.entity.User;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,4 +19,6 @@ public interface UserService {
      int getRecordsByCardNumber(int certificate_type, int certificate_number);
 
      void deleteUserByID(Long id);
+
+    List<Subcontract> getSubcontractList();
 }
