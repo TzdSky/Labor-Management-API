@@ -16,6 +16,9 @@ server:
   servlet:
     context-path: /labor
 
+#文件根目录地址
+attachRootPath: "/labormanagement/upload"
+
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

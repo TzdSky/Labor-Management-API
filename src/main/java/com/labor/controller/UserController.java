@@ -10,12 +10,14 @@ import com.labor.utils.ManageConstants;
 import com.labor.utils.ResultModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.multipart.MultipartFile;
 
 
 /**
@@ -80,7 +82,7 @@ public class UserController {
      * @return 返回结果
      */
     @PostMapping(value="/insertUser")
-    public ResultModel<String>  insertUser(@RequestBody User user){
+    public ResultModel<String>  insertUser(User user,@RequestPart(value = "file") MultipartFile file){
         ResultModel<String> resultModel = new ResultModel<>();
         logger.info("insertUser:===>start");
         /**
@@ -93,7 +95,7 @@ public class UserController {
                 resultModel.setCode(ManageConstants.ERROR_500);
             } else {
                 user.setCreateAt(new Date());
-                resultModel.setData(userService.insertNewUser(user)?"新增成功":"新增失败");
+                resultModel.setData(userService.insertNewUser(user,file)?"新增成功":"新增失败");
                 resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
                 resultModel.setCode(ManageConstants.SUCCESS_200);
             }
