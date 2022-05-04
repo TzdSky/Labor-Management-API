@@ -10,7 +10,8 @@ import java.util.*;
 /**
  * Created by boCong on 2022/5/04.
  */
-public class DateUtil {
+public class
+DateUtil {
     /**
      * 判断字符串是否为日期字符串
      *

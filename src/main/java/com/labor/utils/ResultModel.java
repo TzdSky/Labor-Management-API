@@ -13,6 +13,26 @@ public class ResultModel<T> implements Serializable {
     private String text;
     private T data;
 
+    private int totalNum;
+
+    private int totalPageNum;
+
+    public int getTotalNum() {
+        return totalNum;
+    }
+
+    public void setTotalNum(int totalNum) {
+        this.totalNum = totalNum;
+    }
+
+    public int getTotalPageNum() {
+        return totalPageNum;
+    }
+
+    public void setTotalPageNum(int totalPageNum) {
+        this.totalPageNum = totalPageNum;
+    }
+
     public ResultModel() {
         this.code = 200;
         this.text = "success";
