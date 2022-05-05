@@ -1,19 +1,21 @@
 package com.labor.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.labor.entity.Subcontract;
 import com.labor.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
+
 
 /**
  * @author BoCong
  * @date 2022/5/1
  */
 public interface UserService {
-    IPage<User> getUserList(Map<String, Object> map);
+     Page<User> getUserList(HttpServletRequest request, Pageable page);
 
      boolean insertNewUser(User user, MultipartFile file);
 
