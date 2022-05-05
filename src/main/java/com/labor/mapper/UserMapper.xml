@@ -48,5 +48,47 @@
         select id,company_name from t_subcontract
     </select>
 
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(t.ID) from (
+        select id, `name`, `certificate_type`, `certificate_number`, `gender`, `nation`, `birthday`, `address`, `project_name`, `company`, `goup_name`, `work_type`, `user_type`, `is_sick`, `phone`, `card_number`, `is_contract`, `contract_name`, `contract_number`, `work_age`, `work_certificate`, `health`, `danger_operate`, `irregular_record`, `criticism`, `absence_work`, `creater`, `create_at`, `update_at`
+        from t_user where 1 = 1
+        <if test="queryParams.name != null and queryParams.name != ''">
+            and UPPER(name) like UPPER(CONCAT('%',#{queryParams.name,jdbcType=VARCHAR}, '%'))
+        </if>
+        <if test="queryParams.certificateNumber != 0 and queryParams.certificateNumber != ''">
+            and certificate_number = #{queryParams.certificateNumber,jdbcType=INTEGER}
+        </if>
+        <if test="queryParams.phone != 0 and queryParams.phone != ''">
+            and phone = #{queryParams.phone,jdbcType=INTEGER}
+        </if>
+        <if test="queryParams.groupName != null and queryParams.groupName != ''">
+            and UPPER(goup_name) like UPPER(CONCAT('%',#{queryParams.groupName,jdbcType=VARCHAR}, '%'))
+        </if>
+        <if test="queryParams.workType != null and queryParams.workType != ''">
+            and UPPER(work_type) like UPPER(CONCAT('%',#{queryParams.workType,jdbcType=VARCHAR}, '%'))
+        </if>
+        ) t
+    </select>
 
+    <select id="getPage" resultType="com.labor.entity.User">
+        select id,`name`, `certificate_type`, `certificate_number`, `gender`, `nation`, `birthday`, `address`, `project_name`, `company`, `goup_name`, `work_type`, `user_type`, `is_sick`, `phone`, `card_number`, `is_contract`, `contract_name`, `contract_number`, `work_age`, `work_certificate`, `health`, `danger_operate`, `irregular_record`, `criticism`, `absence_work`, `creater`, `create_at`, `update_at`
+        from t_user where 1 = 1
+        <if test="queryParams.name != null and queryParams.name != ''">
+            and UPPER(name) like UPPER(CONCAT('%',#{queryParams.name,jdbcType=VARCHAR}, '%'))
+        </if>
+        <if test="queryParams.certificateNumber != null and queryParams.certificateNumber != ''">
+            and certificate_number = #{queryParams.certificateNumber,jdbcType=INTEGER}
+        </if>
+        <if test="queryParams.phone != null and queryParams.phone != ''">
+            and phone = #{queryParams.phone,jdbcType=INTEGER}
+        </if>
+        <if test="queryParams.groupName != null and queryParams.groupName != ''">
+            and UPPER(goup_name) like UPPER(CONCAT('%',#{queryParams.groupName,jdbcType=VARCHAR}, '%'))
+        </if>
+        <if test="queryParams.workType != null and queryParams.workType != ''">
+            and UPPER(work_type) like UPPER(CONCAT('%',#{queryParams.workType,jdbcType=VARCHAR}, '%'))
+        </if>
+        order by ID desc
+        limit #{queryParams.page,jdbcType=INTEGER},#{queryParams.size,jdbcType=INTEGER}
+    </select>
 </mapper>

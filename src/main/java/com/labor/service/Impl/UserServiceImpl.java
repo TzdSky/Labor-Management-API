@@ -1,7 +1,8 @@
 package com.labor.service.Impl;
 
+
+
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.labor.controller.UserController;
 import com.labor.entity.AttachmentLog;
 import com.labor.entity.Subcontract;
@@ -17,15 +18,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author BoCong
@@ -40,34 +43,36 @@ public class UserServiceImpl implements UserService {
     private String attachRootPath;
     @Autowired
     private AttachmentLogMapper attachmentLogMapper;
-    @Override
-    public IPage<User> getUserList(Map<String, Object> map) {
 
-        Integer pageNum = (Integer) map.get("pageNum");
-        Integer pageSize = (Integer) map.get("pageSize");
-        String name="";
-        Integer phone=0;
-        Integer certificateNumber=0;
-        String  goupID="";
-        String  workType="";
-        if(StringUtils.isNotEmpty((String)map.get("name"))){
-            name=(String)map.get("name");
+    @Override
+    public Page<User> getUserList(HttpServletRequest request, Pageable page) {
+
+        Map<String, Object> queryParams = new HashMap<>();
+        String name = request.getParameter("name");
+        String phone = request.getParameter("phone");
+        String certificateNumber = request.getParameter("certificateNumber");
+        String goupID = request.getParameter("groupName");
+        String workType = request.getParameter("workType");
+        if (StringUtils.isNotEmpty(name)) {
+            queryParams.put("name", name);
         }
-        if(StringUtils.isNotEmpty((String)map.get("phone"))){
-            phone=(Integer) map.get("phone");
+        if (StringUtils.isNotEmpty(phone)) {
+            queryParams.put("phone", Integer.valueOf(phone));
         }
-        if(StringUtils.isNotEmpty(map.get("certificateNumber").toString())){
-            certificateNumber=(Integer) map.get("certificateNumber");
+        if (StringUtils.isNotEmpty(certificateNumber)) {
+            queryParams.put("certificateNumber", Integer.valueOf(certificateNumber));
         }
-        if(StringUtils.isNotEmpty((String)map.get("goupID"))){
-            goupID=(String) map.get("goupID");
+        if (StringUtils.isNotEmpty(goupID)) {
+            queryParams.put("goupID", goupID);
         }
-        if(StringUtils.isNotEmpty((String)map.get("workType"))){
-            workType=(String)map.get("workType");
+        if (StringUtils.isNotEmpty(workType)) {
+            queryParams.put("workType", workType);
         }
-        Page<User> page = new Page<>(pageNum, pageSize);
-        IPage<User> iPage = userMapper.getUserList(page,name,phone,certificateNumber,goupID,workType);
-        return iPage;
+        Integer total = userMapper.getCount(queryParams);
+        queryParams.put("page", (page.getPageNumber() - 1) * page.getPageSize());
+        queryParams.put("size", page.getPageSize());
+        List<User> userList = userMapper.getPage(queryParams);
+        return new PageImpl<>(userList, PageRequest.of(page.getPageNumber() - 1, page.getPageSize()), total);
     }
 
     @Override

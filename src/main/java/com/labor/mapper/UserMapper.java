@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author BoCong
@@ -41,4 +42,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     List<Subcontract> getSubcontractList();
 
+    Integer getCount(@Param("queryParams") Map<String, Object> queryParams);
+
+    List<User> getPage(@Param("queryParams")Map<String, Object> queryParams);
 }
