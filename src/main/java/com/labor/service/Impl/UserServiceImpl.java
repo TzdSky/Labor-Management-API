@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
         String name = request.getParameter("name");
         String phone = request.getParameter("phone");
         String certificateNumber = request.getParameter("certificateNumber");
-        String groupName = request.getParameter("groupName");
+        String goupID = request.getParameter("groupName");
         String workType = request.getParameter("workType");
         if (StringUtils.isNotEmpty(name)) {
             queryParams.put("name", name);
@@ -62,8 +62,8 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isNotEmpty(certificateNumber)) {
             queryParams.put("certificateNumber", Integer.valueOf(certificateNumber));
         }
-        if (StringUtils.isNotEmpty(groupName)) {
-            queryParams.put("groupName", groupName);
+        if (StringUtils.isNotEmpty(goupID)) {
+            queryParams.put("goupID", goupID);
         }
         if (StringUtils.isNotEmpty(workType)) {
             queryParams.put("workType", workType);
