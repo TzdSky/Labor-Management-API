@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: labor
     password: password
-    url: jdbc:mysql://49.235.79.112:3306/labor_manage?useUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://116.205.142.103:3306/labor_manage?useUnicode=true&characterEncoding=utf8&useSSL=false
   jpa:
     show-sql: true
 #logging:
