@@ -37,7 +37,7 @@ public interface UserMapper extends BaseMapper<User> {
      */
     void deleteUserByID(Long id);
 
-    IPage<User> getUserList(Page<User> page, @Param("name")String name, @Param("phone")Integer phone, @Param("certificateNumber")Integer certificateNumber, @Param("groupName")String groupName,@Param("workType") String workType);
+    IPage<User> getUserList(Page<User> page, @Param("name")String name, @Param("phone")Integer phone, @Param("certificateNumber")Integer certificateNumber, @Param("goupID")String goupID,@Param("workType") String workType);
 
     List<Subcontract> getSubcontractList();
 

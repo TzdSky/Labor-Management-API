@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
         String name="";
         Integer phone=0;
         Integer certificateNumber=0;
-        String  groupName="";
+        String  goupID="";
         String  workType="";
         if(StringUtils.isNotEmpty((String)map.get("name"))){
             name=(String)map.get("name");
@@ -59,14 +59,14 @@ public class UserServiceImpl implements UserService {
         if(StringUtils.isNotEmpty(map.get("certificateNumber").toString())){
             certificateNumber=(Integer) map.get("certificateNumber");
         }
-        if(StringUtils.isNotEmpty((String)map.get("groupName"))){
-            groupName=(String) map.get("groupName");
+        if(StringUtils.isNotEmpty((String)map.get("goupID"))){
+            goupID=(String) map.get("goupID");
         }
         if(StringUtils.isNotEmpty((String)map.get("workType"))){
             workType=(String)map.get("workType");
         }
         Page<User> page = new Page<>(pageNum, pageSize);
-        IPage<User> iPage = userMapper.getUserList(page,name,phone,certificateNumber,groupName,workType);
+        IPage<User> iPage = userMapper.getUserList(page,name,phone,certificateNumber,goupID,workType);
         return iPage;
     }
 
