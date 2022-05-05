@@ -6,10 +6,13 @@ import com.labor.entity.Subcontract;
 import com.labor.entity.User;
 import com.labor.service.GroupService;
 import com.labor.service.UserService;
+import com.labor.utils.DataPage;
 import com.labor.utils.ManageConstants;
 import com.labor.utils.ResultModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -33,17 +38,12 @@ public class UserController {
     private UserService userService;
     @Autowired
     private GroupService groupService;
-    @RequestMapping(value = "/getUserList",method = RequestMethod.POST)
-    @ResponseBody
-    public ResultModel<IPage<User>> getUserList(@RequestBody Map<String,Object> map) {
-        ResultModel<IPage<User>> result = new ResultModel<>();
+    @RequestMapping(value = "/getUserList",method = RequestMethod.GET)
+    public ResultModel<DataPage> getUserList(HttpServletRequest request, Pageable page) {
         logger.info("findUser:===>start");
-          IPage<User> page=userService.getUserList(map);
-          result.setCode(ManageConstants.SUCCESS_200);
-          result.setText(ManageConstants.SUCCESS_200_TEXT);
-          result.setData(page);
+        Page<User> userList= userService.getUserList(request,page);
         logger.info("findUser:===>end");
-          return result;
+        return new ResultModel<>(new DataPage<>(userList));
     }
 
     /**
@@ -61,7 +61,7 @@ public class UserController {
     }
 
     /**
-     *  获取公司
+     *  获取组
      * @return
      */
     @GetMapping("/getGroupName")
