@@ -29,4 +29,11 @@
         limit #{queryParams.page,jdbcType=INTEGER},#{queryParams.size,jdbcType=INTEGER}
     </select>
 
+    <select id="getRecordsByCompanyName"  resultType="int">
+        select count(*) from t_subcontract where company_name=#{companyName}
+    </select>
+
+    <delete id="deleteByID">
+        delete from t_subcontract where id=#{id}
+    </delete>
 </mapper>

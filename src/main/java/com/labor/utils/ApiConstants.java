@@ -53,4 +53,7 @@ public class ApiConstants {
 
 	//默认的用户名
 	public final static String DEFAULT_USERNAME = "admin";
+
+	//重复用户
+	public final static String ERROR_REPEAT_Company_TEXT = "当前公司名称已存在!";
 }

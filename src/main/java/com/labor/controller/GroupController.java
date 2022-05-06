@@ -32,8 +32,6 @@ public class GroupController {
         IPage<Group> page=groupService.getCompanyInfoByNameAndPrincipal(map);
         int totalNum =  (int)page.getTotal();
         int totalPageNum = (int)page.getPages();
-        result.setTotalNum(totalNum);
-        result.setTotalPageNum(totalPageNum);
         result.setCode(ManageConstants.SUCCESS_200);
         result.setText(ManageConstants.SUCCESS_200_TEXT);
         result.setData(page);
