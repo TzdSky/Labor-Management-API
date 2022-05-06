@@ -1,11 +1,11 @@
 package com.labor.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.labor.entity.Group;
-import org.apache.ibatis.annotations.Param;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author BoCong
@@ -14,10 +14,14 @@ import java.util.Map;
 public interface GroupService {
     List<Group> getGroupNameByCom(String companyId);
 
-    IPage<Group> getCompanyInfoByNameAndPrincipal(Map<String, Object> map);
-
     /**
      *新增组别
      **/
-    int insertNewGroup(Group group);
+    boolean insertNewGroup(Group group);
+
+    Page<Group> getGroupList(HttpServletRequest request, Pageable page);
+
+    void deleteByID(Long id);
+
+    int getRecordsByGroupInfo(Group group);
 }

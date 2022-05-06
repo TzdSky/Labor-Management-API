@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author BoCong
@@ -21,15 +22,17 @@ public interface GroupMapper extends BaseMapper<Group> {
     /**
      * @author Tian
      * @date 2022/5/4
-     * @param groupName 公司名称
-     * @param groupPrincipal 负责人
      * 根据公司名、负责人查询班组信息
      */
-    IPage<Group> getCompanyInfoByNameAndPrincipal(Page<Group> page, @Param("groupName") String groupName, @Param("groupPrincipal") String groupPrincipal);
-
+    List<Group> getPage(@Param("queryParams")Map<String, Object> queryParams);
     /**
      *新增组别
      **/
     int insertNewGroup(Group group);
+
+    Integer getCount(@Param("queryParams") Map<String, Object> queryParams);
+
+    void deleteByID(@Param("id") Long id);
+
 
 }
