@@ -4,14 +4,14 @@
 
 
     <select id="getUserList" resultType="com.labor.entity.User">
-        select t.id, t.name, t.certificate_type, t.certificate_number, t.gender, t.nation, t.birthday, t.address, t.project_id, t.company_id, t.goup_id, t.work_type_id, p.project_name, s.company_name, g.group_name, w.work_type_name,
+        SELECT t.id, t.name, t.certificate_type, t.certificate_number, t.gender, t.nation, t.birthday, t.address, t.project_id, t.company_id, t.goup_id, t.work_type_id, p.project_name, s.company_name, g.group_name, w.work_type_name,
         t.user_type, t.is_sick, t.phone, t.card_number, t.is_contract, t.contract_name, t.contract_number, t.work_age, t.work_certificate, t.health,
         t.danger_operate, t.irregular_record, t.criticism, t.absence_work, t.creater, t.create_at, t.update_at
-        from t_user t, t_project p, t_subcontract s, t_group g, t_work_type w
-        where t.project_id = p.project_id
-        and t.company_id = s.id
-        and t.goup_id = g.id
-        and t.work_type_id = w.id
+        FROM t_user t
+        LEFT JOIN t_project p ON t.project_id = p.project_id
+        LEFT JOIN t_subcontract s ON t.company_id = s.id
+        LEFT JOIN t_group g ON t.goup_id = g.id
+        LEFT JOIN t_work_type w ON t.work_type_id = w.id
         <if test="name!=''and name!=null">
             and t.name like CONCAT('%',#{name},'%')
         </if>
@@ -91,4 +91,17 @@
         order by ID desc
         limit #{queryParams.page,jdbcType=INTEGER},#{queryParams.size,jdbcType=INTEGER}
     </select>
+
+    <select id="getMonitorList" resultType="com.labor.entity.User">
+          SELECT * FROM t_user WHERE user_type = 1
+    </select>
+
+    <select id="getUserUnassigned" resultType="com.labor.entity.User">
+          SELECT * FROM t_user WHERE  ISNULL(goup_id)
+    </select>
+
+    <update id="updateUserGroupID">
+        UPDATE t_user SET goup_id = #{groupID}  WHERE id = #{userID}
+    </update>
+
 </mapper>

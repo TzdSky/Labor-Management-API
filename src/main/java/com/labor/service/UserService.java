@@ -24,4 +24,17 @@ public interface UserService {
      void deleteUserByID(Long id);
 
     List<Subcontract> getSubcontractList();
+
+    List<User> getMonitorList();
+
+    /*
+    * 获取没有被分配的靓仔
+    * */
+    List<User> getUserUnassigned();
+
+    /**
+     * 班组页面添加或者删除user之后修改 user班组状态
+     */
+    int updateUserGroupID(Long userID, Long groupID);
+
 }

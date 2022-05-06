@@ -26,4 +26,10 @@ public interface GroupMapper extends BaseMapper<Group> {
      * 根据公司名、负责人查询班组信息
      */
     IPage<Group> getCompanyInfoByNameAndPrincipal(Page<Group> page, @Param("groupName") String groupName, @Param("groupPrincipal") String groupPrincipal);
+
+    /**
+     *新增组别
+     **/
+    int insertNewGroup(Group group);
+
 }

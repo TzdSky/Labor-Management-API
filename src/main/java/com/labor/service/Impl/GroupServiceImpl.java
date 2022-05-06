@@ -40,4 +40,9 @@ public class GroupServiceImpl implements GroupService {
         Page<Group> page = new Page<>(pageNum, pageSize);
         return groupMapper.getCompanyInfoByNameAndPrincipal(page, groupName, groupPrincipal);
     }
+
+    @Override
+    public int insertNewGroup(Group group){
+        return groupMapper.insertNewGroup(group);
+    };
 }

@@ -16,4 +16,10 @@
             and UPPER(gp.group_principal) like UPPER(CONCAT('%',#{groupPrincipal,jdbcType=VARCHAR}, '%'))
         </if>
     </select>
+
+
+    <insert id="insertNewGroup">
+        insert into `t_group` ( `group_name`, `group_principal`, `grade`, `principal_id`, `company_id`,  `enter_attachment`, `enter_time`, `out_time`, `remark`, `creater`, `create_at`, `update_at`)
+        values({groupName},#{groupPrincipal},#{principalId},#{companyId},#{enterAttachment},#{enterTime},#{outTime},#{remark},#{contractType},#{creater},#{createAt},#{updateAt});
+    </insert>
 </mapper>
