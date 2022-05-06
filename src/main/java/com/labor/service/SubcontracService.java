@@ -3,6 +3,7 @@ package com.labor.service;
 import com.labor.entity.Subcontract;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,4 +13,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface SubcontracService {
     Page<Subcontract> subcontractList(HttpServletRequest request, Pageable page);
+
+    int getRecordsByCompanyName(String companyName);
+
+    boolean insertSubcontract(Subcontract subcontract, MultipartFile file);
+
+    void deleteByID(Long id);
 }

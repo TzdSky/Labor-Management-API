@@ -107,14 +107,18 @@ public class UserController {
 
     /**
      * 根据id删除用户
-     * @param id
+     * @param ids
      */
     @GetMapping(value = "/deleteUser")
-    public ResultModel<String> deleteUser(@Param("id") long id){
+    public ResultModel<String> deleteUser(@RequestParam(value = "ids", required = true) List<Long> ids){
         logger.info("deleteUser:===>start");
         ResultModel<String> resultModel = new ResultModel<>();
         try {
-            userService.deleteUserByID(id);
+            if(ids.size()>0){
+                for (Long id:ids) {
+                    userService.deleteUserByID(id);
+                }
+            }
         } catch (Exception e) {
             logger.info("deleteUser:===>error ："+e);
             e.printStackTrace();

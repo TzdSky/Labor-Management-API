@@ -17,4 +17,8 @@ public interface SubcontractMapper extends BaseMapper<Subcontract> {
     Integer getCount(@Param("queryParams") Map<String, Object> queryParams);
 
     List<Subcontract> getPage(@Param("queryParams")Map<String, Object> queryParams);
+
+    int getRecordsByCompanyName(@Param("companyName")String companyName);
+
+    void deleteByID(@Param("id") Long id);
 }
