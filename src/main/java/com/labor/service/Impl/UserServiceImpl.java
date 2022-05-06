@@ -46,7 +46,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<User> getUserList(HttpServletRequest request, Pageable page) {
-
         Map<String, Object> queryParams = new HashMap<>();
         String name = request.getParameter("name");
         String phone = request.getParameter("phone");
