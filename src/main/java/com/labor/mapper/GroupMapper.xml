@@ -6,20 +6,53 @@
       </select>
 
 
-    <select id="getCompanyInfoByNameAndPrincipal" resultType="com.labor.entity.Group">
-        select id, group_name, group_principal, principal_id, company_id, company_name, enter_attachment, DATE_FORMAT(enter_time, '%Y-%m-%d') as enter_time, DATE_FORMAT(out_time, '%Y-%m-%d') as out_time, remark, creater, DATE_FORMAT(create_at, '%Y-%m-%d') ascreate_at, DATE_FORMAT(update_at, '%Y-%m-%d') as update_at from t_group gp
-        where 1 = 1
-        <if test="groupName != null and groupName != ''">
-            and UPPER(gp.group_name) like UPPER(CONCAT('%',#{groupName,jdbcType=VARCHAR}, '%'))
-        </if>
-        <if test="groupPrincipal != null and groupPrincipal != ''">
-            and UPPER(gp.group_principal) like UPPER(CONCAT('%',#{groupPrincipal,jdbcType=VARCHAR}, '%'))
-        </if>
-    </select>
-
 
     <insert id="insertNewGroup">
         insert into `t_group` ( `group_name`, `group_principal`, `grade`, `principal_id`, `company_id`,  `enter_attachment`, `enter_time`, `out_time`, `remark`, `creater`, `create_at`, `update_at`)
-        values({groupName},#{groupPrincipal},#{principalId},#{companyId},#{enterAttachment},#{enterTime},#{outTime},#{remark},#{contractType},#{creater},#{createAt},#{updateAt});
+        values(#{groupName},#{groupPrincipal},#{principalId},#{companyId},#{enterAttachment},#{enterTime},#{outTime},#{remark},#{contractType},#{creater},#{createAt},#{updateAt});
     </insert>
+
+
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(1) from t_group
+        where 1 = 1
+        <if test="queryParams.groupName != null and queryParams.groupName != ''">
+            and UPPER(group_name) like UPPER(CONCAT('%',#{queryParams.groupName,jdbcType=VARCHAR}, '%'))
+        </if>
+
+        <if test="queryParams.groupPrincipal != null and queryParams.groupPrincipal != ''">
+            and UPPER(group_principal) like UPPER(CONCAT('%',#{queryParams.groupPrincipal,jdbcType=VARCHAR}, '%'))
+        </if>
+
+        <if test="queryParams.companyID != null and queryParams.companyID != ''">
+            and company_id = #{queryParams.companyID}
+        </if>
+
+    </select>
+
+
+    <select id="getPage" resultType="com.labor.entity.Group">
+        select id, group_name, group_principal, principal_id, company_id, company_name, enter_attachment, DATE_FORMAT(enter_time, '%Y-%m-%d') as enter_time, DATE_FORMAT(out_time, '%Y-%m-%d') as out_time, remark, creater, DATE_FORMAT(create_at, '%Y-%m-%d') ascreate_at, DATE_FORMAT(update_at, '%Y-%m-%d') as update_at
+        from t_group gp
+        where 1 = 1
+        <if test="queryParams.groupName != null and queryParams.groupName != ''">
+            and UPPER(gp.group_name) like UPPER(CONCAT('%',#{queryParams.groupName,jdbcType=VARCHAR}, '%'))
+        </if>
+
+        <if test="queryParams.groupPrincipal != null and queryParams.groupPrincipal != ''">
+            and UPPER(gp.group_principal) like UPPER(CONCAT('%',#{queryParams.groupPrincipal,jdbcType=VARCHAR}, '%'))
+        </if>
+
+        <if test="queryParams.companyID != null and queryParams.companyID != ''">
+            and gp.company_id = #{queryParams.companyID}
+        </if>
+        order by ID desc
+        limit #{queryParams.page,jdbcType=INTEGER},#{queryParams.size,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByID">
+        delete from t_group where id=#{id}
+    </delete>
+
+
 </mapper>
