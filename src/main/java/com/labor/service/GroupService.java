@@ -15,4 +15,9 @@ public interface GroupService {
     List<Group> getGroupNameByCom(String companyId);
 
     IPage<Group> getCompanyInfoByNameAndPrincipal(Map<String, Object> map);
+
+    /**
+     *新增组别
+     **/
+    int insertNewGroup(Group group);
 }

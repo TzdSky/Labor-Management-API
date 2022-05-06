@@ -152,4 +152,15 @@ public class UserServiceImpl implements UserService {
     public List<Subcontract> getSubcontractList() {
         return userMapper.getSubcontractList();
     }
+
+    @Override
+    public  List<User> getMonitorList() {return userMapper.getMonitorList();};
+
+    @Override
+    public  List<User> getUserUnassigned() {return userMapper.getUserUnassigned();};
+
+    @Override
+    public int updateUserGroupID(Long userID, Long groupID) {
+        return userMapper.updateUserGroupID(userID, groupID );
+    }
 }

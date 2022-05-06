@@ -45,4 +45,21 @@ public interface UserMapper extends BaseMapper<User> {
     Integer getCount(@Param("queryParams") Map<String, Object> queryParams);
 
     List<User> getPage(@Param("queryParams")Map<String, Object> queryParams);
+
+    /**
+     * 获取所有班长信息(用于下拉框)
+     */
+    List<User> getMonitorList();
+
+    /**
+     * 获取没有被分配的靓仔
+     **/
+    List<User> getUserUnassigned();
+
+    /**
+     *  @param userID 用户id
+     * @param groupID  组别id
+     * 班组页面添加或者删除user之后修改 user班组状态
+     */
+    int updateUserGroupID(Long userID, Long groupID);
 }
