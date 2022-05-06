@@ -1,12 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.labor.mapper.SubcontractMapper">
-    <select id="getCompanyInfo" resultType="com.labor.entity.Subcontract">
-        select id,company_name from t_group
-        where 1 = 1
-        <if test="id != null and id != ''">
-          and id=#{id}
+
+
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(t.ID) from (
+        select id,`company_name`, `principal`, `phone`, `subcontrac_content`, `required_file_id`, `address`,`subcontract_type`, `creater`, `create_at`, `update_at`
+        from t_subcontract where 1 = 1
+        <if test="queryParams.companyName != null and queryParams.companyName != ''">
+            and UPPER(company_name) like UPPER(CONCAT('%',#{queryParams.companyName,jdbcType=VARCHAR}, '%'))
         </if>
+        <if test="queryParams.subcontractType != null and queryParams.subcontractType != ''">
+            and subcontract_type = #{queryParams.subcontractType,jdbcType=INTEGER}
+        </if>
+        ) t
+    </select>
+
+    <select id="getPage" resultType="com.labor.entity.User">
+        select id,`company_name`, `principal`, `phone`, `subcontrac_content`, `required_file_id`, `address`,`subcontract_type`, `creater`, `create_at`, `update_at`
+        from t_subcontract where 1 = 1
+        <if test="queryParams.companyName != null and queryParams.companyName != ''">
+            and UPPER(company_name) like UPPER(CONCAT('%',#{queryParams.companyName,jdbcType=VARCHAR}, '%'))
+        </if>
+        <if test="queryParams.subcontractType != null and queryParams.subcontractType != ''">
+            and subcontract_type = #{queryParams.subcontractType,jdbcType=INTEGER}
+        </if>
+        order by ID desc
+        limit #{queryParams.page,jdbcType=INTEGER},#{queryParams.size,jdbcType=INTEGER}
     </select>
 
 </mapper>

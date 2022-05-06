@@ -6,7 +6,7 @@ import java.util.Date;
  * @author BoCong
  * @date 2022/5/3
  */
-@TableName("t_subcontrac")
+@TableName("t_subcontract")
 public class Subcontract {
     private static final long serialVersionUID = 1L;
     /**
@@ -67,7 +67,7 @@ public class Subcontract {
     /**
      * 类型
      */
-    private String type;
+    private Integer subcontractType;
 
     /**
      * 备注
@@ -175,12 +175,12 @@ public class Subcontract {
         this.identificationNumber = identificationNumber;
     }
 
-    public String getType() {
-        return type;
+    public Integer getSubcontractType() {
+        return subcontractType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setSubcontractType(Integer subcontractType) {
+        this.subcontractType = subcontractType;
     }
 
     public String getRemark() {

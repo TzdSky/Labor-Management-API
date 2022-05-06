@@ -1,5 +1,7 @@
 package com.labor.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.labor.entity.Contract;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -7,5 +9,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2022/5/3
  */
 @Mapper
-public interface ContractMapper {
+public interface ContractMapper extends BaseMapper<Contract> {
 }
