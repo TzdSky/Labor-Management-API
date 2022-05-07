@@ -43,4 +43,5 @@ public interface UserService {
      */
     boolean updateUser(User user, MultipartFile file);
 
+    User findUserById(Long id);
 }

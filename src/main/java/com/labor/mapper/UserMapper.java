@@ -66,5 +66,10 @@ public interface UserMapper extends BaseMapper<User> {
      */
     int updateUser(User user);
 
-
+    /**
+     * 查看用户
+     * @param id
+     * @return
+     */
+    User findUserById(Long id);
 }

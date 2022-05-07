@@ -104,6 +104,21 @@ public class UserController {
         logger.info("insertUser:===>end");
         return resultModel;
     }
+    /**
+     * 根据id查看用户
+     * @param id
+     */
+    @GetMapping(value = "/findUserById")
+    public ResultModel<User> findUserById(@RequestParam(value = "id", required = true) Long id){
+        logger.info("findUser:===>start");
+        ResultModel<User> resultModel = new ResultModel<>();
+        User user=userService.findUserById(id);
+        resultModel.setData(user);
+        resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
+        resultModel.setCode(ManageConstants.SUCCESS_200);
+        logger.info("findUser:===>end");
+        return resultModel;
+    }
 
     /**
      * 根据id删除用户

@@ -15,6 +15,7 @@ import com.labor.utils.DateUtil;
 import com.labor.utils.FileUtil;
 import com.labor.utils.GenerateUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -222,6 +223,11 @@ public class UserServiceImpl implements UserService {
         }
 
         return userMapper.updateUser(user) == 1 ? true : false;
+    }
+
+    @Override
+    public User findUserById(Long id) {
+        return userMapper.findUserById(id);
     }
 
 }
