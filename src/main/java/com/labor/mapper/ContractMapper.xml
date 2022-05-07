@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.labor.mapper.ContractMapper">
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(t.ID) from (
+        select t1.id,contract_name,contract_type,company_id,DATE_FORMAT(create_at, '%Y-%m-%d'),DATE_FORMAT(begin_time, '%Y-%m-%d') begin_time,DATE_FORMAT(end_time, '%Y-%m-%d') end_time,status,file_id,sign_company,t2.company_name from t_contract t1 LEFT JOIN t_subcontract t2 on  t1.company_id =t2.id
+        where 1=1
+        <if test="queryParams.contractName != null and queryParams.contractName != ''">
+            and UPPER(t1.contract_name) like UPPER(CONCAT('%',#{queryParams.t1.contractName,jdbcType=VARCHAR}, '%'))
+        </if>
+        <if test="queryParams.contractType != null and queryParams.contractType != ''">
+            and t1.contract_type = #{queryParams.contractType}
+        </if>
+        <if test="queryParams.beginTime !=null and ''!= queryParams.beginTime">
+            and begin_time &gt;= #{queryParams.beginTime}
+        </if>
+        <if test="queryParams.endTime !=null and ''!= queryParams.endTime">
+            AND end_time &lt; #{queryParams.endTime}
+        </if>
+        ) t
+    </select>
 
+    <select id="getPage" resultType="com.labor.entity.User">
+        select t1.id,contract_name,contract_type,company_id,DATE_FORMAT(create_at, '%Y-%m-%d'),DATE_FORMAT(begin_time, '%Y-%m-%d') begin_time,DATE_FORMAT(end_time, '%Y-%m-%d') end_time,status,file_id,sign_company,t2.company_name from t_contract t1 LEFT JOIN t_subcontract t2 on  t1.company_id =t2.id
+        where 1=1
+        <if test="queryParams.contractName != null and queryParams.contractName != ''">
+            and UPPER(t1.contract_name) like UPPER(CONCAT('%',#{queryParams.contractName,jdbcType=VARCHAR}, '%'))
+        </if>
+        <if test="queryParams.contractType != null and queryParams.contractType != ''">
+            and t1.contract_type = #{queryParams.contractType}
+        </if>
+        <if test="queryParams.beginTime !=null and ''!= queryParams.beginTime">
+            and begin_time &gt;= #{queryParams.beginTime}
+        </if>
+        <if test="queryParams.endTime !=null and ''!= queryParams.endTime">
+            AND end_time &lt; #{queryParams.endTime}
+        </if>
+        order by ID desc
+        limit #{queryParams.page,jdbcType=INTEGER},#{queryParams.size,jdbcType=INTEGER}
+    </select>
 
 </mapper>
