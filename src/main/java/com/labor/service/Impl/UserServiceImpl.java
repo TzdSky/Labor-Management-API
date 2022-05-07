@@ -7,6 +7,7 @@ import com.labor.controller.UserController;
 import com.labor.entity.AttachmentLog;
 import com.labor.entity.Subcontract;
 import com.labor.entity.User;
+import com.labor.entity.WorkType;
 import com.labor.enums.DateStyleEnum;
 import com.labor.mapper.AttachmentLogMapper;
 import com.labor.mapper.UserMapper;
@@ -228,6 +229,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserById(Long id) {
         return userMapper.findUserById(id);
+    }
+
+    @Override
+    public List<WorkType> getWorkType() {
+        return userMapper.getWorkType();
     }
 
 }

@@ -2,6 +2,7 @@ package com.labor.service;
 
 import com.labor.entity.Subcontract;
 import com.labor.entity.User;
+import com.labor.entity.WorkType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,4 +45,6 @@ public interface UserService {
     boolean updateUser(User user, MultipartFile file);
 
     User findUserById(Long id);
+
+    List<WorkType> getWorkType();
 }

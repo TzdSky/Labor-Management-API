@@ -105,4 +105,8 @@
         LEFT JOIN t_group g ON t.goup_id = g.id
         LEFT JOIN t_work_type w ON t.work_type_id = w.id where t.id=#{id}
     </select>
+
+    <select id="getWorkType" resultType="com.labor.entity.WorkType">
+        select id,work_type_name from t_work_type
+    </select>
 </mapper>
