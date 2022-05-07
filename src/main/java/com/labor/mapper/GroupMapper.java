@@ -28,11 +28,27 @@ public interface GroupMapper extends BaseMapper<Group> {
     /**
      *新增组别
      **/
-    int insertNewGroup(Group group);
+    Long insertNewGroup(Group group);
 
     Integer getCount(@Param("queryParams") Map<String, Object> queryParams);
 
-    void deleteByID(@Param("id") Long id);
+    /**
+     * 根据id删除
+     * @param ids
+     */
+    void deleteByID(@Param("ids") List<Long> ids);
 
+    /**
+     *  @param userID 用户id
+     * @param groupID  组别id
+     * 班组页面添加或者删除user之后修改 user班组状态
+     */
+    int updateUserGroupID(@Param("userIDs")List<Long> userID, @Param("groupID")Long groupID);
+
+
+    /**
+     * 修改班组内容
+     */
+    int updateGroup(Group group);
 
 }
