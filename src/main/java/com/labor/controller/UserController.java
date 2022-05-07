@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.labor.entity.Group;
 import com.labor.entity.Subcontract;
 import com.labor.entity.User;
+import com.labor.entity.WorkType;
 import com.labor.service.GroupService;
 import com.labor.service.UserService;
 import com.labor.utils.DataPage;
@@ -61,7 +62,35 @@ public class UserController {
     }
 
     /**
+     *  获取工种
+     * @return
+     */
+    @GetMapping("/getWorkType")
+    public ResultModel<List<WorkType>> getWorkType() {
+        ResultModel<List<WorkType>> result = new ResultModel<>();
+        List<WorkType> workTypeList=userService.getWorkType();
+        result.setCode(ManageConstants.SUCCESS_200);
+        result.setText(ManageConstants.SUCCESS_200_TEXT);
+        result.setData(workTypeList);
+        return result;
+    }
+
+    /**
      *  获取组
+     * @return
+     */
+    @GetMapping("/getGroup")
+    public ResultModel<List<Group>> getGroup() {
+        ResultModel<List<Group>> result = new ResultModel<>();
+        List<Group> groupList=groupService.groupList();
+        result.setCode(ManageConstants.SUCCESS_200);
+        result.setText(ManageConstants.SUCCESS_200_TEXT);
+        result.setData(groupList);
+        return result;
+    }
+
+    /**
+     *  通过公司id获取组
      * @return
      */
     @GetMapping("/getGroupName")
@@ -169,5 +198,7 @@ public class UserController {
         logger.info("updateGroup:===>end");
         return resultModel;
     }
+
+
 
 }

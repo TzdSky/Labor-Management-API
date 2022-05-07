@@ -90,4 +90,9 @@ public class GroupServiceImpl implements GroupService {
         return groupMapper.updateGroup(group);
     }
 
+    @Override
+    public List<Group> groupList() {
+        return groupMapper.groupList();
+    }
+
 }

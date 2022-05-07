@@ -34,4 +34,6 @@ public interface GroupService {
      * 修改班组内容
      */
     int updateGroup(Group group);
+
+    List<Group> groupList();
 }

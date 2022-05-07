@@ -83,4 +83,8 @@
         WHERE  id = #{ID}
     </update>
 
+    <select id="groupList" resultType="com.labor.entity.Group">
+        select id,group_name from t_group
+    </select>
+
 </mapper>
