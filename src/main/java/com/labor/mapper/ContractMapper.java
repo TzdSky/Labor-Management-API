@@ -3,6 +3,10 @@ package com.labor.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.labor.entity.Contract;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author BoCong
@@ -10,4 +14,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface ContractMapper extends BaseMapper<Contract> {
+    Integer getCount(@Param("queryParams") Map<String, Object> queryParams);
+
+    List<Contract> getPage(@Param("queryParams") Map<String, Object> queryParams);
 }
