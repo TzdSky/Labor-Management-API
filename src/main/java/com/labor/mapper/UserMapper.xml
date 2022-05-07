@@ -3,32 +3,7 @@
 <mapper namespace="com.labor.mapper.UserMapper">
 
 
-    <select id="getUserList" resultType="com.labor.entity.User">
-        SELECT t.id, t.name, t.certificate_type, t.certificate_number, t.gender, t.nation, t.birthday, t.address, t.project_id, t.company_id, t.goup_id, t.work_type_id, p.project_name, s.company_name, g.group_name, w.work_type_name,
-        t.user_type, t.is_sick, t.phone, t.card_number, t.is_contract, t.contract_name, t.contract_number, t.work_age, t.work_certificate, t.health,
-        t.danger_operate, t.irregular_record, t.criticism, t.absence_work, t.creater, t.create_at, t.update_at
-        FROM t_user t
-        LEFT JOIN t_project p ON t.project_id = p.project_id
-        LEFT JOIN t_subcontract s ON t.company_id = s.id
-        LEFT JOIN t_group g ON t.goup_id = g.id
-        LEFT JOIN t_work_type w ON t.work_type_id = w.id
-        <if test="name!=''and name!=null">
-            and t.name like CONCAT('%',#{name},'%')
-        </if>
-        <if test="certificateNumber!=''and certificateNumber!=0">
-            and t.certificate_number like CONCAT('%',#{certificateNumber},'%')
-        </if>
-        <if test="phone!=''and phone!=0">
-            and t.phone like CONCAT('%',#{phone},'%')
-        </if>
-        <if test="goupID!=''and goupID!=nul">
-            and t.goup_id = #{goupID}
-        </if>
-        <if test="workType!=''and workType!=null">
-            and t.work_type = #{workType}
-        </if>
-        order by t.create_at desc
-    </select>
+
 
     <insert id="inertNewUser">
         INSERT INTO t_user (`name`, `certificate_type`, `certificate_number`, `gender`, `nation`, `birthday`, `address`, `project_id`, `company_id`, `goup_id`, `work_type`, `user_type`, `is_sick`, `phone`, `card_number`, `is_contract`, `contract_name`, `contract_number`, `work_age`, `work_certificate`, `health`, `danger_operate`, `irregular_record`, `criticism`, `absence_work`, `creater`, `create_at`, `update_at`)
@@ -68,11 +43,11 @@
         <if test="queryParams.phone != 0 and queryParams.phone != ''">
             and t.phone = #{queryParams.phone,jdbcType=INTEGER}
         </if>
-        <if test="queryParams.groupName != null and queryParams.groupName != ''">
-            and UPPER(t.goup_name) like UPPER(CONCAT('%',#{queryParams.groupName,jdbcType=VARCHAR}, '%'))
+        <if test="queryParams.goupID != null and queryParams.goupID != ''">
+            and UPPER(t.goup_id) like UPPER(CONCAT('%',#{queryParams.goupID}, '%'))
         </if>
-        <if test="queryParams.workType != null and queryParams.workType != ''">
-            and UPPER(t.work_type) like UPPER(CONCAT('%',#{queryParams.workType,jdbcType=VARCHAR}, '%'))
+        <if test="queryParams.workTypeId != null and queryParams.workTypeId != ''">
+            and UPPER(t.work_type_id) like UPPER(CONCAT('%',#{queryParams.workType}, '%'))
         </if>
         ) t
     </select>
@@ -95,11 +70,11 @@
         <if test="queryParams.phone != null and queryParams.phone != ''">
             and t.phone = #{queryParams.phone,jdbcType=INTEGER}
         </if>
-        <if test="queryParams.groupName != null and queryParams.groupName != ''">
-            and UPPER(t.goup_name) like UPPER(CONCAT('%',#{queryParams.groupName,jdbcType=VARCHAR}, '%'))
+        <if test="queryParams.goupID != null and queryParams.goupID != ''">
+            and UPPER(t.goup_id) =#{queryParams.goupID}
         </if>
-        <if test="queryParams.workType != null and queryParams.workType != ''">
-            and UPPER(t.work_type) like UPPER(CONCAT('%',#{queryParams.workType,jdbcType=VARCHAR}, '%'))
+        <if test="queryParams.workTypeId != null and queryParams.workTypeId != ''">
+            and UPPER(t.work_type_id) = #{queryParams.workTypeId}
         </if>
         order by ID desc
         limit #{queryParams.page,jdbcType=INTEGER},#{queryParams.size,jdbcType=INTEGER}
