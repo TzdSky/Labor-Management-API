@@ -51,8 +51,8 @@ public class UserServiceImpl implements UserService {
         String name = request.getParameter("name");
         String phone = request.getParameter("phone");
         String certificateNumber = request.getParameter("certificateNumber");
-        String goupID = request.getParameter("groupName");
-        String workType = request.getParameter("workType");
+        String goupID = request.getParameter("goupID");
+        String workTypeId = request.getParameter("workTypeId");
         if (StringUtils.isNotEmpty(name)) {
             queryParams.put("name", name);
         }
@@ -65,8 +65,8 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isNotEmpty(goupID)) {
             queryParams.put("goupID", goupID);
         }
-        if (StringUtils.isNotEmpty(workType)) {
-            queryParams.put("workType", workType);
+        if (StringUtils.isNotEmpty(workTypeId)) {
+            queryParams.put("workTypeId", workTypeId);
         }
         Integer total = userMapper.getCount(queryParams);
         queryParams.put("page", (page.getPageNumber() - 1) * page.getPageSize());

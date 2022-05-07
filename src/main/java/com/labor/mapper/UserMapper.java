@@ -39,7 +39,6 @@ public interface UserMapper extends BaseMapper<User> {
      */
     void deleteUserByID(Long id);
 
-    IPage<User> getUserList(Page<User> page, @Param("name")String name, @Param("phone")Integer phone, @Param("certificateNumber")Integer certificateNumber, @Param("goupID")String goupID,@Param("workType") String workType);
 
     /**
      * 获取所有劳务公司 用于下拉框
