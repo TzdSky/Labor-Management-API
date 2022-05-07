@@ -3,6 +3,7 @@ package com.labor.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author BoCong
@@ -77,6 +78,18 @@ public class Group {
      */
     private Date updateAt;
 
+    /**
+     * 用来存该组别下的工人
+     */
+    private List<Long> userInGroup;
+
+    public List<Long> getUserInGroup() {
+        return userInGroup;
+    }
+
+    public void setUserInGroup(List<Long> userInGroup) {
+        this.userInGroup = userInGroup;
+    }
 
     public Long getCompanyId() {
         return companyId;

@@ -42,7 +42,7 @@ public class GroupController {
 
 
     /**
-     * 根据id删除组别
+     * 根据id 批量删除组别
      * @param  ids
      */
     @GetMapping(value = "/deleteGroupList")
@@ -51,9 +51,7 @@ public class GroupController {
         ResultModel<String> resultModel = new ResultModel<>();
         try {
             if(ids.size()>0){
-                for (Long id:ids) {
-                    groupService.deleteByID(id);
-                }
+                    groupService.deleteGroupByID(ids);
             }
         } catch (Exception e) {
             logger.info("deleteGroupList:===>error ："+e);
@@ -75,26 +73,96 @@ public class GroupController {
      * @return 返回结果
      */
     @PostMapping(value="/insertNewGroup")
-    public ResultModel<String>  insertNewGroup(Group group){
+    public ResultModel<String>  insertNewGroup(@RequestBody Group group){
         ResultModel<String> resultModel = new ResultModel<>();
-        logger.info("insertUser:===>start");
-        /**
-         * 新增前做判断 根据班组名称 负责人公司去重
-         */
+        logger.info("insertNewGroup:===>start");
         if(group != null) {
-            int records = groupService.getRecordsByGroupInfo(group);
-            if(records > 0) {
+            boolean hasRecords = false;
+            int records = 0 ;
+            if(group.getGroupName() != null && group.getPrincipalId()!= null && group.getCompanyId()!= null) {
+                //三条记录都不为空的时候查询数据库是不是相同的记录 去重
+                 records = groupService.getRecordsByGroupInfo(group);
+                hasRecords =  records > 0 ? true : false;
+            }
+
+            if(hasRecords) {
                 resultModel.setText(ManageConstants.ERROR_REPEAT_TEXT);
                 resultModel.setCode(ManageConstants.ERROR_500);
             } else {
                 group.setCreateAt(new Date());
-                resultModel.setData(groupService.insertNewGroup(group)?"新增成功":"新增失败");
+                Long group1 = groupService.insertNewGroup(group);
+                if(group.getUserInGroup().size() > 0){
+                    //新增完，根据返回的id批量修改user表的 user班组id
+                    groupService.updateUserGroupID(group.getUserInGroup(),group.getID());
+                }
+                resultModel.setData(group1 != null?"新增成功":"新增失败");
                 resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
                 resultModel.setCode(ManageConstants.SUCCESS_200);
             }
 
         }
-        logger.info("insertUser:===>end");
+        logger.info("insertNewGroup:===>end");
         return resultModel;
     }
+
+
+
+    /**
+     * 根据id 批量修改user的班组状态
+     * @param  ids 要修改的user id集合
+     * @param  status 0删除(修改user的班组goup_id为null)，1 添加（修改user的班组goup_id为当前组别的id）
+     */
+    @GetMapping(value = "/addOrRemoveUserInGroup")
+    public ResultModel<String> addOrRemoveUserInGroup(@RequestParam(value = "ids", required = true) List<Long> ids,
+                                               @RequestParam(value = "status", required = true) Long status,
+                                               @RequestParam(value = "groupID", required = true)Long groupID){
+        logger.info("addOrRemoveUserInGroup:===>start");
+        ResultModel<String> resultModel = new ResultModel<>();
+        try {
+            if(ids != null && status != null && groupID != null){
+                if(ids.size() > 0){
+
+                    if(status == 0){
+                        groupID = null; //如果是删除user就设置为空
+                    }
+                    groupService.updateUserGroupID(ids,groupID);
+                }
+            } else {
+                resultModel.setText(ManageConstants.ERROR_405_TEXT);
+                resultModel.setCode(ManageConstants.ERROR_405);
+                return resultModel;
+            }
+        } catch (Exception e) {
+            logger.info("addOrRemoveUserInGroup:===>error ："+e);
+            e.printStackTrace();
+            resultModel.setText(ManageConstants.ERROR_207_TEXT);
+            resultModel.setCode(ManageConstants.ERROR_207);
+            return resultModel;
+        }
+        resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
+        resultModel.setCode(ManageConstants.SUCCESS_200);
+        logger.info("addOrRemoveUserInGroup:===>end");
+        return resultModel;
+    }
+
+
+    /**
+     * 修改班组
+     * @param group 传参对象
+     * @return 返回结果
+     */
+    @PostMapping(value="/updateGroup")
+    public ResultModel<String> updateGroup(@RequestBody Group group){
+        ResultModel<String> resultModel = new ResultModel<>();
+        logger.info("updateGroup:===>start");
+        int queryStatus = groupService.updateGroup(group);
+        resultModel.setData(queryStatus == 1?"修改成功":"修改失败");
+        resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
+        resultModel.setCode(ManageConstants.SUCCESS_200);
+        logger.info("updateGroup:===>end");
+        return resultModel;
+    }
+
+
+
 }

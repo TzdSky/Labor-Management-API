@@ -89,7 +89,7 @@ public class UserController {
          * 新增前做判断
          */
         if(user != null) {
-            int records = userService.getRecordsByCardNumber(user.getCertificateType(), user.getCertificateNumber());
+            int records = userService.getRecordsByCardNumber(user.getCertificateType(), user.getCardNumber());
             if(records > 0) {
                 resultModel.setText(ManageConstants.ERROR_REPEAT_TEXT);
                 resultModel.setCode(ManageConstants.ERROR_500);
@@ -132,6 +132,27 @@ public class UserController {
         return resultModel;
     }
 
-
+    /**
+     * 修改用户
+     * @param user 传参对象
+     * @return 返回结果
+     */
+    @PostMapping(value="/updateUser")
+    public ResultModel<String>  updateUser(User user, @RequestPart(value = "file") MultipartFile file){
+        ResultModel<String> resultModel = new ResultModel<>();
+        logger.info("updateUser:===>start");
+        if(user != null) {
+            user.setCreateAt(new Date());
+            resultModel.setData(userService.updateUser(user, file) ? "修改成功" : "修改失败");
+            resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
+            resultModel.setCode(ManageConstants.SUCCESS_200);
+        }else {
+            resultModel.setData("修改失败");
+            resultModel.setText(ManageConstants.ERROR_207_TEXT);
+            resultModel.setCode(ManageConstants.ERROR_207);
+        }
+        logger.info("updateGroup:===>end");
+        return resultModel;
+    }
 
 }

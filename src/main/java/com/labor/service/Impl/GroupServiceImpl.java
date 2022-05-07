@@ -59,14 +59,14 @@ public class GroupServiceImpl implements GroupService {
 
 
     @Override
-    public boolean insertNewGroup(Group group){
-        return groupMapper.insertNewGroup(group) == 1 ? true : false;
+    public Long insertNewGroup(Group group){
+        return groupMapper.insertNewGroup(group);
     };
 
 
     @Override
-    public void deleteByID(Long id) {
-        groupMapper.deleteByID(id);
+    public void deleteGroupByID(List<Long> ids) {
+        groupMapper.deleteByID(ids);
     }
 
     @Override
@@ -79,4 +79,15 @@ public class GroupServiceImpl implements GroupService {
         queryParams.put("principalId", group.getPrincipalId());
         return groupMapper.getCount(queryParams);
     };
+
+    @Override
+    public int updateUserGroupID(List<Long> userID, Long groupID) {
+        return groupMapper.updateUserGroupID(userID, groupID );
+    }
+
+    @Override
+    public int updateGroup(Group group) {
+        return groupMapper.updateGroup(group);
+    }
+
 }

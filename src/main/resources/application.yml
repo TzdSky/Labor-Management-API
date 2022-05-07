@@ -1,9 +1,9 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://116.205.142.103:3306/labor_manage?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: labor
     password: password
-    url: jdbc:mysql://116.205.142.103:3306/labor_manage?useUnicode=true&characterEncoding=utf8&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
 #logging:

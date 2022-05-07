@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.labor.entity.AttachmentLog;
+import com.labor.entity.Group;
 import com.labor.entity.Subcontract;
 import com.labor.entity.User;
 import org.apache.ibatis.annotations.Mapper;
@@ -40,6 +41,9 @@ public interface UserMapper extends BaseMapper<User> {
 
     IPage<User> getUserList(Page<User> page, @Param("name")String name, @Param("phone")Integer phone, @Param("certificateNumber")Integer certificateNumber, @Param("goupID")String goupID,@Param("workType") String workType);
 
+    /**
+     * 获取所有劳务公司 用于下拉框
+     */
     List<Subcontract> getSubcontractList();
 
     Integer getCount(@Param("queryParams") Map<String, Object> queryParams);
@@ -56,10 +60,11 @@ public interface UserMapper extends BaseMapper<User> {
      **/
     List<User> getUserUnassigned();
 
+
     /**
-     *  @param userID 用户id
-     * @param groupID  组别id
-     * 班组页面添加或者删除user之后修改 user班组状态
+     * 修改用户
      */
-    int updateUserGroupID(Long userID, Long groupID);
+    int updateUser(User user);
+
+
 }

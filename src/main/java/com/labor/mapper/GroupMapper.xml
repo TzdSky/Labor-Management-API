@@ -7,40 +7,47 @@
 
 
 
-    <insert id="insertNewGroup">
-        insert into `t_group` ( `group_name`, `group_principal`, `grade`, `principal_id`, `company_id`,  `enter_attachment`, `enter_time`, `out_time`, `remark`, `creater`, `create_at`, `update_at`)
+    <insert id="insertNewGroup" parameterType="com.labor.entity.Group">
+        <!--通过mybatis框架提供的selectKey标签获得自增产生的ID值-->
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="ID">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into `t_group` (`group_name`, `group_principal`, `grade`, `principal_id`, `company_id`,  `enter_attachment`, `enter_time`, `out_time`, `remark`, `creater`, `create_at`, `update_at`)
         values(#{groupName},#{groupPrincipal},#{principalId},#{companyId},#{enterAttachment},#{enterTime},#{outTime},#{remark},#{contractType},#{creater},#{createAt},#{updateAt});
     </insert>
 
 
+
     <select id="getCount" resultType="java.lang.Integer">
-        select count(1) from t_group
+        SELECT COUNT(1) FROM t_group g INNER JOIN t_user u
+        ON g.principal_id = u.id
         where 1 = 1
         <if test="queryParams.groupName != null and queryParams.groupName != ''">
-            and UPPER(group_name) like UPPER(CONCAT('%',#{queryParams.groupName,jdbcType=VARCHAR}, '%'))
+            and UPPER(g.group_name) like UPPER(CONCAT('%',#{queryParams.groupName,jdbcType=VARCHAR}, '%'))
         </if>
 
         <if test="queryParams.groupPrincipal != null and queryParams.groupPrincipal != ''">
-            and UPPER(group_principal) like UPPER(CONCAT('%',#{queryParams.groupPrincipal,jdbcType=VARCHAR}, '%'))
+            and UPPER(u.name) like UPPER(CONCAT('%',#{queryParams.groupPrincipal,jdbcType=VARCHAR}, '%'))
         </if>
 
         <if test="queryParams.companyID != null and queryParams.companyID != ''">
-            and company_id = #{queryParams.companyID}
+            and g.company_id = #{queryParams.companyID}
         </if>
 
     </select>
 
 
     <select id="getPage" resultType="com.labor.entity.Group">
-        select id, group_name, group_principal, principal_id, company_id, company_name, enter_attachment, DATE_FORMAT(enter_time, '%Y-%m-%d') as enter_time, DATE_FORMAT(out_time, '%Y-%m-%d') as out_time, remark, creater, DATE_FORMAT(create_at, '%Y-%m-%d') ascreate_at, DATE_FORMAT(update_at, '%Y-%m-%d') as update_at
-        from t_group gp
+        select gp.id, gp.group_name, gp.group_principal, gp.principal_id, gp.company_id, gp.company_name, gp.enter_attachment, DATE_FORMAT(gp.enter_time, '%Y-%m-%d') as enter_time, DATE_FORMAT(gp.out_time, '%Y-%m-%d') as out_time, gp.remark, gp.creater, DATE_FORMAT(gp.create_at, '%Y-%m-%d') gp.ascreate_at, DATE_FORMAT(gp.update_at, '%Y-%m-%d') as update_at
+        from t_group gp INNER JOIN t_user u
+        ON gp.principal_id = u.id
         where 1 = 1
         <if test="queryParams.groupName != null and queryParams.groupName != ''">
             and UPPER(gp.group_name) like UPPER(CONCAT('%',#{queryParams.groupName,jdbcType=VARCHAR}, '%'))
         </if>
 
         <if test="queryParams.groupPrincipal != null and queryParams.groupPrincipal != ''">
-            and UPPER(gp.group_principal) like UPPER(CONCAT('%',#{queryParams.groupPrincipal,jdbcType=VARCHAR}, '%'))
+            and UPPER(u.name) like UPPER(CONCAT('%',#{queryParams.groupPrincipal,jdbcType=VARCHAR}, '%'))
         </if>
 
         <if test="queryParams.companyID != null and queryParams.companyID != ''">
@@ -50,9 +57,30 @@
         limit #{queryParams.page,jdbcType=INTEGER},#{queryParams.size,jdbcType=INTEGER}
     </select>
 
-    <delete id="deleteByID">
-        delete from t_group where id=#{id}
+    <delete id="deleteByID" parameterType="java.util.List">
+        delete from t_group where id in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </delete>
 
+
+    <update id="updateUserGroupID">
+        UPDATE t_user SET goup_id = #{groupID}  WHERE id in
+        <foreach collection="userIDs" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+
+    <update id="updateGroup">
+       UPDATE t_group  SET
+       principal_id = #{principalId}, company_id = #{companyId},
+        enter_time = STR_TO_DATE(#{enterTime},'%Y-%m-%d %H:%i:%s'),
+         out_time = STR_TO_DATE(#{outTime},'%Y-%m-%d %H:%i:%s'),
+          remark = #{remark},
+          update_at = NOW()
+        WHERE  id = #{ID}
+    </update>
 
 </mapper>
