@@ -18,7 +18,7 @@ public class User {
      private Integer certificateType;
 
      //证件号码
-     private Integer certificateNumber;
+     private String certificateNumber;
 
      //性别
      private Integer gender;
@@ -42,7 +42,7 @@ public class User {
      private String groupName;
 
      //工种
-     private String workTypeName;
+     private Integer workTypeId;
 
 
      //项目名称 ID外键
@@ -107,6 +107,45 @@ public class User {
      //修改时间
      private Date updateAt;
 
+     //年龄
+     private Integer age;
+
+     //籍贯
+     private String nativePlace;
+
+     private Integer approachStatus;
+
+     public Integer getApproachStatus() {
+          return approachStatus;
+     }
+
+     public void setApproachStatus(Integer approachStatus) {
+          this.approachStatus = approachStatus;
+     }
+
+     public Integer getWorkTypeId() {
+          return workTypeId;
+     }
+
+     public void setWorkTypeId(Integer workTypeId) {
+          this.workTypeId = workTypeId;
+     }
+
+     public String getNativePlace() {
+          return nativePlace;
+     }
+
+     public void setNativePlace(String nativePlace) {
+          this.nativePlace = nativePlace;
+     }
+
+     public Integer getAge() {
+          return age;
+     }
+
+     public void setAge(Integer age) {
+          this.age = age;
+     }
 
      public Long getProjectID() {
           return projectID;
@@ -157,11 +196,11 @@ public class User {
           this.certificateType = certificateType;
      }
 
-     public Integer getCertificateNumber() {
+     public String getCertificateNumber() {
           return certificateNumber;
      }
 
-     public void setCertificateNumber(Integer certificateNumber) {
+     public void setCertificateNumber(String certificateNumber) {
           this.certificateNumber = certificateNumber;
      }
 
@@ -219,14 +258,6 @@ public class User {
 
      public void setGroupName(String groupName) {
           this.groupName = groupName;
-     }
-
-     public String getWorkTypeName() {
-          return workTypeName;
-     }
-
-     public void setWorkTypeName(String workTypeName) {
-          this.workTypeName = workTypeName;
      }
 
      public String getUserType() {

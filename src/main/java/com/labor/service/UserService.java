@@ -25,6 +25,9 @@ public interface UserService {
 
     List<Subcontract> getSubcontractList();
 
+    /**
+     * 获取所有负责人
+     **/
     List<User> getMonitorList();
 
     /*
@@ -33,8 +36,11 @@ public interface UserService {
     List<User> getUserUnassigned();
 
     /**
-     * 班组页面添加或者删除user之后修改 user班组状态
+     * 修改用户信息
+     * @param user
+     * @param file
+     * @return
      */
-    int updateUserGroupID(Long userID, Long groupID);
+    boolean updateUser(User user, MultipartFile file);
 
 }
