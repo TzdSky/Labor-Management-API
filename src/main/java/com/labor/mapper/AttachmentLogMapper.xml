@@ -11,5 +11,11 @@
           values(#{fileName},#{fileType},#{fileSize},#{savePath},#{creater},#{createAt},#{updateAt});
       </insert>
 
+      <select id="selectByConFile" resultType="com.labor.entity.AttachmentLog">
+          select id,`file_name`, `file_type`, `file_size`, `save_path`, `creater`,  `create_at`, `update_at` from t_attachment_log where id=#{contractFileId}
+      </select>
 
+     <delete id="deleteByContractFileId">
+         delete from t_attachment_log where id=#{deleteByContractFileId}
+     </delete>
 </mapper>
