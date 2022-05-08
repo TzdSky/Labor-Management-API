@@ -62,6 +62,26 @@ public class FileUtil {
         out.flush();
         out.close();
     }
+    // 文件删除工具类服务方法
+    /**
+     * 删除数据文件
+     *
+     * @param filePath
+     * @throws IOException
+     */
+    public static boolean deleteDataFile(String filePath){
+        boolean flag = false;
+        File file = new File(filePath);
+        // 路径存在则进行删除
+        if (file.exists()) {
+            file.delete();
+            flag = true;
+            logger.info("--文件清除--");
+        }
+        return flag;
+
+    }
+
 
     public static void main(String[] args) {
         String filePath = "D:\\home\\test";
