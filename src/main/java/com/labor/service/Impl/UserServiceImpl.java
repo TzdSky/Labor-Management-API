@@ -141,7 +141,7 @@ public class UserServiceImpl implements UserService {
         }
 
     @Override
-    public int getRecordsByCardNumber(int certificate_type, int certificate_number) {
+    public int getRecordsByCardNumber(int certificate_type, String certificate_number) {
         return userMapper.getRecordsByCardNumber(certificate_type, certificate_number);
     }
 
