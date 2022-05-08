@@ -129,6 +129,7 @@ public class UserServiceImpl implements UserService {
             Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
             if(count>0){
                 logger.info("--文件信息保存成功--");
+                user.setContractFileId(attachmentLog.getID());
             }else{
                 logger.info("--文件信息保存失败--");
             }

@@ -70,11 +70,11 @@ public class User {
      //是否有合同
      private Integer isContract;
 
-     //合同名称
-     private String contractName;
+     //头像文件id
+     private Long headImgId;
 
-     //合同编号
-     private String contractNumber;
+     //合同文件id
+     private Long contractFileId;
 
      //工龄
      private Integer workAge;
@@ -300,20 +300,20 @@ public class User {
           this.isContract = isContract;
      }
 
-     public String getContractName() {
-          return contractName;
+     public Long getHeadImgId() {
+          return headImgId;
      }
 
-     public void setContractName(String contractName) {
-          this.contractName = contractName;
+     public void setHeadImgId(Long headImgId) {
+          this.headImgId = headImgId;
      }
 
-     public String getContractNumber() {
-          return contractNumber;
+     public Long getContractFileId() {
+          return contractFileId;
      }
 
-     public void setContractNumber(String contractNumber) {
-          this.contractNumber = contractNumber;
+     public void setContractFileId(Long contractFileId) {
+          this.contractFileId = contractFileId;
      }
 
      public Integer getWorkAge() {

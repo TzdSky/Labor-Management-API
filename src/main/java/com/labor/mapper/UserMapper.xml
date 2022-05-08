@@ -6,8 +6,8 @@
 
 
     <insert id="inertNewUser">
-        INSERT INTO t_user (`name`, `certificate_type`, `certificate_number`, `gender`, `nation`, `birthday`, `address`, `project_id`, `company_id`, `goup_id`, `work_type_id`, `user_type`, `is_sick`, `phone`, `card_number`, `is_contract`, `contract_name`, `contract_number`, `work_age`, `work_certificate`, `health`, `danger_operate`, `irregular_record`, `criticism`, `absence_work`, `creater`, `create_at`, `update_at`)
-         VALUES (#{name}, #{certificateType}, #{certificateNumber}, #{gender}, #{nation}, #{birthday}, #{address}, #{projectID}, #{companyID}, #{goupID}, #{workTypeId}, #{userType}, #{isSick}, #{phone}, #{cardNumber}, #{isContract}, #{contractName}, #{contractNumber}, #{workAge}, #{workCertificate}, #{health}, #{dangerOperate}, #{irregularRecord}, #{criticism}, #{absenceWork}, #{creater}, #{createAt}, #{updateAt});
+        INSERT INTO t_user (`name`, `certificate_type`, `certificate_number`, `gender`, `nation`, `birthday`, `address`, `project_id`, `company_id`, `goup_id`, `work_type_id`, `user_type`, `is_sick`, `phone`, `card_number`, `is_contract`, `head_img_id`, `contract_file_id`, `work_age`, `work_certificate`, `health`, `danger_operate`, `irregular_record`, `criticism`, `absence_work`, `creater`, `create_at`, `update_at`)
+         VALUES (#{name}, #{certificateType}, #{certificateNumber}, #{gender}, #{nation}, #{birthday}, #{address}, #{projectID}, #{companyID}, #{goupID}, #{workTypeId}, #{userType}, #{isSick}, #{phone}, #{cardNumber}, #{isContract}, #{headImgId}, #{contractFileId}, #{workAge}, #{workCertificate}, #{health}, #{dangerOperate}, #{irregularRecord}, #{criticism}, #{absenceWork}, #{creater}, #{createAt}, #{updateAt});
     </insert>
 
 
@@ -26,7 +26,7 @@
     <select id="getCount" resultType="java.lang.Integer">
         select count(t.ID) from (
         SELECT t.id, t.name, t.certificate_type, t.certificate_number, t.gender, t.nation, t.birthday, t.address, t.project_id, t.company_id, t.goup_id, t.work_type_id, p.project_name, s.company_name, g.group_name, w.work_type_name,
-        t.user_type, t.is_sick, t.phone, t.card_number, t.is_contract, t.contract_name, t.contract_number, t.work_age, t.work_certificate, t.health,
+        t.user_type, t.is_sick, t.phone, t.card_number, t.is_contract, t.head_img_id, t.contract_file_id, t.work_age, t.work_certificate, t.health,
         t.danger_operate, t.irregular_record, t.criticism, t.absence_work, t.creater, t.create_at, t.update_at
         FROM t_user t
         LEFT JOIN t_project p ON t.project_id = p.project_id
@@ -54,7 +54,7 @@
 
     <select id="getPage" resultType="com.labor.entity.User">
         SELECT t.id, t.name, t.certificate_type, t.certificate_number, t.gender, t.nation, t.birthday, t.address, t.project_id, t.company_id, t.goup_id, t.work_type_id, p.project_name, s.company_name, g.group_name, w.work_type_name,
-        t.user_type, t.is_sick, t.phone, t.card_number, t.is_contract, t.contract_name, t.contract_number, t.work_age, t.work_certificate, t.health,
+        t.user_type, t.is_sick, t.phone, t.card_number, t.is_contract, t.contract_file_id, t.head_img_id, t.work_age, t.work_certificate, t.health,
         t.danger_operate, t.irregular_record, t.criticism, t.absence_work, t.creater, t.create_at, t.update_at
         FROM t_user t
         LEFT JOIN t_project p ON t.project_id = p.project_id
