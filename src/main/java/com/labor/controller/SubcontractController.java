@@ -23,6 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/system/subcontract")
+@CrossOrigin
 public class SubcontractController {
     private Logger logger = Logger.getLogger(UserController.class);
     @Autowired

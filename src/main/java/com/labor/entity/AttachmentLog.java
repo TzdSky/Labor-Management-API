@@ -14,7 +14,7 @@ public class AttachmentLog {
      /**
      * 文件id
      */
-    private Long fileId;
+    private Long ID;
      /**
      * 文件名称
      */
@@ -44,12 +44,12 @@ public class AttachmentLog {
      */
      private Date updateAt;
 
-    public Long getFileId() {
-        return fileId;
+    public Long getID() {
+        return ID;
     }
 
-    public void setFileId(Long fileId) {
-        this.fileId = fileId;
+    public void setID(Long ID) {
+        this.ID = ID;
     }
 
     public String getFileName() {

@@ -109,4 +109,8 @@
     <select id="getWorkType" resultType="com.labor.entity.WorkType">
         select id,work_type_name from t_work_type
     </select>
+
+    <select id="getProjectList" resultType="com.labor.entity.Project">
+        select project_id,project_name,company_id from t_project
+    </select>
 </mapper>

@@ -108,14 +108,13 @@ public class SubcontractServiceImpl implements SubcontracService {
                     logger.info("--文件上传成功--");
                     ex.printStackTrace();
                 }
-                attachmentLog.setFileId(GenerateUtil.generateLongId());
                 attachmentLog.setFileName(fileNames);
                 attachmentLog.setSavePath(filePath);
             }
             attachmentLog.setFileSize((int) size);
             attachmentLog.setFileType(type);
             attachmentLog.setCreateAt(new Date());
-            Integer count=attachmentLogMapper.insert(attachmentLog);
+            Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
             if(count>0){
                 logger.info("--文件信息保存成功--");
             }else{

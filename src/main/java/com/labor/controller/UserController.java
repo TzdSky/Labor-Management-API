@@ -1,10 +1,7 @@
 package com.labor.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.labor.entity.Group;
-import com.labor.entity.Subcontract;
-import com.labor.entity.User;
-import com.labor.entity.WorkType;
+import com.labor.entity.*;
 import com.labor.service.GroupService;
 import com.labor.service.UserService;
 import com.labor.utils.DataPage;
@@ -32,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/system/user")
+@CrossOrigin
 public class UserController {
     private Logger logger = Logger.getLogger(UserController.class);
 
@@ -72,6 +70,20 @@ public class UserController {
         result.setCode(ManageConstants.SUCCESS_200);
         result.setText(ManageConstants.SUCCESS_200_TEXT);
         result.setData(workTypeList);
+        return result;
+    }
+
+    /**
+     *  获取工种
+     * @return
+     */
+    @GetMapping("/getProject")
+    public ResultModel<List<Project>> getProject() {
+        ResultModel<List<Project>> result = new ResultModel<>();
+        List<Project> projectList=userService.getProjectList();
+        result.setCode(ManageConstants.SUCCESS_200);
+        result.setText(ManageConstants.SUCCESS_200_TEXT);
+        result.setData(projectList);
         return result;
     }
 

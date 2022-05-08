@@ -10,4 +10,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface AttachmentLogMapper extends BaseMapper<AttachmentLog> {
+    Integer insertAttachLog(AttachmentLog attachmentLog);
 }
