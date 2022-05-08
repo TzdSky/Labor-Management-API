@@ -27,7 +27,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param certificate_number 证件号码
      * 根据证件类型、号码 查重
      */
-    int getRecordsByCardNumber(int certificate_type, int certificate_number);
+    int getRecordsByCardNumber(int certificate_type, String certificate_number);
     /**
      * @author Tian
      * @date 2022/5/2

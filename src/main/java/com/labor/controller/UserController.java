@@ -118,7 +118,7 @@ public class UserController {
          * 新增前做判断
          */
         if(user != null) {
-            int records = userService.getRecordsByCardNumber(user.getCertificateType(), user.getCardNumber());
+            int records = userService.getRecordsByCardNumber(user.getCertificateType(), user.getCertificateNumber());
             if(records > 0) {
                 resultModel.setText(ManageConstants.ERROR_REPEAT_TEXT);
                 resultModel.setCode(ManageConstants.ERROR_500);

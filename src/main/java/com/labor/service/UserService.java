@@ -20,7 +20,7 @@ public interface UserService {
 
      boolean insertNewUser(User user, MultipartFile file);
 
-     int getRecordsByCardNumber(int certificate_type, int certificate_number);
+     int getRecordsByCardNumber(int certificate_type, String certificateNumber);
 
      void deleteUserByID(Long id);
 
