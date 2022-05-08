@@ -35,6 +35,10 @@ public class ManageConstants extends ApiConstants {
 	public final static  int ERROR_207 = 207;
 	public final static String ERROR_207_TEXT = "查询失败";
 
+	//删除失败
+	public final static  int ERROR_209 = 207;
+	public final static String ERROR_209_TEXT = "删除失败";
+
 	// HTTP请求方法
 	public final static String HTTP_METHOD_POST = "POST";
 	public final static String HTTP_METHOD_GET = "GET";
