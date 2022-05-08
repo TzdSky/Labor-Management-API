@@ -57,8 +57,8 @@ public class GroupController {
         } catch (Exception e) {
             logger.info("deleteGroupList:===>error ："+e);
             e.printStackTrace();
-            resultModel.setText(ManageConstants.ERROR_205_TEXT);
-            resultModel.setCode(ManageConstants.ERROR_205);
+            resultModel.setText(ManageConstants.ERROR_209_TEXT);
+            resultModel.setCode(ManageConstants.ERROR_209);
             return resultModel;
         }
         resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
@@ -92,7 +92,7 @@ public class GroupController {
             } else {
                 group.setCreateAt(new Date());
                 Long group1 = groupService.insertNewGroup(group);
-                if(group.getUserInGroup().size() > 0){
+                if(group.getUserInGroup() != null && group.getUserInGroup().size() > 0){
                     //新增完，根据返回的id批量修改user表的 user班组id
                     groupService.updateUserGroupID(group.getUserInGroup(),group.getID());
                 }
@@ -158,7 +158,7 @@ public class GroupController {
         logger.info("updateGroup:===>start");
         int queryStatus = groupService.updateGroup(group);
         resultModel.setData(queryStatus == 1?"修改成功":"修改失败");
-        resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
+        resultModel.setText(queryStatus == 1?ManageConstants.SUCCESS_200_TEXT:"失败");
         resultModel.setCode(ManageConstants.SUCCESS_200);
         logger.info("updateGroup:===>end");
         return resultModel;

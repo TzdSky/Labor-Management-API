@@ -6,8 +6,8 @@
 
 
     <insert id="inertNewUser">
-        INSERT INTO t_user (`name`, `certificate_type`, `certificate_number`, `gender`, `nation`, `birthday`, `address`, `project_id`, `company_id`, `goup_id`, `work_type_id`, `user_type`, `is_sick`, `phone`, `card_number`, `is_contract`, `head_img_id`, `contract_file_id`, `work_age`, `work_certificate`, `health`, `danger_operate`, `irregular_record`, `criticism`, `absence_work`, `creater`, `create_at`, `update_at`)
-         VALUES (#{name}, #{certificateType}, #{certificateNumber}, #{gender}, #{nation}, #{birthday}, #{address}, #{projectID}, #{companyID}, #{goupID}, #{workTypeId}, #{userType}, #{isSick}, #{phone}, #{cardNumber}, #{isContract}, #{headImgId}, #{contractFileId}, #{workAge}, #{workCertificate}, #{health}, #{dangerOperate}, #{irregularRecord}, #{criticism}, #{absenceWork}, #{creater}, #{createAt}, #{updateAt});
+        INSERT INTO t_user (`name`, `certificate_type`, `certificate_number`, `gender`, `nation`, `birthday`, `address`, `project_id`, `company_id`, `goup_id`, `work_type_id`, `user_type`,`att_group_id`, `is_sick`, `phone`, `card_number`, `is_contract`, `head_img_id`, `contract_file_id`, `work_age`, `work_certificate`, `health`, `danger_operate`, `irregular_record`, `criticism`, `absence_work`, `creater`, `create_at`, `update_at`)
+         VALUES (#{name}, #{certificateType}, #{certificateNumber}, #{gender}, #{nation}, #{birthday}, #{address}, #{projectID}, #{companyID}, #{goupID}, #{workTypeId}, #{userType},#{attGroupId}, #{isSick}, #{phone}, #{cardNumber}, #{isContract}, #{headImgId}, #{contractFileId}, #{workAge}, #{workCertificate}, #{health}, #{dangerOperate}, #{irregularRecord}, #{criticism}, #{absenceWork}, #{creater}, #{createAt}, #{updateAt});
     </insert>
 
 
@@ -16,7 +16,7 @@
     </select>
 
     <delete id="deleteUserByID">
-        delete from t_user where ID = #{id}
+        delete from t_user where id = #{ID}
     </delete>
 
     <select id="getSubcontractList" resultType="com.labor.entity.Subcontract">
@@ -25,7 +25,7 @@
 
     <select id="getCount" resultType="java.lang.Integer">
         select count(t.ID) from (
-        SELECT t.id, t.name, t.certificate_type, t.certificate_number, t.gender, t.nation, t.birthday, t.address, t.project_id, t.company_id, t.goup_id, t.work_type_id, p.project_name, s.company_name, g.group_name, w.work_type_name,
+        SELECT t.id, t.name, t.certificate_type, t.certificate_number, t.gender, t.nation, t.birthday, t.address, t.project_id, t.company_id, t.goup_id, t.work_type_id,t.att_group_id, p.project_name, s.company_name, g.group_name, w.work_type_name,
         t.user_type, t.is_sick, t.phone, t.card_number, t.is_contract, t.head_img_id, t.contract_file_id, t.work_age, t.work_certificate, t.health,
         t.danger_operate, t.irregular_record, t.criticism, t.absence_work, t.creater, t.create_at, t.update_at
         FROM t_user t
@@ -53,7 +53,7 @@
     </select>
 
     <select id="getPage" resultType="com.labor.entity.User">
-        SELECT t.id, t.name, t.certificate_type, t.certificate_number, t.gender, t.nation, t.birthday, t.address, t.project_id, t.company_id, t.goup_id, t.work_type_id, p.project_name, s.company_name, g.group_name, w.work_type_name,
+        SELECT t.id, t.name, t.certificate_type, t.certificate_number, t.gender, t.nation, t.birthday, t.address, t.project_id, t.company_id, t.goup_id, t.work_type_id,att_group_id, p.project_name, s.company_name, g.group_name, w.work_type_name,
         t.user_type, t.is_sick, t.phone, t.card_number, t.is_contract, t.contract_file_id, t.head_img_id, t.work_age, t.work_certificate, t.health,
         t.danger_operate, t.irregular_record, t.criticism, t.absence_work, t.creater, t.create_at, t.update_at
         FROM t_user t
@@ -91,19 +91,19 @@
     <update id="updateUser">
         UPDATE t_user SET NAME = #{name}, nation = #{nation}, gender = #{gender},age = #{age},birthday  = STR_TO_DATE(#{birthday},'%Y-%m-%d %H:%i:%s'),
         certificate_number = #{certificateNumber},native_Place = #{nativePlace}, address = #{address},project_id = #{projectID},
-        company_id = #{companyId}, goup_id = #{goupId},user_type = #{userType},work_type_id = #{workTypeId},user_type = #{userType},
+        company_id = #{companyId}, goup_id = #{goupId},user_type = #{userType},work_type_id = #{workTypeId},att_group_id = #{attGroupId},user_type = #{userType},
         is_contract = #{isContract},approach_status = #{approachStatus},phone = #{phone},update_at = NOW()
         WHERE id = #{ID}
     </update>
     <select id="findUserById" resultType="com.labor.entity.User">
-        SELECT t.id, t.name, t.certificate_type, t.certificate_number, t.gender, t.nation, t.birthday, t.address, t.project_id, t.company_id, t.goup_id, t.work_type_id, p.project_name, s.company_name, g.group_name, w.work_type_name,
+        SELECT t.id, t.name, t.certificate_type, t.certificate_number, t.gender, t.nation, t.birthday, t.address, t.project_id, t.company_id, t.goup_id, t.work_type_id,t.att_group_id, p.project_name, s.company_name, g.group_name, w.work_type_name,
         t.user_type, t.is_sick, t.phone, t.card_number, t.is_contract, t.contract_file_id, t.head_img_id, t.work_age, t.work_certificate, t.health,
         t.danger_operate, t.irregular_record, t.criticism, t.absence_work, t.creater, t.create_at, t.update_at
         FROM t_user t
         LEFT JOIN t_project p ON t.project_id = p.project_id
         LEFT JOIN t_subcontract s ON t.company_id = s.id
         LEFT JOIN t_group g ON t.goup_id = g.id
-        LEFT JOIN t_work_type w ON t.work_type_id = w.id where t.id=#{id}
+        LEFT JOIN t_work_type w ON t.work_type_id = w.id where t.id=#{ID}
     </select>
 
     <select id="getWorkType" resultType="com.labor.entity.WorkType">

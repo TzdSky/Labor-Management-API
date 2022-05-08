@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.labor.mapper.GroupMapper">
-      <select id="getGroupNameByCom" resultType="com.labor.entity.Group">
-          select id,group_name from t_group where company_id=#{companyId}
-      </select>
-
+    <select id="getGroupNameByCom" resultType="com.labor.entity.Group">
+        select id, group_name
+        from t_group
+        where company_id = #{companyId}
+    </select>
 
 
     <insert id="insertNewGroup" parameterType="com.labor.entity.Group">
@@ -12,10 +13,10 @@
         <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="ID">
             select LAST_INSERT_ID()
         </selectKey>
-        insert into `t_group` (`group_name`, `group_principal`, `grade`, `principal_id`, `company_id`,  `enter_attachment`, `enter_time`, `out_time`, `remark`, `creater`, `create_at`, `update_at`)
-        values(#{groupName},#{groupPrincipal},#{principalId},#{companyId},#{enterAttachment},#{enterTime},#{outTime},#{remark},#{contractType},#{creater},#{createAt},#{updateAt});
+        insert into `t_group` (`group_name`, `group_principal`, `grade`, `principal_id`, `company_id`,
+        `enter_attachment`, `enter_time`, `out_time`, `remark`, `creater`, `create_at`, `update_at`)
+        values(#{groupName},#{groupPrincipal},#{grade},#{principalId},#{companyId},#{enterAttachment},#{enterTime},#{outTime},#{remark},#{creater},#{createAt},#{updateAt});
     </insert>
-
 
 
     <select id="getCount" resultType="java.lang.Integer">
@@ -38,10 +39,26 @@
 
 
     <select id="getPage" resultType="com.labor.entity.Group">
-        select gp.id, gp.group_name, gp.group_principal, gp.principal_id, gp.company_id, gp.company_name, gp.enter_attachment, DATE_FORMAT(gp.enter_time, '%Y-%m-%d') as enter_time, DATE_FORMAT(gp.out_time, '%Y-%m-%d') as out_time, gp.remark, gp.creater, DATE_FORMAT(gp.create_at, '%Y-%m-%d') gp.ascreate_at, DATE_FORMAT(gp.update_at, '%Y-%m-%d') as update_at
-        from t_group gp INNER JOIN t_user u
-        ON gp.principal_id = u.id
-        where 1 = 1
+        SELECT
+        gp.id,
+        gp.group_name,
+        gp.group_principal,
+        gp.principal_id,
+        gp.company_id,
+        gp.att_group_id,
+        gp.company_name,
+        gp.enter_attachment,
+        DATE_FORMAT(gp.enter_time, '%Y-%m-%d' ) AS enter_time,
+        DATE_FORMAT(gp.out_time, '%Y-%m-%d' ) AS out_time,
+        gp.remark,
+        gp.creater,
+        DATE_FORMAT(gp.create_at, '%Y-%m-%d' ) as create_at,
+        DATE_FORMAT(gp.update_at, '%Y-%m-%d' ) AS update_at
+        FROM
+        t_group gp
+        INNER JOIN t_user u ON gp.principal_id = u.id
+        WHERE
+        1 = 1
         <if test="queryParams.groupName != null and queryParams.groupName != ''">
             and UPPER(gp.group_name) like UPPER(CONCAT('%',#{queryParams.groupName,jdbcType=VARCHAR}, '%'))
         </if>
@@ -66,7 +83,7 @@
 
 
     <update id="updateUserGroupID">
-        UPDATE t_user SET goup_id = #{groupID}  WHERE id in
+        UPDATE t_user SET goup_id = #{groupID} WHERE id in
         <foreach collection="userIDs" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
@@ -74,17 +91,19 @@
 
 
     <update id="updateGroup">
-       UPDATE t_group  SET
-       principal_id = #{principalId}, company_id = #{companyId},
-        enter_time = STR_TO_DATE(#{enterTime},'%Y-%m-%d %H:%i:%s'),
-         out_time = STR_TO_DATE(#{outTime},'%Y-%m-%d %H:%i:%s'),
-          remark = #{remark},
-          update_at = NOW()
-        WHERE  id = #{ID}
+        UPDATE t_group
+        SET principal_id = #{principalId},
+            company_id   = #{companyId},
+            enter_time   = STR_TO_DATE(#{enterTime}, '%Y-%m-%d %H:%i:%s'),
+            out_time     = STR_TO_DATE(#{outTime}, '%Y-%m-%d %H:%i:%s'),
+            remark       = #{remark},
+            update_at    = NOW()
+        WHERE id = #{ID}
     </update>
 
     <select id="groupList" resultType="com.labor.entity.Group">
-        select id,group_name from t_group
+        select id, group_name
+        from t_group
     </select>
 
 </mapper>
