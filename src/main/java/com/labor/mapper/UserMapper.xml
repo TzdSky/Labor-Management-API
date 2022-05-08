@@ -16,7 +16,7 @@
     </select>
 
     <delete id="deleteUserByID">
-        delete from t_user where id = #{id}
+        delete from t_user where id = #{ID}
     </delete>
 
     <select id="getSubcontractList" resultType="com.labor.entity.Subcontract">
@@ -93,7 +93,7 @@
         certificate_number = #{certificateNumber},native_Place = #{nativePlace}, address = #{address},project_id = #{projectID},
         company_id = #{companyId}, goup_id = #{goupId},user_type = #{userType},work_type_id = #{workTypeId},att_group_id = #{attGroupId},user_type = #{userType},
         is_contract = #{isContract},approach_status = #{approachStatus},phone = #{phone},update_at = NOW()
-        WHERE id = #{id}
+        WHERE id = #{ID}
     </update>
     <select id="findUserById" resultType="com.labor.entity.User">
         SELECT t.id, t.name, t.certificate_type, t.certificate_number, t.gender, t.nation, t.birthday, t.address, t.project_id, t.company_id, t.goup_id, t.work_type_id,t.att_group_id, p.project_name, s.company_name, g.group_name, w.work_type_name,
@@ -103,7 +103,7 @@
         LEFT JOIN t_project p ON t.project_id = p.project_id
         LEFT JOIN t_subcontract s ON t.company_id = s.id
         LEFT JOIN t_group g ON t.goup_id = g.id
-        LEFT JOIN t_work_type w ON t.work_type_id = w.id where t.id=#{id}
+        LEFT JOIN t_work_type w ON t.work_type_id = w.id where t.id=#{ID}
     </select>
 
     <select id="getWorkType" resultType="com.labor.entity.WorkType">
