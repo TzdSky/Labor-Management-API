@@ -45,7 +45,6 @@
         gp.group_principal,
         gp.principal_id,
         gp.company_id,
-        gp.att_group_id,
         gp.company_name,
         gp.enter_attachment,
         DATE_FORMAT(gp.enter_time, '%Y-%m-%d' ) AS enter_time,
