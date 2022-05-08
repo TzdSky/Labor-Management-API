@@ -36,6 +36,7 @@ public class Group {
      */
     private Long companyId;
 
+
     /**
      * 公司名字
      */
@@ -62,9 +63,9 @@ public class Group {
     private String remark;
 
     /**
-     *合同类型
+     *级别
      */
-    private Integer contractType;
+    private Integer grade;
     /**
      * 创建人
      */
@@ -171,12 +172,12 @@ public class Group {
         this.remark = remark;
     }
 
-    public Integer getContractType() {
-        return contractType;
+    public Integer getGrade() {
+        return grade;
     }
 
-    public void setContractType(Integer contractType) {
-        this.contractType = contractType;
+    public void setGrade(Integer grade) {
+        this.grade = grade;
     }
 
     public String getCreater() {

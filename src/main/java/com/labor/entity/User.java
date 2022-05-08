@@ -58,6 +58,12 @@ public class User {
      //工人类型
      private String userType;
 
+     /**
+      * 考勤组id
+      */
+     private String attGroupId;
+
+
      //是否生病
      private Integer isSick;
 
@@ -114,6 +120,14 @@ public class User {
      private String nativePlace;
 
      private Integer approachStatus;
+
+     public String getAttGroupId() {
+          return attGroupId;
+     }
+
+     public void setAttGroupId(String attGroupId) {
+          this.attGroupId = attGroupId;
+     }
 
      public Integer getApproachStatus() {
           return approachStatus;
