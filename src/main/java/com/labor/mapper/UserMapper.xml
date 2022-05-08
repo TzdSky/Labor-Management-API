@@ -97,7 +97,7 @@
     </update>
     <select id="findUserById" resultType="com.labor.entity.User">
         SELECT t.id, t.name, t.certificate_type, t.certificate_number, t.gender, t.nation, t.birthday, t.address, t.project_id, t.company_id, t.goup_id, t.work_type_id, p.project_name, s.company_name, g.group_name, w.work_type_name,
-        t.user_type, t.is_sick, t.phone, t.card_number, t.is_contract, t.contract_name, t.contract_number, t.work_age, t.work_certificate, t.health,
+        t.user_type, t.is_sick, t.phone, t.card_number, t.is_contract, t.contract_file_id, t.head_img_id, t.work_age, t.work_certificate, t.health,
         t.danger_operate, t.irregular_record, t.criticism, t.absence_work, t.creater, t.create_at, t.update_at
         FROM t_user t
         LEFT JOIN t_project p ON t.project_id = p.project_id
