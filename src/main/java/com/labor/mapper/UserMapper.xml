@@ -92,7 +92,7 @@
         UPDATE t_user SET NAME = #{name}, nation = #{nation}, gender = #{gender},age = #{age},birthday  = STR_TO_DATE(#{birthday},'%Y-%m-%d %H:%i:%s'),
         certificate_number = #{certificateNumber},native_Place = #{nativePlace}, address = #{address},project_id = #{projectID},
         company_id = #{companyID}, goup_id = #{goupID},user_type = #{userType},work_type_id = #{workTypeId},user_type = #{userType},contract_file_id = #{contractFileId},
-        company_id = #{companyId}, goup_id = #{goupId},user_type = #{userType},work_type_id = #{workTypeId},att_group_id = #{attGroupId},user_type = #{userType},
+        att_group_id = #{attGroupId},
         is_contract = #{isContract},approach_status = #{approachStatus},phone = #{phone},update_at = NOW()
         WHERE id = #{ID}
     </update>
