@@ -1,5 +1,6 @@
 package com.labor.service;
 
+import com.labor.entity.Project;
 import com.labor.entity.Subcontract;
 import com.labor.entity.User;
 import com.labor.entity.WorkType;
@@ -47,4 +48,6 @@ public interface UserService {
     User findUserById(Long id);
 
     List<WorkType> getWorkType();
+
+    List<Project> getProjectList();
 }

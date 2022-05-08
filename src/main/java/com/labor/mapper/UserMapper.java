@@ -70,4 +70,6 @@ public interface UserMapper extends BaseMapper<User> {
     User findUserById(Long id);
 
     List<WorkType> getWorkType();
+
+    List<Project> getProjectList();
 }

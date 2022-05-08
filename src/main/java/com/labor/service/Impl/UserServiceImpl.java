@@ -4,10 +4,7 @@ package com.labor.service.Impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.labor.controller.UserController;
-import com.labor.entity.AttachmentLog;
-import com.labor.entity.Subcontract;
-import com.labor.entity.User;
-import com.labor.entity.WorkType;
+import com.labor.entity.*;
 import com.labor.enums.DateStyleEnum;
 import com.labor.mapper.AttachmentLogMapper;
 import com.labor.mapper.UserMapper;
@@ -118,20 +115,21 @@ public class UserServiceImpl implements UserService {
                         fileDir.mkdirs();
                     }
                     FileUtil.uploadFile(fileName.getBytes(), filePath, fileNames);//文件处理
-                } catch (Exception ex) {
                     logger.info("--文件上传成功--");
+                } catch (Exception ex) {
+                    logger.info("--文件上传失败--");
                     ex.printStackTrace();
                 }
-                attachmentLog.setFileId(GenerateUtil.generateLongId());
                 attachmentLog.setFileName(fileNames);
                 attachmentLog.setSavePath(filePath);
             }
             attachmentLog.setFileSize((int) size);
             attachmentLog.setFileType(type);
             attachmentLog.setCreateAt(new Date());
-            Integer count=attachmentLogMapper.insert(attachmentLog);
+            Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
             if(count>0){
                 logger.info("--文件信息保存成功--");
+                user.setContractFileId(attachmentLog.getID());
             }else{
                 logger.info("--文件信息保存失败--");
             }
@@ -208,14 +206,13 @@ public class UserServiceImpl implements UserService {
                     logger.info("--文件上传成功--");
                     ex.printStackTrace();
                 }
-                attachmentLog.setFileId(GenerateUtil.generateLongId());
                 attachmentLog.setFileName(fileNames);
                 attachmentLog.setSavePath(filePath);
             }
             attachmentLog.setFileSize((int) size);
             attachmentLog.setFileType(type);
             attachmentLog.setCreateAt(new Date());
-            Integer count=attachmentLogMapper.insert(attachmentLog);
+            Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
             if(count>0){
                 logger.info("--文件信息保存成功--");
             }else{
@@ -234,6 +231,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<WorkType> getWorkType() {
         return userMapper.getWorkType();
+    }
+
+    @Override
+    public List<Project> getProjectList() {
+        return userMapper.getProjectList();
     }
 
 }

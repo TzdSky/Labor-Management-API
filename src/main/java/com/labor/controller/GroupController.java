@@ -26,6 +26,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/system/group")
+@CrossOrigin
 public class GroupController {
     private Logger logger = Logger.getLogger(GroupController.class);
     @Autowired
