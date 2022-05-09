@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.labor.mapper.GroupMapper">
+<mapper namespace="com.labor.mapper.AttendanceMapper">
 
     <update id="updateUserAttendanceID">
         UPDATE t_user SET att_group_id = #{attGroupId} WHERE id in
@@ -9,6 +9,146 @@
         </foreach>
     </update>
 
+    <update id="clearUserAttendanceID">
+       UPDATE t_user SET att_group_id = 0 where att_group_id = #{attGroupId}
+    </update>
+
+    <delete id="deleteAttendanceGroupByID">
+        delete from t_attendance_group where id = {id}
+    </delete>
+
+    <select id="getAttRecordsByAttGroupName" resultType="java.lang.Integer">
+        select count(1) from t_attendance_group
+        where att_group_name = #{attGroupName}
+    </select>
+
+
+    <insert id="insertAttendanceGroup" parameterType="com.labor.entity.Attendance">
+        <!--通过mybatis框架提供的selectKey标签获得自增产生的ID值-->
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="ID">
+            select LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO `t_attendance_group` ( `att_group_name`, `location`, `update_at`, `create_at`) VALUES(#{attGroupName},#{location},NOW(),NOW());
+    </insert>
+
+
+    <update id="updateAttGroup">
+        UPDATE t_attendance_group
+        SET att_group_name = #{attGroupName},
+            location   = #{location},
+            update_at = NOW(),
+        WHERE id = #{ID}
+    </update>
+
+    <select id="getCount" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM t_attendance_group
+        where 1 = 1
+        <if test="attGroupName != null and attGroupName != ''">
+            and UPPER(att_group_name) like UPPER(CONCAT('%',#{attGroupName,jdbcType=VARCHAR}, '%'))
+        </if>
+    </select>
+
+
+
+    <select id="getAttGroupList" resultType="com.labor.entity.Attendance">
+        SELECT a.id,a.att_group_name,a.location,a.update_at,
+        (
+        SELECT
+        COUNT(1)
+        FROM
+        t_user u
+        WHERE
+        a.id = u.att_group_id
+        ) AS userCounts
+        FROM t_attendance_group a
+        WHERE 1 = 1
+        <if test="queryParams.attGroupName != null and queryParams.attGroupName != ''">
+            and UPPER(a.att_group_name) like UPPER(CONCAT('%',#{queryParams.attGroupName,jdbcType=VARCHAR}, '%'))
+        </if>
+        order by a.id desc
+        limit #{queryParams.page,jdbcType=INTEGER},#{queryParams.size,jdbcType=INTEGER}
+    </select>
+
+
+    <select id="getAttSearchList" resultType="com.labor.entity.AttendanceSearch">
+        SELECT t.id, t.name, s.company_name, g.group_name
+        <if test="queryParams.attDate != null and queryParams.attDate != ''">
+            ,
+            <foreach collection="days" index="index" item="item" open="" separator="," close="">
+                (
+                SELECT
+                COUNT(1)
+                FROM
+                t_clock c
+                WHERE
+                c.user_id = t.id
+                AND c.record_date = STR_TO_DATE(#{attDate}#{index},'%Y-%m-%d')
+                AND c.clock_status = 1
+                ) AS clockCounts#{index}
+            </foreach>
+        </if>
+        FROM t_user t
+        LEFT JOIN t_project p ON t.project_id = p.project_id
+        LEFT JOIN t_subcontract s ON t.company_id = s.id
+        LEFT JOIN t_group g ON t.goup_id = g.id
+        LEFT JOIN t_work_type w ON t.work_type_id = w.id
+
+        <if test="queryParams.userName != null and queryParams.userName != ''">
+            and UPPER(t.name) like UPPER(CONCAT('%',#{queryParams.userName,jdbcType=VARCHAR}, '%'))
+        </if>
+
+        <if test="queryParams.groupID != null and queryParams.groupID != ''">
+            and t.goup_id = #{queryParams.groupID}
+        </if>
+
+        <if test="queryParams.principalID != null and queryParams.principalID != ''">
+            and g.principal_id = #{queryParams.principalID}
+        </if>
+
+        <if test="queryParams.companyID != null and queryParams.companyID != ''">
+            and t.company_id = #{queryParams.companyID}
+        </if>
+
+        <if test="queryParams.workTypeID != null and queryParams.workTypeID != ''">
+            and t.work_type_id = #{queryParams.workTypeID}
+        </if>
+        order by t.id desc
+        limit #{queryParams.page,jdbcType=INTEGER},#{queryParams.size,jdbcType=INTEGER}
+    </select>
+
+    <select id="getSearchCount" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM t_user t
+        LEFT JOIN t_project p ON t.project_id = p.project_id
+        LEFT JOIN t_subcontract s ON t.company_id = s.id
+        LEFT JOIN t_group g ON t.goup_id = g.id
+        LEFT JOIN t_work_type w ON t.work_type_id = w.id
+        LEFT JOIN t_clock ck ON ck.user_id = t.id
+        <if test="queryParams.userName != null and queryParams.userName != ''">
+            and UPPER(t.name) like UPPER(CONCAT('%',#{queryParams.userName,jdbcType=VARCHAR}, '%'))
+        </if>
+
+        <if test="queryParams.groupID != null and queryParams.groupID != ''">
+            and t.goup_id = #{queryParams.groupID}
+        </if>
+
+        <if test="queryParams.principalID != null and queryParams.principalID != ''">
+            and g.principal_id = #{queryParams.principalID}
+        </if>
+
+        <if test="queryParams.companyID != null and queryParams.companyID != ''">
+            and t.company_id = #{queryParams.companyID}
+        </if>
+
+        <if test="queryParams.workTypeID != null and queryParams.workTypeID != ''">
+            and t.work_type_id = #{queryParams.workTypeID}
+        </if>
+
+        <if test="queryParams.attDate != null and queryParams.attDate != ''">
+            WHERE DATE_FORMAT(ck.record_date,'%Y-%m')=#{queryParams.attDate}
+        </if>
+        GROUP BY t.id
+    </select>
 
 
 </mapper>

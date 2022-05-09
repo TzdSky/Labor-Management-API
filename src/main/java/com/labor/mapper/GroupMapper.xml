@@ -34,7 +34,6 @@
         <if test="queryParams.companyID != null and queryParams.companyID != ''">
             and g.company_id = #{queryParams.companyID}
         </if>
-
     </select>
 
 
