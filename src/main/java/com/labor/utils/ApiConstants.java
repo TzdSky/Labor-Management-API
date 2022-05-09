@@ -56,4 +56,8 @@ public class ApiConstants {
 
 	//重复用户
 	public final static String ERROR_REPEAT_Company_TEXT = "当前公司名称已存在!";
+
+	//重复考勤组名
+	public final static String ERROR_REPEAT_ATT_TEXT = "当前考勤组已存在!";
+
 }
