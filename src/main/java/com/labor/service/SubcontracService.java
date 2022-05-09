@@ -19,4 +19,8 @@ public interface SubcontracService {
     boolean insertSubcontract(Subcontract subcontract, MultipartFile file);
 
     void deleteByID(Long id);
+
+    Subcontract findSubcontractByID(Long id);
+
+    boolean updateSubcontract(Subcontract subcontract, MultipartFile file);
 }

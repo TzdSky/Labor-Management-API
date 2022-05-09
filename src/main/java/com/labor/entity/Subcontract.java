@@ -24,10 +24,7 @@ public class Subcontract {
      */
     private String principal;
 
-    /**
-     * 负责人标识
-     */
-    private Long principalId;
+
 
     /**
      * 手机号码
@@ -111,13 +108,6 @@ public class Subcontract {
         this.principal = principal;
     }
 
-    public Long getPrincipalId() {
-        return principalId;
-    }
-
-    public void setPrincipalId(Long principalId) {
-        this.principalId = principalId;
-    }
 
     public Integer getPhone() {
         return phone;

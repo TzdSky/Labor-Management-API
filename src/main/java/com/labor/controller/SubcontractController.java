@@ -37,12 +37,28 @@ public class SubcontractController {
     }
 
     /**
+     * 根据id查看公司
+     * @param  ID
+     */
+    @GetMapping(value = "/findSubcontractByID")
+    public ResultModel<Subcontract> findSubcontractByID(@RequestParam(value = "ID", required = true) Long ID){
+        logger.info("findSubcontractByID:===>start");
+        ResultModel<Subcontract> resultModel = new ResultModel<>();
+        Subcontract subcontract=subcontracService.findSubcontractByID(ID);
+        resultModel.setData(subcontract);
+        resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
+        resultModel.setCode(ManageConstants.SUCCESS_200);
+        logger.info("findSubcontractByID:===>end");
+        return resultModel;
+    }
+
+    /**
      * 新增
      * @param subcontract 传参对象
      * @return 返回结果
      */
     @PostMapping(value="/insertSubcontract")
-    public ResultModel<String>  insertUser(Subcontract subcontract,@RequestPart(value = "file") MultipartFile file){
+    public ResultModel<String>  insertSubcontract(Subcontract subcontract,@RequestPart(value = "file") MultipartFile file){
         ResultModel<String> resultModel = new ResultModel<>();
         logger.info("insertSubcontract:===>start");
         /**
@@ -71,7 +87,7 @@ public class SubcontractController {
      */
     @GetMapping(value = "/deleteSubcontract")
     public ResultModel<String> deleteSubcontract(@RequestParam(value = "ids", required = true) List<Long> ids){
-        logger.info("deleteUser:===>start");
+        logger.info("deleteSubcontract:===>start");
         ResultModel<String> resultModel = new ResultModel<>();
         try {
             if(ids.size()>0){
@@ -80,7 +96,7 @@ public class SubcontractController {
                 }
             }
         } catch (Exception e) {
-            logger.info("deleteUser:===>error ："+e);
+            logger.info("deleteSubcontract:===>error ："+e);
             e.printStackTrace();
             resultModel.setText(ManageConstants.ERROR_205_TEXT);
             resultModel.setCode(ManageConstants.ERROR_205);
@@ -88,7 +104,52 @@ public class SubcontractController {
         }
         resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
         resultModel.setCode(ManageConstants.SUCCESS_200);
-        logger.info("deleteUser:===>end");
+        logger.info("deleteSubcontract:===>end");
+        return resultModel;
+    }
+    /**
+     * 根据id删除公司
+     * @param  ID
+     */
+    @GetMapping(value = "/deleteSubcontractOne")
+    public ResultModel<String> deleteSubcontractOne(@RequestParam(value = "ID", required = true) Long ID){
+        logger.info("deleteSubcontractOne:===>start");
+        ResultModel<String> resultModel = new ResultModel<>();
+        try {
+            subcontracService.deleteByID(ID);
+        } catch (Exception e) {
+            logger.info("deleteSubcontractOne:===>error ："+e);
+            e.printStackTrace();
+            resultModel.setText(ManageConstants.ERROR_205_TEXT);
+            resultModel.setCode(ManageConstants.ERROR_205);
+            return resultModel;
+        }
+        resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
+        resultModel.setCode(ManageConstants.SUCCESS_200);
+        logger.info("deleteSubcontractOne:===>end");
+        return resultModel;
+    }
+
+    /**
+     * 修改分包商
+     * @param subcontract 传参对象
+     * @return 返回结果
+     */
+    @PostMapping(value="/updateSubcontract")
+    public ResultModel<String>  updateSubcontract(Subcontract subcontract, @RequestPart(value = "file") MultipartFile file){
+        ResultModel<String> resultModel = new ResultModel<>();
+        logger.info("updateSubcontract:===>start");
+        if(subcontract != null) {
+            subcontract.setUpdateAt(new Date());
+            resultModel.setData(subcontracService.updateSubcontract(subcontract, file) ? "修改成功" : "修改失败");
+            resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
+            resultModel.setCode(ManageConstants.SUCCESS_200);
+        }else {
+            resultModel.setData("修改失败");
+            resultModel.setText(ManageConstants.ERROR_207_TEXT);
+            resultModel.setCode(ManageConstants.ERROR_207);
+        }
+        logger.info("updateSubcontract:===>end");
         return resultModel;
     }
 }

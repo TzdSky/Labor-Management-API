@@ -167,7 +167,8 @@ public class UserServiceImpl implements UserService {
             AttachmentLog contractAtt=attachmentLogMapper.selectByConFile(user.getContractFileId());
             String rootPath =contractAtt.getSavePath();
             //清空文件夹文件
-            FileUtil.deleteDataFile(rootPath);
+            //String requireFileName=requiredFile.getFileName();
+            FileUtil.delAllFile(rootPath);
             //文件名
             String fileNames = fileName.getOriginalFilename();
             //文件大小
