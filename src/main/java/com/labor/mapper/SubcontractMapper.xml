@@ -16,7 +16,7 @@
         ) t
     </select>
 
-    <select id="getPage" resultType="com.labor.entity.User">
+    <select id="getPage" resultType="com.labor.entity.Subcontract">
         select id,`company_name`, `principal`, `phone`, `subcontrac_content`, `required_file_id`, `address`,`subcontract_type`, `creater`, `create_at`, `update_at`
         from t_subcontract where 1 = 1
         <if test="queryParams.companyName != null and queryParams.companyName != ''">
@@ -36,4 +36,26 @@
     <delete id="deleteByID">
         delete from t_subcontract where id=#{id}
     </delete>
+
+    <insert id="insertSubcontract" parameterType="com.labor.entity.Subcontract">
+        <!--通过mybatis框架提供的selectKey标签获得自增产生的ID值-->
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="ID">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into `t_subcontract` (`company_name`, `principal`, `phone`, `subcontrac_content`, `required_file_id`,
+        `address`, `telephone`, `account_bank`, `identification_number`, `subcontract_type`,`remark`,`creater`, `create_at`, `update_at`)
+        values(#{companyName},#{principal},#{phone},#{subcontracContent},#{requiredFileId},#{address},#{telephone},#{accountBank},#{identificationNumber},#{subcontractType},#{remark},#{creater},#{createAt},#{updateAt});
+    </insert>
+
+    <select id="findSubcontractByID" resultType="com.labor.entity.Subcontract">
+        select id,`company_name`, `principal`, `phone`, `subcontrac_content`, `required_file_id`, `address`,`subcontract_type`, `creater`, `create_at`, `update_at`
+        from t_subcontract where id = #{id}
+    </select>
+
+    <update id="updateSubcontract">
+ UPDATE t_subcontract SET company_name = #{companyName}, principal = #{principal}, phone = #{phone},subcontrac_content = #{subcontracContent},
+        required_file_id = #{requiredFileId},address = #{address}, telephone = #{telephone},account_bank = #{accountBank},
+        identification_number = #{identificationNumber}, subcontract_type = #{subcontractType},remark = #{remark},update_at = NOW()
+        WHERE id = #{ID}
+    </update>
 </mapper>

@@ -3,11 +3,9 @@ package com.labor.service.Impl;
 import com.labor.controller.UserController;
 import com.labor.entity.AttachmentLog;
 import com.labor.entity.Subcontract;
-import com.labor.enums.DateStyleEnum;
 import com.labor.mapper.AttachmentLogMapper;
 import com.labor.mapper.SubcontractMapper;
 import com.labor.service.SubcontracService;
-import com.labor.utils.DateUtil;
 import com.labor.utils.FileUtil;
 import com.labor.utils.GenerateUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -73,23 +71,17 @@ public class SubcontractServiceImpl implements SubcontracService {
             long size = fileName.getSize();
             //文件类型
             String type = fileName.getContentType();
-            //根据日期生成目录
-            Date date = new Date();
+
             if (null != fileNames && !"".equals(fileNames)) {
                 //文件存放路径
                 String rootPath = attachRootPath.replace("\\", File.separator).replace("/", File.separator);
                 //时间格式
-                String dateStr = DateUtil.dateToString(date, DateStyleEnum.YYYY_MM_DD);
+                String urlStr = "RequiredFile";
                 //文件名前缀
                 String fileNamePrefix = UUID.randomUUID().toString();
-                if (null == dateStr) {
-                    logger.info("创建附件目录失败...");
-                    dateStr = "temp";
-                } else {
-                    dateStr = dateStr.replace("-", File.separator);
-                }
+
                 //最终附件存放的目录
-                rootPath = rootPath + dateStr + File.separator;
+                rootPath = rootPath + urlStr + File.separator;
                 StringBuilder fileFullName = new StringBuilder();
                 String randomCode = GenerateUtil.randomIn(6);
                 fileNamePrefix += randomCode;
@@ -117,16 +109,69 @@ public class SubcontractServiceImpl implements SubcontracService {
             Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
             if(count>0){
                 logger.info("--文件信息保存成功--");
+                subcontract.setRequiredFileId(attachmentLog.getID());
             }else{
                 logger.info("--文件信息保存失败--");
             }
         }
 
-        return subcontractMapper.insert(subcontract) == 1 ? true : false;
+        return subcontractMapper.insertSubcontract(subcontract) == 1 ? true : false;
     }
 
     @Override
     public void deleteByID(Long id) {
          subcontractMapper.deleteByID(id);
+    }
+
+    @Override
+    public Subcontract findSubcontractByID(Long id) {
+        return subcontractMapper.findSubcontractByID(id);
+    }
+
+    @Override
+    public boolean updateSubcontract(Subcontract subcontract, MultipartFile fileName) {
+        AttachmentLog attachmentLog=new AttachmentLog();
+        if(!fileName.isEmpty()){
+            AttachmentLog requiredFile=attachmentLogMapper.selectByConFile(subcontract.getRequiredFileId());
+            String rootPath =requiredFile.getSavePath();
+            //清空文件夹文件
+            FileUtil.deleteDataFile(rootPath);
+            //文件名
+            String fileNames = fileName.getOriginalFilename();
+            //文件大小
+            long size = fileName.getSize();
+            //文件类型
+            String type = fileName.getContentType();
+
+            if (null != fileNames && !"".equals(fileNames)) {
+                //文件存放路径
+
+                try {
+                    FileUtil.uploadFile(fileName.getBytes(), rootPath, fileNames);//文件处理
+                    logger.info("--文件上传成功--");
+                } catch (Exception ex) {
+                    logger.info("--文件上传失败--");
+                    ex.printStackTrace();
+                }
+                attachmentLog.setFileName(fileNames);
+                attachmentLog.setSavePath(rootPath);
+            }
+            attachmentLog.setFileSize((int) size);
+            attachmentLog.setFileType(type);
+            attachmentLog.setCreateAt(new Date());
+            attachmentLog.setUpdateAt(new Date());
+            Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
+            if(count>0){
+                logger.info("--文件信息保存成功--");
+                attachmentLogMapper.deleteByContractFileId(subcontract.getRequiredFileId());
+                subcontract.setRequiredFileId(attachmentLog.getID());
+
+            }else{
+                logger.info("--文件信息保存失败--");
+            }
+
+        }
+
+        return subcontractMapper.updateSubcontract(subcontract) == 1 ? true : false;
     }
 }

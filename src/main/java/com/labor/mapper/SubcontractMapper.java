@@ -21,4 +21,10 @@ public interface SubcontractMapper extends BaseMapper<Subcontract> {
     int getRecordsByCompanyName(@Param("companyName")String companyName);
 
     void deleteByID(@Param("id") Long id);
+
+    int insertSubcontract(Subcontract subcontract);
+
+    Subcontract findSubcontractByID(@Param("id")Long id);
+
+    int updateSubcontract(Subcontract subcontract);
 }
