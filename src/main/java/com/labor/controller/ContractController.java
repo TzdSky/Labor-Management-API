@@ -140,7 +140,7 @@ public class ContractController {
      * @return 返回结果
      */
     @PostMapping(value="/updateContract")
-    public ResultModel<String>  updateContract(Subcontract subcontract, @RequestPart(value = "file") MultipartFile file){
+    public ResultModel<String>  updateContract(Contract subcontract, @RequestPart(value = "file") MultipartFile file){
         ResultModel<String> resultModel = new ResultModel<>();
         logger.info("updateContract:===>start");
         if(subcontract != null) {

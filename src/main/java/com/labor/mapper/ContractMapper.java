@@ -27,4 +27,6 @@ public interface ContractMapper extends BaseMapper<Contract> {
     int insertContract(Contract contract);
 
     Contract findFileID(@Param("ID") Long id);
+
+    int updateContract(Contract contract);
 }

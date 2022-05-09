@@ -23,5 +23,5 @@ public interface ContractService {
 
     boolean insertContract(Contract contract, MultipartFile file);
 
-    boolean updateContract(Subcontract subcontract, MultipartFile file);
+    boolean updateContract(Contract contract, MultipartFile file);
 }

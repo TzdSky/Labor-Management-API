@@ -169,9 +169,56 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public boolean updateContract(Subcontract subcontract, MultipartFile file) {
-        return false;
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateContract(Contract contract, MultipartFile fileOne) {
+        AttachmentLog attachmentLog=new AttachmentLog();
+        if(!fileOne.isEmpty()){
+            AttachmentLog requiredFile=attachmentLogMapper.selectByConFile(contract.getFileOneId());
+            if(null==requiredFile){
+                logger.info("--文件id错误--");
+                return false;
+            }
+            String rootPath =requiredFile.getSavePath();
+            FileUtil.delAllFile(rootPath);
+            //文件名
+            String fileNames = fileOne.getOriginalFilename();
+            //文件大小
+            long size = fileOne.getSize();
+            //文件类型
+            String type = fileOne.getContentType();
+
+            if (null != fileNames && !"".equals(fileNames)) {
+                //文件存放路径
+
+                try {
+                    FileUtil.uploadFile(fileOne.getBytes(), rootPath, fileNames);//文件处理
+                    logger.info("--文件上传成功--");
+                } catch (Exception ex) {
+                    logger.info("--文件上传失败--");
+                    ex.printStackTrace();
+                }
+                attachmentLog.setFileName(fileNames);
+                attachmentLog.setSavePath(rootPath);
+            }
+            attachmentLog.setFileSize((int) size);
+            attachmentLog.setFileType(type);
+            attachmentLog.setCreateAt(new Date());
+            attachmentLog.setUpdateAt(new Date());
+            Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
+            if(count>0){
+                logger.info("--FileOne文件信息保存成功--");
+                attachmentLogMapper.deleteByContractFileId(contract.getFileOneId());
+                contract.setFileOneId(attachmentLog.getID());
+                contract.setUploadTimeOne(attachmentLog.getCreateAt());
+            }else{
+                logger.info("--FileOne文件信息保存失败--");
+            }
+
+        }
+
+        return contractMapper.updateContract(contract) == 1 ? true : false;
     }
+
 
 
 }
