@@ -58,7 +58,7 @@ public class SubcontractController {
      * @return 返回结果
      */
     @PostMapping(value="/insertSubcontract")
-    public ResultModel<String>  insertUser(Subcontract subcontract,@RequestPart(value = "file") MultipartFile file){
+    public ResultModel<String>  insertSubcontract(Subcontract subcontract,@RequestPart(value = "file") MultipartFile file){
         ResultModel<String> resultModel = new ResultModel<>();
         logger.info("insertSubcontract:===>start");
         /**

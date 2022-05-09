@@ -84,18 +84,20 @@ public class FileUtil {
 
     }
     //param folderPath 文件夹完整绝对路径
-    public static void delFolder(String folderPath) {
+    public static Boolean delFolder(String folderPath) {
         File file = new File(folderPath);
         try {
             // 路径存在则进行删除
             if (file.exists()) {
                 file.delete();
                 logger.info("--文件清除成功--");
+                return true;
             }
         } catch (Exception e) {
             logger.info("--文件清除失败--");
             e.printStackTrace();
         }
+        return false;
     }
 
     //删除指定文件夹下所有文件

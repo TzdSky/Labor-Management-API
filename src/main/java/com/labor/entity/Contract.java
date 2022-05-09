@@ -44,15 +44,17 @@ public class Contract {
      */
     private String signCompany;
 
-    /**
-     * 附件id
-     */
-    private Long fileId;
+
 
     /**
-     * 上传时间
+     * 文件1上传时间
      */
-    private Date uploadTime;
+    private Date uploadTimeOne;
+
+    /**
+     *  文件2上传时间
+     */
+    private Date uploadTimeTwo;
 
     /**
      * 合同状态(0 生效 1失效
@@ -76,6 +78,26 @@ public class Contract {
      *  公司名称
      */
     private String companyName;
+
+    private Long fileOneId;
+
+    private Long fileTwoId;
+
+    public Long getFileOneId() {
+        return fileOneId;
+    }
+
+    public void setFileOneId(Long fileOneId) {
+        this.fileOneId = fileOneId;
+    }
+
+    public Long getFileTwoId() {
+        return fileTwoId;
+    }
+
+    public void setFileTwoId(Long fileTwoId) {
+        this.fileTwoId = fileTwoId;
+    }
 
     public Long getID() {
         return ID;
@@ -133,20 +155,22 @@ public class Contract {
         this.signCompany = signCompany;
     }
 
-    public Long getFileId() {
-        return fileId;
+
+
+    public Date getUploadTimeOne() {
+        return uploadTimeOne;
     }
 
-    public void setFileId(Long fileId) {
-        this.fileId = fileId;
+    public void setUploadTimeOne(Date uploadTimeOne) {
+        this.uploadTimeOne = uploadTimeOne;
     }
 
-    public Date getUploadTime() {
-        return uploadTime;
+    public Date getUploadTimeTwo() {
+        return uploadTimeTwo;
     }
 
-    public void setUploadTime(Date uploadTime) {
-        this.uploadTime = uploadTime;
+    public void setUploadTimeTwo(Date uploadTimeTwo) {
+        this.uploadTimeTwo = uploadTimeTwo;
     }
 
     public Integer getStatus() {

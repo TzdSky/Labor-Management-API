@@ -21,4 +21,10 @@ public interface ContractMapper extends BaseMapper<Contract> {
     Contract findContractByID(@Param("ID") Long id);
 
     void deleteContractID(@Param("ID") Long id);
+
+    int getRecordsByName(@Param("contractName")String contractName);
+
+    int insertContract(Contract contract);
+
+    Contract findFileID(@Param("ID") Long id);
 }

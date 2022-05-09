@@ -1,21 +1,29 @@
 package com.labor.service.Impl;
 
+import com.labor.controller.UserController;
+import com.labor.entity.AttachmentLog;
 import com.labor.entity.Contract;
 import com.labor.entity.Subcontract;
+import com.labor.mapper.AttachmentLogMapper;
 import com.labor.mapper.ContractMapper;
 import com.labor.service.ContractService;
+import com.labor.utils.FileUtil;
+import com.labor.utils.GenerateUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.util.*;
 
 /**
  * @author BoCong
@@ -23,8 +31,13 @@ import java.util.Map;
  */
 @Service
 public class ContractServiceImpl implements ContractService {
+    private Logger logger = Logger.getLogger(UserController.class);
     @Autowired
     private ContractMapper contractMapper;
+    @Value("${attachRootPath}")
+    private String attachRootPath;
+    @Autowired
+    private AttachmentLogMapper attachmentLogMapper;
     @Override
     public Page<Contract> getContractList(HttpServletRequest request, Pageable page) {
         Map<String, Object> queryParams = new HashMap<>();
@@ -57,8 +70,107 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteContractID(Long id) {
-         contractMapper.deleteContractID(id);
+
+         //查询所有文件id
+         Contract contract=contractMapper.findFileID(id);
+         //删除文件1
+         if(null!=contract.getFileOneId()){
+             AttachmentLog attachmentLogOne=attachmentLogMapper.selectByConFile(contract.getFileOneId());
+             String FileOneUrl=attachmentLogOne.getSavePath();
+             //删除文件夹内文件
+             FileUtil.delAllFile(FileOneUrl);
+             //删除文件夹
+             Boolean falg=FileUtil.delFolder(FileOneUrl.substring(0,FileOneUrl.length()-1));
+             if(falg){
+                 attachmentLogMapper.deleteByContractFileId(contract.getFileOneId());
+             }
+         }
+         //删除文件2
+         if(null!=contract.getFileTwoId()){
+             AttachmentLog attachmentLogTwo=attachmentLogMapper.selectByConFile(contract.getFileTwoId());
+             //删除文件夹内文件
+             FileUtil.delAllFile(attachmentLogTwo.getSavePath());
+             String FileTwoUrl=attachmentLogTwo.getSavePath();
+             //删除文件夹
+             Boolean falg=FileUtil.delFolder(FileTwoUrl.substring(0,FileTwoUrl.length()-1));
+             if(falg){
+                 //删除文件信息
+                 attachmentLogMapper.deleteByContractFileId(contract.getFileTwoId());
+             }
+         }
+        //合同信息删除
+        contractMapper.deleteContractID(id);
+    }
+
+    @Override
+    public int getRecordsByName(String contractName) {
+        return contractMapper.getRecordsByName(contractName);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean insertContract(Contract contract, MultipartFile fileOne) {
+        AttachmentLog attachmentLog=new AttachmentLog();
+        if(!fileOne.isEmpty()){
+            //文件名
+            String fileNames = fileOne.getOriginalFilename();
+            //文件大小
+            long size = fileOne.getSize();
+            //文件类型
+            String type = fileOne.getContentType();
+
+            if (null != fileNames && !"".equals(fileNames)) {
+                //文件存放路径
+                String rootPath = attachRootPath.replace("\\", File.separator).replace("/", File.separator);
+                //文件存放
+                String urlStr = "ContractFile"+File.separator+"FileOne";
+                //文件名前缀
+                String fileNamePrefix = UUID.randomUUID().toString();
+
+                //最终附件存放的目录
+                rootPath = rootPath + urlStr + File.separator;
+                StringBuilder fileFullName = new StringBuilder();
+                String randomCode = GenerateUtil.randomIn(6);
+                fileNamePrefix += randomCode;
+                StringBuilder realFileName = new StringBuilder();
+                realFileName.append(fileNamePrefix).append(File.separator);
+                fileFullName = fileFullName.append(rootPath).append(realFileName);
+                String filePath = fileFullName.toString();
+                try {
+                    //若文件夹不存在则先创建
+                    File fileDir = new File(filePath);
+                    if (!fileDir.exists()) {
+                        fileDir.mkdirs();
+                    }
+                    FileUtil.uploadFile(fileOne.getBytes(), filePath, fileNames);//文件处理
+                } catch (Exception ex) {
+                    logger.info("--文件上传成功--");
+                    ex.printStackTrace();
+                }
+                attachmentLog.setFileName(fileNames);
+                attachmentLog.setSavePath(filePath);
+            }
+            attachmentLog.setFileSize((int) size);
+            attachmentLog.setFileType(type);
+            attachmentLog.setCreateAt(new Date());
+            Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
+            if(count>0){
+                logger.info("--文件信息保存成功--");
+                contract.setFileOneId(attachmentLog.getID());
+                contract.setUploadTimeOne(attachmentLog.getCreateAt());
+            }else{
+                logger.info("--文件信息保存失败--");
+            }
+        }
+
+        return contractMapper.insertContract(contract) == 1 ? true : false;
+    }
+
+    @Override
+    public boolean updateContract(Subcontract subcontract, MultipartFile file) {
+        return false;
     }
 
 

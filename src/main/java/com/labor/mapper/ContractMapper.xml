@@ -3,7 +3,11 @@
 <mapper namespace="com.labor.mapper.ContractMapper">
     <select id="getCount" resultType="java.lang.Integer">
         select count(t.ID) from (
-        select t1.id,contract_name,contract_type,company_id,DATE_FORMAT(create_at, '%Y-%m-%d'),DATE_FORMAT(begin_time, '%Y-%m-%d') begin_time,DATE_FORMAT(end_time, '%Y-%m-%d') end_time,status,file_id,sign_company,t2.company_name from t_contract t1 LEFT JOIN t_subcontract t2 on  t1.company_id =t2.id
+        select t1.id,contract_name,contract_type,company_id,DATE_FORMAT(t1.create_at, '%Y-%m-%d') create_at,DATE_FORMAT(begin_time, '%Y-%m-%d') begin_time,DATE_FORMAT(end_time, '%Y-%m-%d') end_time,status,
+        t1.file_one_id,t1.file_two_id,sign_company,t2.company_name,
+        DATE_FORMAT(t1.update_at, '%Y-%m-%d') update_at, DATE_FORMAT(upload_time_one, '%Y-%m-%d') upload_time_one,DATE_FORMAT(upload_time_two, '%Y-%m-%d') upload_time_two,t1.creater
+        from t_contract t1
+        LEFT JOIN t_subcontract t2 on  t1.company_id =t2.id
         where 1=1
         <if test="queryParams.contractName != null and queryParams.contractName != ''">
             and UPPER(t1.contract_name) like UPPER(CONCAT('%',#{queryParams.t1.contractName,jdbcType=VARCHAR}, '%'))
@@ -21,7 +25,10 @@
     </select>
 
     <select id="getPage" resultType="com.labor.entity.Contract">
-        select t1.id,contract_name,contract_type,company_id,DATE_FORMAT(create_at, '%Y-%m-%d'),DATE_FORMAT(begin_time, '%Y-%m-%d') begin_time,DATE_FORMAT(end_time, '%Y-%m-%d') end_time,status,file_id,sign_company,t2.company_name from t_contract t1 LEFT JOIN t_subcontract t2 on  t1.company_id =t2.id
+        select t1.id,contract_name,contract_type,company_id,DATE_FORMAT(t1.create_at, '%Y-%m-%d') create_at,DATE_FORMAT(begin_time, '%Y-%m-%d') begin_time,DATE_FORMAT(end_time, '%Y-%m-%d') end_time,status,t1.file_one_id,t1.file_two_id,sign_company,t2.company_name,
+        DATE_FORMAT(t1.update_at, '%Y-%m-%d') update_at, DATE_FORMAT(upload_time_one, '%Y-%m-%d') upload_time_one,DATE_FORMAT(upload_time_two, '%Y-%m-%d') upload_time_two,t1.creater
+        from t_contract t1
+        LEFT JOIN t_subcontract t2 on  t1.company_id =t2.id
         where 1=1
         <if test="queryParams.contractName != null and queryParams.contractName != ''">
             and UPPER(t1.contract_name) like UPPER(CONCAT('%',#{queryParams.contractName,jdbcType=VARCHAR}, '%'))
@@ -40,13 +47,31 @@
     </select>
 
     <select id="findContractByID" resultType="com.labor.entity.Contract">
-        select t1.id,contract_name,contract_type,company_id,DATE_FORMAT(create_at, '%Y-%m-%d'),DATE_FORMAT(begin_time, '%Y-%m-%d') begin_time,DATE_FORMAT(end_time, '%Y-%m-%d') end_time,status,file_id,sign_company,t2.company_name from t_contract t1
+        select t1.id,contract_name,contract_type,company_id,DATE_FORMAT(t1.create_at, '%Y-%m-%d') create_at,DATE_FORMAT(begin_time, '%Y-%m-%d') begin_time,DATE_FORMAT(end_time, '%Y-%m-%d') end_time,status,
+        t1.file_one_id,t1.file_two_id,sign_company,t2.company_name,
+        DATE_FORMAT(t1.update_at, '%Y-%m-%d') update_at, DATE_FORMAT(upload_time_one, '%Y-%m-%d') upload_time_one,DATE_FORMAT(upload_time_two, '%Y-%m-%d') upload_time_two,t1.creater
+        from t_contract t1
         LEFT JOIN t_subcontract t2 on  t1.company_id =t2.id where t1.id=#{ID}
     </select>
 
-
+    <select id="findFileID" resultType="com.labor.entity.Contract">
+        select file_one_id,file_two_id from t_contract where id=#{ID}
+    </select>
     <delete id="deleteContractID">
         delete from t_contract where id=#{ID}
     </delete>
 
+    <select id="getRecordsByName" resultType="int">
+        select count(*) from t_contract where contract_name=#{contractName}
+    </select>
+
+    <insert id="insertContract" parameterType="com.labor.entity.Contract">
+        <!--通过mybatis框架提供的selectKey标签获得自增产生的ID值-->
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="ID">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into `t_contract` (`contract_name`, `contract_type`, `company_id`, `begin_time`, `end_time`,
+        `status`, `file_one_id`, `file_two_id`, `sign_company`, `upload_time_one`,`upload_time_two`,`creater`, `create_at`, `update_at`)
+        values(#{contractName},#{contractType},#{companyId},#{beginDate},#{endDate},#{status},#{fileOneId},#{fileTwoId},#{signCompany},#{uploadTimeOne},#{uploadTimeTwo},#{creater},#{createAt},#{updateAt});
+    </insert>
 </mapper>
