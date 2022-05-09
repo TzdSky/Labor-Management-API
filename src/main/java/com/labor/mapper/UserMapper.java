@@ -31,10 +31,10 @@ public interface UserMapper extends BaseMapper<User> {
     /**
      * @author Tian
      * @date 2022/5/2
-     * @param id 主键id
+     * @param ID 主键id
      * 根据id删除
      */
-    void deleteUserByID(Long id);
+    void deleteUserByID(@Param("ID") Long ID);
 
 
     /**
@@ -64,10 +64,10 @@ public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 查看用户
-     * @param id
+     * @param ID
      * @return
      */
-    User findUserById(Long id);
+    User findUserById(@Param("ID") Long ID);
 
     List<WorkType> getWorkType();
 

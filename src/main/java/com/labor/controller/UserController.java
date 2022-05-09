@@ -144,13 +144,13 @@ public class UserController {
     }
     /**
      * 根据id查看用户
-     * @param id
+     * @param ID
      */
     @GetMapping(value = "/findUserById")
-    public ResultModel<User> findUserById(@RequestParam(value = "id", required = true) Long id){
+    public ResultModel<User> findUserById(@RequestParam(value = "ID", required = true) Long ID){
         logger.info("findUser:===>start");
         ResultModel<User> resultModel = new ResultModel<>();
-        User user=userService.findUserById(id);
+        User user=userService.findUserById(ID);
         resultModel.setData(user);
         resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
         resultModel.setCode(ManageConstants.SUCCESS_200);
