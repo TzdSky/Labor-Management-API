@@ -133,9 +133,15 @@ public class SubcontractServiceImpl implements SubcontracService {
         AttachmentLog attachmentLog=new AttachmentLog();
         if(!fileName.isEmpty()){
             AttachmentLog requiredFile=attachmentLogMapper.selectByConFile(subcontract.getRequiredFileId());
+            if(null==requiredFile){
+                logger.info("--文件id错误--");
+                return false;
+            }
             String rootPath =requiredFile.getSavePath();
-            //清空文件夹文件
-            FileUtil.deleteDataFile(rootPath);
+//            String requireFileName=requiredFile.getFileName();
+//            //清空文件夹文件
+//            FileUtil.deleteDataFile(rootPath,requireFileName);
+            FileUtil.delAllFile(rootPath);
             //文件名
             String fileNames = fileName.getOriginalFilename();
             //文件大小
