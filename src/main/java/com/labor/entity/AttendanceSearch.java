@@ -1,6 +1,7 @@
 package com.labor.entity;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Tian
@@ -130,6 +131,16 @@ public class AttendanceSearch {
 
      //打卡状态 搜索月份第31天
      private String clockStatus31;
+
+     private List<String> headers;
+
+     public List<String> getHeaders() {
+          return headers;
+     }
+
+     public void setHeaders(List<String> headers) {
+          this.headers = headers;
+     }
 
      public Long getID() {
           return ID;
