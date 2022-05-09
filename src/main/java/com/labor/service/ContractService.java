@@ -12,4 +12,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface ContractService {
     Page<Contract> getContractList(HttpServletRequest request, Pageable page);
+
+    Contract findContractByID(Long id);
+
+    void deleteContractID(Long id);
 }

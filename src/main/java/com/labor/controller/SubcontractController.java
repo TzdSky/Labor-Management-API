@@ -38,13 +38,13 @@ public class SubcontractController {
 
     /**
      * 根据id查看公司
-     * @param  id
+     * @param  ID
      */
     @GetMapping(value = "/findSubcontractByID")
-    public ResultModel<Subcontract> findSubcontractByID(@RequestParam(value = "id", required = true) Long id){
+    public ResultModel<Subcontract> findSubcontractByID(@RequestParam(value = "ID", required = true) Long ID){
         logger.info("findSubcontractByID:===>start");
         ResultModel<Subcontract> resultModel = new ResultModel<>();
-        Subcontract subcontract=subcontracService.findSubcontractByID(id);
+        Subcontract subcontract=subcontracService.findSubcontractByID(ID);
         resultModel.setData(subcontract);
         resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
         resultModel.setCode(ManageConstants.SUCCESS_200);
@@ -109,14 +109,14 @@ public class SubcontractController {
     }
     /**
      * 根据id删除公司
-     * @param  id
+     * @param  ID
      */
     @GetMapping(value = "/deleteSubcontractOne")
-    public ResultModel<String> deleteSubcontractOne(@RequestParam(value = "id", required = true) Long id){
+    public ResultModel<String> deleteSubcontractOne(@RequestParam(value = "ID", required = true) Long ID){
         logger.info("deleteSubcontractOne:===>start");
         ResultModel<String> resultModel = new ResultModel<>();
         try {
-            subcontracService.deleteByID(id);
+            subcontracService.deleteByID(ID);
         } catch (Exception e) {
             logger.info("deleteSubcontractOne:===>error ："+e);
             e.printStackTrace();

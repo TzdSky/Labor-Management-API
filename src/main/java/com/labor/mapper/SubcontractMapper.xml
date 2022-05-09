@@ -34,7 +34,7 @@
     </select>
 
     <delete id="deleteByID">
-        delete from t_subcontract where id=#{id}
+        delete from t_subcontract where id=#{ID}
     </delete>
 
     <insert id="insertSubcontract" parameterType="com.labor.entity.Subcontract">
@@ -49,7 +49,7 @@
 
     <select id="findSubcontractByID" resultType="com.labor.entity.Subcontract">
         select id,`company_name`, `principal`, `phone`, `subcontrac_content`, `required_file_id`, `address`,`subcontract_type`, `creater`, `create_at`, `update_at`
-        from t_subcontract where id = #{id}
+        from t_subcontract where id = #{ID}
     </select>
 
     <update id="updateSubcontract">

@@ -72,6 +72,11 @@ public class Contract {
      */
     private Date updateAt;
 
+    /**
+     *  公司名称
+     */
+    private String companyName;
+
     public Long getID() {
         return ID;
     }
@@ -174,5 +179,13 @@ public class Contract {
 
     public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

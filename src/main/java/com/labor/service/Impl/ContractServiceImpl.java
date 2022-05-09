@@ -51,5 +51,15 @@ public class ContractServiceImpl implements ContractService {
         return new PageImpl<>(contractMapperList, PageRequest.of(page.getPageNumber() - 1, page.getPageSize()), total);
     }
 
+    @Override
+    public Contract findContractByID(Long id) {
+        return contractMapper.findContractByID(id);
+    }
+
+    @Override
+    public void deleteContractID(Long id) {
+         contractMapper.deleteContractID(id);
+    }
+
 
 }

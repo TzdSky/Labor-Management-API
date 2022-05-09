@@ -20,7 +20,7 @@
         ) t
     </select>
 
-    <select id="getPage" resultType="com.labor.entity.User">
+    <select id="getPage" resultType="com.labor.entity.Contract">
         select t1.id,contract_name,contract_type,company_id,DATE_FORMAT(create_at, '%Y-%m-%d'),DATE_FORMAT(begin_time, '%Y-%m-%d') begin_time,DATE_FORMAT(end_time, '%Y-%m-%d') end_time,status,file_id,sign_company,t2.company_name from t_contract t1 LEFT JOIN t_subcontract t2 on  t1.company_id =t2.id
         where 1=1
         <if test="queryParams.contractName != null and queryParams.contractName != ''">
@@ -38,5 +38,15 @@
         order by ID desc
         limit #{queryParams.page,jdbcType=INTEGER},#{queryParams.size,jdbcType=INTEGER}
     </select>
+
+    <select id="findContractByID" resultType="com.labor.entity.Contract">
+        select t1.id,contract_name,contract_type,company_id,DATE_FORMAT(create_at, '%Y-%m-%d'),DATE_FORMAT(begin_time, '%Y-%m-%d') begin_time,DATE_FORMAT(end_time, '%Y-%m-%d') end_time,status,file_id,sign_company,t2.company_name from t_contract t1
+        LEFT JOIN t_subcontract t2 on  t1.company_id =t2.id where t1.id=#{ID}
+    </select>
+
+
+    <delete id="deleteContractID">
+        delete from t_contract where id=#{ID}
+    </delete>
 
 </mapper>

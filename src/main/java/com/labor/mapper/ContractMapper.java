@@ -17,4 +17,8 @@ public interface ContractMapper extends BaseMapper<Contract> {
     Integer getCount(@Param("queryParams") Map<String, Object> queryParams);
 
     List<Contract> getPage(@Param("queryParams") Map<String, Object> queryParams);
+
+    Contract findContractByID(@Param("ID") Long id);
+
+    void deleteContractID(@Param("ID") Long id);
 }
