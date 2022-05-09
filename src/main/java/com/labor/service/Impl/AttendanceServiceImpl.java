@@ -72,12 +72,8 @@ public class AttendanceServiceImpl implements AttendanceService {
             queryParams.put("attGroupName", attGroupName);
         }
         Integer total = attendanceMapper.getAttGroupCount(attGroupName);
-
         queryParams.put("page", (page.getPageNumber() - 1) * page.getPageSize());
         queryParams.put("size", page.getPageSize());
-        System.err.println("page.total() = "+total);
-        System.err.println("page.getPageNumber() = "+page.getPageNumber());
-        System.err.println("page.getPageSize() = "+page.getPageSize());
         List<Attendance> attGroupList = attendanceMapper.getAttGroupList(queryParams);
         return new PageImpl<>(attGroupList, PageRequest.of(page.getPageNumber() - 1, page.getPageSize()), total);
     }
@@ -113,25 +109,37 @@ public class AttendanceServiceImpl implements AttendanceService {
         }else {
             //默认当月
             Date date = new Date();
-            String fomart = "YYYY_MM";
+            String fomart = "YYYY-MM";
             attDate = DateUtil.dateToString(date, fomart);
             queryParams.put("attDate", DateUtil.dateToString(date, fomart));
         }
-        String attDates[] = attDate.split("_");
 
-        Calendar a = Calendar.getInstance();
-        a.set(Calendar.YEAR, Integer.parseInt(attDates[0]));
-        a.set(Calendar.MONTH, Integer.parseInt(attDates[0]) -1);//Calendar 0-11
-        int days= a.get(Calendar.DATE);
+        int days= DateUtil.getInputMonthDays(attDate);
+        List<Integer> dayList = condition(days);
         Integer total = attendanceMapper.getSearchCount(queryParams);
 
-        queryParams.put("days", (days));
+        queryParams.put("dayList", (dayList));
         queryParams.put("page", (page.getPageNumber() - 1) * page.getPageSize());
         queryParams.put("size", page.getPageSize());
-        System.err.println("page.total() = "+total);
-        System.err.println("page.getPageNumber() = "+page.getPageNumber());
-        System.err.println("page.getPageSize() = "+page.getPageSize());
+        System.err.println("days = "+days);
+        System.err.println("attDate = "+queryParams.get("attDate"));
         List<AttendanceSearch> attGroupList = attendanceMapper.getAttSearchList(queryParams);
         return new PageImpl<>(attGroupList, PageRequest.of(page.getPageNumber() - 1, page.getPageSize()), total);
     }
+
+        //将天数 转为天数数组 eg:30 ==> list(1,2,,,,30)
+        public static List<Integer> condition (int days){
+            List <Integer> dayList = new ArrayList<>();
+            for (int i = 1; i <= days; i++) {
+                dayList.add(i);
+            }
+            return dayList;
+        }
+
+
+    //设置表头
+    public static List<Integer> setHeader (List<AttendanceSearch> attGroupList){
+        return null;
+    }
+
 }

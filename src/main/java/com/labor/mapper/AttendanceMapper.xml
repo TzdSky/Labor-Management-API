@@ -3,7 +3,7 @@
 <mapper namespace="com.labor.mapper.AttendanceMapper">
 
     <update id="updateUserAttendanceID">
-        UPDATE t_user SET att_group_id = #{attGroupId} WHERE id in
+        UPDATE t_user SET att_group_id = #{attendanceID} WHERE id in
         <foreach collection="userIDs" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
@@ -14,12 +14,20 @@
     </update>
 
     <delete id="deleteAttendanceGroupByID">
-        delete from t_attendance_group where id = {id}
+        delete from t_attendance_group where id = #{id}
     </delete>
 
     <select id="getAttRecordsByAttGroupName" resultType="java.lang.Integer">
         select count(1) from t_attendance_group
         where att_group_name = #{attGroupName}
+    </select>
+
+    <select id="getAttGroupCount" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM t_attendance_group
+        where 1 = 1
+        <if test="attGroupName != null and attGroupName != ''">
+            and UPPER(att_group_name) like UPPER(CONCAT('%',#{attGroupName,jdbcType=VARCHAR}, '%'))
+        </if>
     </select>
 
 
@@ -36,17 +44,11 @@
         UPDATE t_attendance_group
         SET att_group_name = #{attGroupName},
             location   = #{location},
-            update_at = NOW(),
+            update_at = NOW()
         WHERE id = #{ID}
     </update>
 
-    <select id="getCount" resultType="java.lang.Integer">
-        SELECT COUNT(1) FROM t_attendance_group
-        where 1 = 1
-        <if test="attGroupName != null and attGroupName != ''">
-            and UPPER(att_group_name) like UPPER(CONCAT('%',#{attGroupName,jdbcType=VARCHAR}, '%'))
-        </if>
-    </select>
+
 
 
 
@@ -74,17 +76,16 @@
         SELECT t.id, t.name, s.company_name, g.group_name
         <if test="queryParams.attDate != null and queryParams.attDate != ''">
             ,
-            <foreach collection="days" index="index" item="item" open="" separator="," close="">
+            <foreach collection="queryParams.dayList" index="index" item="item" open="" separator="," close="">
                 (
                 SELECT
-                COUNT(1)
+                c.clock_status
                 FROM
                 t_clock c
                 WHERE
                 c.user_id = t.id
-                AND c.record_date = STR_TO_DATE(#{attDate}#{index},'%Y-%m-%d')
-                AND c.clock_status = 1
-                ) AS clockCounts#{index}
+                AND c.record_date = STR_TO_DATE(CONCAT(#{queryParams.attDate}, '-', #{index}),'%Y-%m-%d')
+                ) AS clockStatus#{index}
             </foreach>
         </if>
         FROM t_user t
@@ -117,6 +118,7 @@
     </select>
 
     <select id="getSearchCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM (
         SELECT COUNT(1)
         FROM t_user t
         LEFT JOIN t_project p ON t.project_id = p.project_id
@@ -148,6 +150,7 @@
             WHERE DATE_FORMAT(ck.record_date,'%Y-%m')=#{queryParams.attDate}
         </if>
         GROUP BY t.id
+        ) t
     </select>
 
 

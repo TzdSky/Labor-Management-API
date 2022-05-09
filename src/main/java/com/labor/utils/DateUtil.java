@@ -757,4 +757,18 @@ DateUtil {
         String year = format.format(y);
         return year;
     }
+
+    /**
+     * 输入年月获取当月天数
+     */
+    public static int getInputMonthDays(String yearMonth){
+        String attDates[] = yearMonth.split("-");
+        Calendar a = Calendar.getInstance();
+        a.set(Calendar.YEAR, Integer.parseInt(attDates[0]));
+        a.set(Calendar.MONTH, Integer.parseInt(attDates[1]) -1);//Calendar 0-11
+        a.set(Calendar.DATE, 1);//把⽇期设置为当⽉第⼀天
+        a.roll(Calendar.DATE, -1);//⽇期回滚⼀天，也就是最后⼀天
+        int days= a.get(Calendar.DATE);
+        return days;
+    }
 }

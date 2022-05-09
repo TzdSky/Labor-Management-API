@@ -124,6 +124,10 @@ public class AttendanceController {
             resultModel.setCode(ManageConstants.ERROR_500);
         } else {
             int queryStatus = attendanceService.updateAttGroup(attendance);
+            if(queryStatus == 1){
+                //修改成功了考勤组，就顺势修改user状态
+                attendanceService.updateUserGroupID(attendance.getUserInAttGroup(),attendance.getID());
+            }
             resultModel.setData(queryStatus == 1?"修改成功":"修改失败");
             resultModel.setText(queryStatus == 1?ManageConstants.SUCCESS_200_TEXT:"失败");
             resultModel.setCode(ManageConstants.SUCCESS_200);
