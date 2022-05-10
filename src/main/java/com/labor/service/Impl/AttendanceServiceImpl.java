@@ -44,9 +44,10 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
-    public int getAttRecordsByAttGroupName(String attGroupName){
+    public int getAttRecordsByAttGroupName(String attGroupName) {
         return attendanceMapper.getAttRecordsByAttGroupName(attGroupName);
     }
+
 
     @Override
     public int getAttGroupCount(String attGroupName){
@@ -124,6 +125,10 @@ public class AttendanceServiceImpl implements AttendanceService {
         System.err.println("days = "+days);
         System.err.println("attDate = "+queryParams.get("attDate"));
         List<AttendanceSearch> attGroupList = attendanceMapper.getAttSearchList(queryParams);
+        if(attGroupList != null && attGroupList.size() > 0) {
+            List<String> headers =  setHeader(attDate, days);
+            attGroupList.get(0).setHeaders(headers);
+        }
         return new PageImpl<>(attGroupList, PageRequest.of(page.getPageNumber() - 1, page.getPageSize()), total);
     }
 
@@ -137,9 +142,22 @@ public class AttendanceServiceImpl implements AttendanceService {
         }
 
 
-    //设置表头
-    public static List<Integer> setHeader (List<AttendanceSearch> attGroupList){
-        return null;
+    //传入年月以及当月天数设置表头
+    public static List<String> setHeader (String yearMonth, Integer days){
+        List<String> headers = new ArrayList<>();
+        headers.add("名称");
+        headers.add("所属公司");
+        headers.add("所在班组");
+        String temp ="";
+        //小于10的时候前面加个0  eg:2022-11-1 ==>022-11-01
+        for (int i = 1; i <= days; i++) {
+            temp = "-" + i;
+            if (i < 10){
+                temp = "-0" + i;
+            }
+            headers.add(yearMonth + temp);
+        }
+        return headers;
     }
 
 }

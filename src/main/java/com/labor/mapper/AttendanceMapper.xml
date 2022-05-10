@@ -56,6 +56,14 @@
         SELECT a.id,a.att_group_name,a.location,a.update_at,
         (
         SELECT
+        GROUP_CONCAT(name)
+        FROM
+        t_user u
+        WHERE
+        a.id = u.att_group_id
+        ) AS userLists,
+        (
+        SELECT
         COUNT(1)
         FROM
         t_user u
@@ -73,7 +81,17 @@
 
 
     <select id="getAttSearchList" resultType="com.labor.entity.AttendanceSearch">
-        SELECT t.id, t.name, s.company_name, g.group_name
+        SELECT t.id, t.name, s.company_name, g.group_name,
+        (
+        SELECT
+        COUNT(1)
+        FROM
+        t_clock c
+        WHERE
+        c.user_id = t.id
+        AND c.clock_status = 1
+        AND DATE_FORMAT(c.record_date,'%Y-%m')=#{queryParams.attDate}
+        ) AS attCounts
         <if test="queryParams.attDate != null and queryParams.attDate != ''">
             ,
             <foreach collection="queryParams.dayList" index="index" item="item" open="" separator="," close="">
@@ -93,7 +111,7 @@
         LEFT JOIN t_subcontract s ON t.company_id = s.id
         LEFT JOIN t_group g ON t.goup_id = g.id
         LEFT JOIN t_work_type w ON t.work_type_id = w.id
-
+        where 1 = 1
         <if test="queryParams.userName != null and queryParams.userName != ''">
             and UPPER(t.name) like UPPER(CONCAT('%',#{queryParams.userName,jdbcType=VARCHAR}, '%'))
         </if>
@@ -126,6 +144,7 @@
         LEFT JOIN t_group g ON t.goup_id = g.id
         LEFT JOIN t_work_type w ON t.work_type_id = w.id
         LEFT JOIN t_clock ck ON ck.user_id = t.id
+        where 1 = 1
         <if test="queryParams.userName != null and queryParams.userName != ''">
             and UPPER(t.name) like UPPER(CONCAT('%',#{queryParams.userName,jdbcType=VARCHAR}, '%'))
         </if>
@@ -147,7 +166,7 @@
         </if>
 
         <if test="queryParams.attDate != null and queryParams.attDate != ''">
-            WHERE DATE_FORMAT(ck.record_date,'%Y-%m')=#{queryParams.attDate}
+            and DATE_FORMAT(ck.record_date,'%Y-%m')=#{queryParams.attDate}
         </if>
         GROUP BY t.id
         ) t
