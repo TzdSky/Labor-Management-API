@@ -1,6 +1,7 @@
 package com.labor.controller;
 
 import com.labor.entity.Contract;
+import com.labor.entity.ProgameCompany;
 import com.labor.entity.Subcontract;
 import com.labor.entity.User;
 import com.labor.service.ContractService;
@@ -99,6 +100,21 @@ public class ContractController {
             resultModel.setCode(ManageConstants.ERROR_205);
             return resultModel;
         }
+        resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
+        resultModel.setCode(ManageConstants.SUCCESS_200);
+        logger.info("deleteContractOne:===>end");
+        return resultModel;
+    }
+
+    /**
+     * 查询工程项目
+     */
+    @GetMapping(value = "/findProgameCompany")
+    public ResultModel<List<ProgameCompany>> findProgameCompany(){
+        logger.info("deleteContractOne:===>start");
+        ResultModel<List<ProgameCompany>> resultModel = new ResultModel<>();
+        List<ProgameCompany> list=contractService.findProgameCompany();
+        resultModel.setData(list);
         resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
         resultModel.setCode(ManageConstants.SUCCESS_200);
         logger.info("deleteContractOne:===>end");

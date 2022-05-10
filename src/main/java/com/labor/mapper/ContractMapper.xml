@@ -81,4 +81,8 @@
         sign_company = #{signCompany}, upload_time_one = #{uploadTimeOne},upload_time_two = #{uploadTimeTwo},update_at = NOW()
         WHERE id = #{ID}
     </update>
+
+    <select id="findProgameCompany" resultType="com.labor.entity.ProgameCompany">
+        select id,progame_company_name from t_progame_company
+    </select>
 </mapper>

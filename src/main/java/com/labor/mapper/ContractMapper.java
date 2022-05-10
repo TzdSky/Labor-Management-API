@@ -2,6 +2,7 @@ package com.labor.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.labor.entity.Contract;
+import com.labor.entity.ProgameCompany;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -29,4 +30,6 @@ public interface ContractMapper extends BaseMapper<Contract> {
     Contract findFileID(@Param("ID") Long id);
 
     int updateContract(Contract contract);
+
+    List<ProgameCompany> findProgameCompany();
 }

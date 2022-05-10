@@ -3,6 +3,7 @@ package com.labor.service.Impl;
 import com.labor.controller.UserController;
 import com.labor.entity.AttachmentLog;
 import com.labor.entity.Contract;
+import com.labor.entity.ProgameCompany;
 import com.labor.entity.Subcontract;
 import com.labor.mapper.AttachmentLogMapper;
 import com.labor.mapper.ContractMapper;
@@ -219,6 +220,10 @@ public class ContractServiceImpl implements ContractService {
         return contractMapper.updateContract(contract) == 1 ? true : false;
     }
 
+    @Override
+    public List<ProgameCompany> findProgameCompany() {
+        return contractMapper.findProgameCompany();
+    }
 
 
 }
