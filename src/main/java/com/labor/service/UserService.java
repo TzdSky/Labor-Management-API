@@ -19,7 +19,7 @@ import java.util.List;
 public interface UserService {
      Page<User> getUserList(HttpServletRequest request, Pageable page);
 
-     boolean insertNewUser(User user, MultipartFile file);
+     boolean insertNewUser(User user, MultipartFile contractFile,MultipartFile headImg);
 
      int getRecordsByCardNumber(int certificate_type, String certificateNumber);
 
