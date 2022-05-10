@@ -2,7 +2,6 @@ package com.labor.controller;
 
 import com.labor.entity.Attendance;
 import com.labor.entity.AttendanceSearch;
-import com.labor.entity.Group;
 import com.labor.service.AttendanceService;
 import com.labor.service.GroupService;
 import com.labor.utils.DataPage;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author Tian
@@ -74,14 +72,13 @@ public class AttendanceController {
      * @return 返回结果
      */
     @PostMapping(value="/insertAttendanceGroup")
-    public ResultModel<String>  insertNewGroup(@RequestBody Attendance attendance){
+    public ResultModel<String>  insertAttendanceGroup(@RequestBody Attendance attendance){
         ResultModel<String> resultModel = new ResultModel<>();
         logger.info("insertAttendanceGroup:===>start");
         if(attendance != null) {
-            boolean hasRecords = false;
             int records = 0 ;
             if(StringUtils.isNotEmpty(attendance.getAttGroupName())) {
-                //考勤组名称都不为空的时候查询数据库是不是相同的记录 去重
+                //考勤组名称不为空的时候查询数据库是不是相同的记录 去重
                 records = attendanceService.getAttRecordsByAttGroupName(attendance.getAttGroupName());
             }
             if(records > 0) {
@@ -111,7 +108,7 @@ public class AttendanceController {
      * @return 返回结果
      */
     @PostMapping(value="/updateAttendanceGroup")
-    public ResultModel<String> updateGroup(@RequestBody Attendance attendance){
+    public ResultModel<String> updateAttendanceGroup(@RequestBody Attendance attendance){
         ResultModel<String> resultModel = new ResultModel<>();
         logger.info("updateAttendanceGroup:===>start");
         int records = 0 ;
@@ -124,7 +121,7 @@ public class AttendanceController {
             resultModel.setCode(ManageConstants.ERROR_500);
         } else {
             int queryStatus = attendanceService.updateAttGroup(attendance);
-            if(queryStatus == 1){
+            if(queryStatus == 1 && attendance.getUserInAttGroup() != null && attendance.getUserInAttGroup().size() > 0){
                 //修改成功了考勤组，就顺势修改user状态
                 attendanceService.updateUserGroupID(attendance.getUserInAttGroup(),attendance.getID());
             }

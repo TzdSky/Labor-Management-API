@@ -14,7 +14,6 @@ public class ResultModel<T> implements Serializable {
     private T data;
 
 
-
     public ResultModel() {
         this.code = 200;
         this.text = "success";

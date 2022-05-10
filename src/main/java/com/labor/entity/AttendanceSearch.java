@@ -39,6 +39,9 @@ public class AttendanceSearch {
      //考勤月份 页面传过来
      private Date attDate;
 
+     //搜索月份考勤总天数
+     private Integer attCounts;
+
      //打卡状态 搜索月份第1天
      private String clockStatus1;
 
@@ -133,6 +136,14 @@ public class AttendanceSearch {
      private String clockStatus31;
 
      private List<String> headers;
+
+     public Integer getAttCounts() {
+          return attCounts;
+     }
+
+     public void setAttCounts(Integer attCounts) {
+          this.attCounts = attCounts;
+     }
 
      public List<String> getHeaders() {
           return headers;

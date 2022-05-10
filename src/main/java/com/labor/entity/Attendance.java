@@ -27,8 +27,13 @@ public class Attendance {
     //创建时间
     private Date createAt;
 
+    //页面输入修改考勤组的userid集合
     private List<Long> userInAttGroup;
 
+    private String userLists;
+
+
+    //统计人数
     private Integer userCounts;
 
     public Integer getUserCounts() {
@@ -85,5 +90,13 @@ public class Attendance {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+
+    public String getUserLists() {
+        return userLists;
+    }
+
+    public void setUserLists(String userLists) {
+        this.userLists = userLists;
     }
 }
