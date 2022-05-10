@@ -1,7 +1,8 @@
 package com.labor.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.labor.entity.Group;
+import com.labor.entity.Attendance;
+import com.labor.entity.AttendanceSearch;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,27 +14,12 @@ import java.util.Map;
  * @date 2022/5/8
  */
 @Mapper
-public interface AttendanceMapper extends BaseMapper<Group> {
-    List<Group> getGroupNameByCom(@Param("companyId") String companyId);
-
+public interface AttendanceMapper extends BaseMapper<Attendance> {
     /**
-     * @author Tian
-     * @date 2022/5/4
-     * 根据公司名、负责人查询班组信息
+     * 根据id删除考勤组
+     * @param id
      */
-    List<Group> getPage(@Param("queryParams")Map<String, Object> queryParams);
-    /**
-     *新增组别
-     **/
-    Long insertNewGroup(Group group);
-
-    Integer getCount(@Param("queryParams") Map<String, Object> queryParams);
-
-    /**
-     * 根据id删除
-     * @param ids
-     */
-    void deleteByID(@Param("ids") List<Long> ids);
+    int deleteAttendanceGroupByID(@Param("id") Long id);
 
     /**
      *  @param userID 用户id
@@ -42,6 +28,53 @@ public interface AttendanceMapper extends BaseMapper<Group> {
      */
     int updateUserAttendanceID(@Param("userIDs")List<Long> userID, @Param("attendanceID")Long attendanceID);
 
+    /**
+     * 删除考勤组后清空绑定的user
+     * @return
+     */
+    int clearUserAttendanceID(@Param("attGroupId") Long attGroupId );
 
+    /**
+     * 根据考勤组名字查重(精确查询)
+     * @param attGroupName
+     * @return
+     */
+    int getAttRecordsByAttGroupName(@Param("attGroupName") String attGroupName);
+
+    /**
+     * 根据考勤组名字查重(模糊查询用于分页)
+     * @param attGroupName
+     * @return
+     */
+    int getAttGroupCount(@Param("attGroupName") String attGroupName);
+
+
+    /**
+     *新增考勤组
+     **/
+    Long insertAttendanceGroup(Attendance attendance);
+
+    /**
+     * 修改考勤组
+     */
+    int updateAttGroup (Attendance attendance);
+
+    /**
+     * 根据考勤组名称查询考勤组列表
+     */
+    List<Attendance> getAttGroupList(@Param("queryParams")Map<String, Object> queryParams);
+
+
+    /**
+     * 获取查询考勤列表的总数
+     * @param queryParams
+     * @return
+     */
+    int getSearchCount(@Param("queryParams")Map<String, Object> queryParams);
+
+    /**
+     * 根据考勤组名称查询考勤列表  按日显示
+     */
+    List<AttendanceSearch> getAttSearchList(@Param("queryParams")Map<String, Object> queryParams);
 
 }

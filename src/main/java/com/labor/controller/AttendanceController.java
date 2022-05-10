@@ -1,10 +1,14 @@
 package com.labor.controller;
 
+import com.labor.entity.Attendance;
+import com.labor.entity.AttendanceSearch;
 import com.labor.entity.Group;
+import com.labor.service.AttendanceService;
 import com.labor.service.GroupService;
 import com.labor.utils.DataPage;
 import com.labor.utils.ManageConstants;
 import com.labor.utils.ResultModel;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,30 +31,31 @@ public class AttendanceController {
     @Autowired
     private GroupService groupService;
 
-    @RequestMapping(value = "/getGrouprList",method = RequestMethod.GET)
-    public ResultModel<DataPage> getGrouprList(HttpServletRequest request, Pageable page) {
-        logger.info("getGrouprList:===>start");
-        Page<Group> groupList= groupService.getGroupList(request,page);
-        logger.info("getGrouprList:===>end");
+
+    @Autowired
+    private AttendanceService attendanceService;
+
+    @RequestMapping(value = "/getAttGroupList",method = RequestMethod.GET)
+    public ResultModel<DataPage> getAttGroupList(HttpServletRequest request, Pageable page) {
+        logger.info("getAttGroupList:===>start");
+        Page<Attendance> groupList= attendanceService.getAttGroupList(request,page);
+        logger.info("getAttGroupList:===>end");
         return new ResultModel<>(new DataPage<>(groupList));
     }
 
-
-
     /**
-     * 根据id 批量删除组别
-     * @param  ids
+     * 根据id删除考勤组
+     * @param  id
      */
-    @GetMapping(value = "/deleteGroupList")
-    public ResultModel<String> deleteGroupList(@RequestParam(value = "ids", required = true) List<Long> ids){
-        logger.info("deleteGroupList:===>start");
+    @GetMapping(value = "/deleteAttendanceGroupByID")
+    public ResultModel<String> deleteAttendanceGroupByID(@RequestParam(value = "id", required = true) Long id){
+        logger.info("deleteAttendanceGroupByID:===>start");
         ResultModel<String> resultModel = new ResultModel<>();
         try {
-            if(ids.size()>0){
-                    groupService.deleteGroupByID(ids);
-            }
+            attendanceService.deleteAttendanceGroupByID(id);
+            attendanceService.clearUserAttendanceID(id);
         } catch (Exception e) {
-            logger.info("deleteGroupList:===>error ："+e);
+            logger.info("deleteAttendanceGroupByID:===>error ："+e);
             e.printStackTrace();
             resultModel.setText(ManageConstants.ERROR_209_TEXT);
             resultModel.setCode(ManageConstants.ERROR_209);
@@ -58,38 +63,36 @@ public class AttendanceController {
         }
         resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
         resultModel.setCode(ManageConstants.SUCCESS_200);
-        logger.info("deleteGroupList:===>end");
+        logger.info("deleteAttendanceGroupByID:===>end");
         return resultModel;
     }
 
 
     /**
      * 新增
-     * @param group 传参对象
+     * @param attendance 传参对象
      * @return 返回结果
      */
-    @PostMapping(value="/insertNewGroup")
-    public ResultModel<String>  insertNewGroup(@RequestBody Group group){
+    @PostMapping(value="/insertAttendanceGroup")
+    public ResultModel<String>  insertNewGroup(@RequestBody Attendance attendance){
         ResultModel<String> resultModel = new ResultModel<>();
-        logger.info("insertNewGroup:===>start");
-        if(group != null) {
+        logger.info("insertAttendanceGroup:===>start");
+        if(attendance != null) {
             boolean hasRecords = false;
             int records = 0 ;
-            if(group.getGroupName() != null && group.getPrincipalId()!= null && group.getCompanyId()!= null) {
-                //三条记录都不为空的时候查询数据库是不是相同的记录 去重
-                 records = groupService.getRecordsByGroupInfo(group);
-                hasRecords =  records > 0 ? true : false;
+            if(StringUtils.isNotEmpty(attendance.getAttGroupName())) {
+                //考勤组名称都不为空的时候查询数据库是不是相同的记录 去重
+                records = attendanceService.getAttRecordsByAttGroupName(attendance.getAttGroupName());
             }
-
-            if(hasRecords) {
+            if(records > 0) {
                 resultModel.setText(ManageConstants.ERROR_REPEAT_TEXT);
                 resultModel.setCode(ManageConstants.ERROR_500);
             } else {
-                group.setCreateAt(new Date());
-                Long group1 = groupService.insertNewGroup(group);
-                if(group.getUserInGroup() != null && group.getUserInGroup().size() > 0){
-                    //新增完，根据返回的id批量修改user表的 user班组id
-                    groupService.updateUserGroupID(group.getUserInGroup(),group.getID());
+                attendance.setCreateAt(new Date());
+                Long group1 = attendanceService.insertAttendanceGroup(attendance);
+                if(attendance.getUserInAttGroup() != null && attendance.getUserInAttGroup().size() > 0){
+                    //新增完，根据返回的id批量修改user表的user考勤组id
+                    attendanceService.updateUserGroupID(attendance.getUserInAttGroup(),attendance.getID());
                 }
                 resultModel.setData(group1 != null?"新增成功":"新增失败");
                 resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
@@ -97,66 +100,48 @@ public class AttendanceController {
             }
 
         }
-        logger.info("insertNewGroup:===>end");
-        return resultModel;
-    }
-
-
-
-    /**
-     * 根据id 批量修改user的班组状态
-     * @param  ids 要修改的user id集合
-     * @param  status 0删除(修改user的班组goup_id为null)，1 添加（修改user的班组goup_id为当前组别的id）
-     */
-    @GetMapping(value = "/addOrRemoveUserInGroup")
-    public ResultModel<String> addOrRemoveUserInGroup(@RequestParam(value = "ids", required = true) List<Long> ids,
-                                               @RequestParam(value = "status", required = true) Long status,
-                                               @RequestParam(value = "groupID", required = true)Long groupID){
-        logger.info("addOrRemoveUserInGroup:===>start");
-        ResultModel<String> resultModel = new ResultModel<>();
-        try {
-            if(ids != null && status != null && groupID != null){
-                if(ids.size() > 0){
-
-                    if(status == 0){
-                        groupID = null; //如果是删除user就设置为空
-                    }
-                    groupService.updateUserGroupID(ids,groupID);
-                }
-            } else {
-                resultModel.setText(ManageConstants.ERROR_405_TEXT);
-                resultModel.setCode(ManageConstants.ERROR_405);
-                return resultModel;
-            }
-        } catch (Exception e) {
-            logger.info("addOrRemoveUserInGroup:===>error ："+e);
-            e.printStackTrace();
-            resultModel.setText(ManageConstants.ERROR_207_TEXT);
-            resultModel.setCode(ManageConstants.ERROR_207);
-            return resultModel;
-        }
-        resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
-        resultModel.setCode(ManageConstants.SUCCESS_200);
-        logger.info("addOrRemoveUserInGroup:===>end");
+        logger.info("insertAttendanceGroup:===>end");
         return resultModel;
     }
 
 
     /**
-     * 修改班组
-     * @param group 传参对象
+     * 修改考勤班组
+     * @param attendance 传参对象
      * @return 返回结果
      */
-    @PostMapping(value="/updateGroup")
-    public ResultModel<String> updateGroup(@RequestBody Group group){
+    @PostMapping(value="/updateAttendanceGroup")
+    public ResultModel<String> updateGroup(@RequestBody Attendance attendance){
         ResultModel<String> resultModel = new ResultModel<>();
-        logger.info("updateGroup:===>start");
-        int queryStatus = groupService.updateGroup(group);
-        resultModel.setData(queryStatus == 1?"修改成功":"修改失败");
-        resultModel.setText(queryStatus == 1?ManageConstants.SUCCESS_200_TEXT:"失败");
-        resultModel.setCode(ManageConstants.SUCCESS_200);
-        logger.info("updateGroup:===>end");
+        logger.info("updateAttendanceGroup:===>start");
+        int records = 0 ;
+        if(StringUtils.isNotEmpty(attendance.getAttGroupName())) {
+            //修改后的考勤组名称都不为空的时候查询数据库是不是相同的记录 去重
+            records = attendanceService.getAttRecordsByAttGroupName(attendance.getAttGroupName());
+        }
+        if (records > 0){
+            resultModel.setText(ManageConstants.ERROR_REPEAT_ATT_TEXT);
+            resultModel.setCode(ManageConstants.ERROR_500);
+        } else {
+            int queryStatus = attendanceService.updateAttGroup(attendance);
+            if(queryStatus == 1){
+                //修改成功了考勤组，就顺势修改user状态
+                attendanceService.updateUserGroupID(attendance.getUserInAttGroup(),attendance.getID());
+            }
+            resultModel.setData(queryStatus == 1?"修改成功":"修改失败");
+            resultModel.setText(queryStatus == 1?ManageConstants.SUCCESS_200_TEXT:"失败");
+            resultModel.setCode(ManageConstants.SUCCESS_200);
+        }
+        logger.info("updateAttendanceGroup");
         return resultModel;
+    }
+
+    @RequestMapping(value = "/getAttSearchList",method = RequestMethod.GET)
+    public ResultModel<DataPage> getAttSearchList(HttpServletRequest request, Pageable page) {
+        logger.info("getAttSearchList:===>start");
+        Page<AttendanceSearch> attGroupList= attendanceService.getAttSearchList(request,page);
+        logger.info("getAttSearchList:===>end");
+        return new ResultModel<>(new DataPage<>(attGroupList));
     }
 
 
