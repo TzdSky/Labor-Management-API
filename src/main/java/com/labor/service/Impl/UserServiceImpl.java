@@ -74,32 +74,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean insertNewUser(User user, MultipartFile fileName) {
-        AttachmentLog attachmentLog=new AttachmentLog();
-        if(!fileName.isEmpty()){
+    public boolean insertNewUser(User user, MultipartFile contractFile,MultipartFile headImg) {
+        if(null!=contractFile&&!contractFile.equals("")){
+            AttachmentLog attachmentLog=new AttachmentLog();
             //文件名
-            String fileNames = fileName.getOriginalFilename();
+            String fileNames = contractFile.getOriginalFilename();
             //文件大小
-            long size = fileName.getSize();
+            long size = contractFile.getSize();
             //文件类型
-            String type = fileName.getContentType();
-            //根据日期生成目录
-            Date date = new Date();
+            String type = contractFile.getContentType();
+
             if (null != fileNames && !"".equals(fileNames)) {
                 //文件存放路径
                 String rootPath = attachRootPath.replace("\\", File.separator).replace("/", File.separator);
-                //时间格式
-                String dateStr = DateUtil.dateToString(date, DateStyleEnum.YYYY_MM_DD);
+
                 //文件名前缀
                 String fileNamePrefix = UUID.randomUUID().toString();
-                if (null == dateStr) {
-                    logger.info("创建附件目录失败...");
-                    dateStr = "temp";
-                } else {
-                    dateStr = dateStr.replace("-", File.separator);
-                }
+                //文件存放文件夹
+                String urlStr = "UserFile"+File.separator+"ContractFile";
                 //最终附件存放的目录
-                rootPath = rootPath + dateStr + File.separator;
+                rootPath = rootPath + urlStr + File.separator;
                 StringBuilder fileFullName = new StringBuilder();
                 String randomCode = GenerateUtil.randomIn(6);
                 fileNamePrefix += randomCode;
@@ -113,7 +107,8 @@ public class UserServiceImpl implements UserService {
                     if (!fileDir.exists()) {
                         fileDir.mkdirs();
                     }
-                    FileUtil.uploadFile(fileName.getBytes(), filePath, fileNames);//文件处理
+                    //文件处理
+                    FileUtil.uploadFile(contractFile.getBytes(), filePath, fileNames);
                     logger.info("--文件上传成功--");
                 } catch (Exception ex) {
                     logger.info("--文件上传失败--");
@@ -133,7 +128,59 @@ public class UserServiceImpl implements UserService {
                 logger.info("--文件信息保存失败--");
             }
         }
+        if(null!=headImg&&!headImg.equals("")){
+            AttachmentLog attachmentLog=new AttachmentLog();
+            //文件名
+            String fileNames = headImg.getOriginalFilename();
+            //文件大小
+            long size = headImg.getSize();
+            //文件类型
+            String type = headImg.getContentType();
 
+            if (null != fileNames && !"".equals(fileNames)) {
+                //文件存放路径
+                String rootPath = attachRootPath.replace("\\", File.separator).replace("/", File.separator);
+
+                //文件名前缀
+                String fileNamePrefix = UUID.randomUUID().toString();
+                //文件存放文件夹
+                String urlStr = "UserFile"+File.separator+"HeadImgFile";
+                //最终附件存放的目录
+                rootPath = rootPath + urlStr + File.separator;
+                StringBuilder fileFullName = new StringBuilder();
+                String randomCode = GenerateUtil.randomIn(6);
+                fileNamePrefix += randomCode;
+                StringBuilder realFileName = new StringBuilder();
+                realFileName.append(fileNamePrefix).append(File.separator);
+                fileFullName = fileFullName.append(rootPath).append(realFileName);
+                String filePath = fileFullName.toString();
+                try {
+                    //若文件夹不存在则先创建
+                    File fileDir = new File(filePath);
+                    if (!fileDir.exists()) {
+                        fileDir.mkdirs();
+                    }
+                    //文件处理
+                    FileUtil.uploadFile(headImg.getBytes(), filePath, fileNames);
+                    logger.info("--图片上传成功--");
+                } catch (Exception ex) {
+                    logger.info("--图片上传失败--");
+                    ex.printStackTrace();
+                }
+                attachmentLog.setFileName(fileNames);
+                attachmentLog.setSavePath(filePath);
+            }
+            attachmentLog.setFileSize((int) size);
+            attachmentLog.setFileType(type);
+            attachmentLog.setCreateAt(new Date());
+            Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
+            if(count>0){
+                logger.info("--文件信息保存成功--");
+                user.setHeadImgId(attachmentLog.getID());
+            }else{
+                logger.info("--文件信息保存失败--");
+            }
+        }
             return userMapper.inertNewUser(user) == 1 ? true : false;
         }
 
