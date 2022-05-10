@@ -3,7 +3,7 @@
 <mapper namespace="com.labor.mapper.ContractMapper">
     <select id="getCount" resultType="java.lang.Integer">
         select count(t.ID) from (
-        select t1.id,contract_name,contract_type,company_id,DATE_FORMAT(t1.create_at, '%Y-%m-%d') create_at,DATE_FORMAT(begin_time, '%Y-%m-%d') begin_time,DATE_FORMAT(end_time, '%Y-%m-%d') end_time,status,
+        select t1.id,contract_name,contract_type,company_id,DATE_FORMAT(t1.create_at, '%Y-%m-%d') create_at,DATE_FORMAT(begin_date, '%Y-%m-%d') begin_date,DATE_FORMAT(end_date, '%Y-%m-%d') end_date,status,
         t1.file_one_id,t1.file_two_id,sign_company,t2.company_name,
         DATE_FORMAT(t1.update_at, '%Y-%m-%d') update_at, DATE_FORMAT(upload_time_one, '%Y-%m-%d') upload_time_one,DATE_FORMAT(upload_time_two, '%Y-%m-%d') upload_time_two,t1.creater
         from t_contract t1
@@ -16,16 +16,16 @@
             and t1.contract_type = #{queryParams.contractType}
         </if>
         <if test="queryParams.beginTime !=null and ''!= queryParams.beginTime">
-            and begin_time &gt;= #{queryParams.beginTime}
+            and begin_date &gt;= #{queryParams.beginTime}
         </if>
         <if test="queryParams.endTime !=null and ''!= queryParams.endTime">
-            AND end_time &lt; #{queryParams.endTime}
+            AND end_date &lt; #{queryParams.endTime}
         </if>
         ) t
     </select>
 
     <select id="getPage" resultType="com.labor.entity.Contract">
-        select t1.id,contract_name,contract_type,company_id,DATE_FORMAT(t1.create_at, '%Y-%m-%d') create_at,DATE_FORMAT(begin_time, '%Y-%m-%d') begin_time,DATE_FORMAT(end_time, '%Y-%m-%d') end_time,status,t1.file_one_id,t1.file_two_id,sign_company,t2.company_name,
+        select t1.id,contract_name,contract_type,company_id,DATE_FORMAT(t1.create_at, '%Y-%m-%d') create_at,DATE_FORMAT(begin_date, '%Y-%m-%d') begin_date,DATE_FORMAT(end_date, '%Y-%m-%d') end_date,status,t1.file_one_id,t1.file_two_id,sign_company,t2.company_name,
         DATE_FORMAT(t1.update_at, '%Y-%m-%d') update_at, DATE_FORMAT(upload_time_one, '%Y-%m-%d') upload_time_one,DATE_FORMAT(upload_time_two, '%Y-%m-%d') upload_time_two,t1.creater
         from t_contract t1
         LEFT JOIN t_subcontract t2 on  t1.company_id =t2.id
@@ -37,17 +37,17 @@
             and t1.contract_type = #{queryParams.contractType}
         </if>
         <if test="queryParams.beginTime !=null and ''!= queryParams.beginTime">
-            and begin_time &gt;= #{queryParams.beginTime}
+            and begin_date &gt;= #{queryParams.beginTime}
         </if>
         <if test="queryParams.endTime !=null and ''!= queryParams.endTime">
-            AND end_time &lt; #{queryParams.endTime}
+            AND end_date &lt; #{queryParams.endTime}
         </if>
         order by ID desc
         limit #{queryParams.page,jdbcType=INTEGER},#{queryParams.size,jdbcType=INTEGER}
     </select>
 
     <select id="findContractByID" resultType="com.labor.entity.Contract">
-        select t1.id,contract_name,contract_type,company_id,DATE_FORMAT(t1.create_at, '%Y-%m-%d') create_at,DATE_FORMAT(begin_time, '%Y-%m-%d') begin_time,DATE_FORMAT(end_time, '%Y-%m-%d') end_time,status,
+        select t1.id,contract_name,contract_type,company_id,DATE_FORMAT(t1.create_at, '%Y-%m-%d') create_at,DATE_FORMAT(begin_date, '%Y-%m-%d') begin_date,DATE_FORMAT(end_date, '%Y-%m-%d') end_date,status,
         t1.file_one_id,t1.file_two_id,sign_company,t2.company_name,
         DATE_FORMAT(t1.update_at, '%Y-%m-%d') update_at, DATE_FORMAT(upload_time_one, '%Y-%m-%d') upload_time_one,DATE_FORMAT(upload_time_two, '%Y-%m-%d') upload_time_two,t1.creater
         from t_contract t1
@@ -70,8 +70,19 @@
         <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="ID">
             select LAST_INSERT_ID()
         </selectKey>
-        insert into `t_contract` (`contract_name`, `contract_type`, `company_id`, `begin_time`, `end_time`,
+        insert into `t_contract` (`contract_name`, `contract_type`, `company_id`, `begin_date`, `end_date`,
         `status`, `file_one_id`, `file_two_id`, `sign_company`, `upload_time_one`,`upload_time_two`,`creater`, `create_at`, `update_at`)
         values(#{contractName},#{contractType},#{companyId},#{beginDate},#{endDate},#{status},#{fileOneId},#{fileTwoId},#{signCompany},#{uploadTimeOne},#{uploadTimeTwo},#{creater},#{createAt},#{updateAt});
     </insert>
+
+    <update id="updateContract">
+        UPDATE t_contract SET contract_name = #{contractName}, contract_type = #{contractType}, company_id = #{companyId},begin_date = #{beginDate},
+        end_date = #{endDate},status = #{status}, file_one_id = #{fileOneId},file_two_id = #{fileTwoId},
+        sign_company = #{signCompany}, upload_time_one = #{uploadTimeOne},upload_time_two = #{uploadTimeTwo},update_at = NOW()
+        WHERE id = #{ID}
+    </update>
+
+    <select id="findProgameCompany" resultType="com.labor.entity.ProgameCompany">
+        select id,progame_company_name from t_progame_company
+    </select>
 </mapper>

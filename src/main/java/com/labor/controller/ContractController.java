@@ -1,6 +1,7 @@
 package com.labor.controller;
 
 import com.labor.entity.Contract;
+import com.labor.entity.ProgameCompany;
 import com.labor.entity.Subcontract;
 import com.labor.entity.User;
 import com.labor.service.ContractService;
@@ -106,6 +107,21 @@ public class ContractController {
     }
 
     /**
+     * 查询工程项目
+     */
+    @GetMapping(value = "/findProgameCompany")
+    public ResultModel<List<ProgameCompany>> findProgameCompany(){
+        logger.info("deleteContractOne:===>start");
+        ResultModel<List<ProgameCompany>> resultModel = new ResultModel<>();
+        List<ProgameCompany> list=contractService.findProgameCompany();
+        resultModel.setData(list);
+        resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
+        resultModel.setCode(ManageConstants.SUCCESS_200);
+        logger.info("deleteContractOne:===>end");
+        return resultModel;
+    }
+
+    /**
      * 新增
      * @param contract 传参对象
      * @return 返回结果
@@ -140,7 +156,7 @@ public class ContractController {
      * @return 返回结果
      */
     @PostMapping(value="/updateContract")
-    public ResultModel<String>  updateContract(Subcontract subcontract, @RequestPart(value = "file") MultipartFile file){
+    public ResultModel<String>  updateContract(Contract subcontract, @RequestPart(value = "file") MultipartFile file){
         ResultModel<String> resultModel = new ResultModel<>();
         logger.info("updateContract:===>start");
         if(subcontract != null) {

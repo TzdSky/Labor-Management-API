@@ -1,12 +1,14 @@
 package com.labor.service;
 
 import com.labor.entity.Contract;
+import com.labor.entity.ProgameCompany;
 import com.labor.entity.Subcontract;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author BoCong
@@ -23,5 +25,7 @@ public interface ContractService {
 
     boolean insertContract(Contract contract, MultipartFile file);
 
-    boolean updateContract(Subcontract subcontract, MultipartFile file);
+    boolean updateContract(Contract contract, MultipartFile file);
+
+    List<ProgameCompany> findProgameCompany();
 }
