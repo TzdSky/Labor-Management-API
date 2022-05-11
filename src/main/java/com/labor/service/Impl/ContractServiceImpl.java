@@ -114,7 +114,7 @@ public class ContractServiceImpl implements ContractService {
     @Transactional(rollbackFor = Exception.class)
     public boolean insertContract(Contract contract, MultipartFile fileOne) {
         AttachmentLog attachmentLog=new AttachmentLog();
-        if(!fileOne.isEmpty()){
+        if(null != fileOne && !"".equals(fileOne)){
             //文件名
             String fileNames = fileOne.getOriginalFilename();
             //文件大小
@@ -172,8 +172,9 @@ public class ContractServiceImpl implements ContractService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean updateContract(Contract contract, MultipartFile fileOne) {
-        AttachmentLog attachmentLog=new AttachmentLog();
-        if(!fileOne.isEmpty()){
+
+        if(null != fileOne && !"".equals(fileOne)){
+            AttachmentLog attachmentLog=new AttachmentLog();
             AttachmentLog requiredFile=attachmentLogMapper.selectByConFile(contract.getFileOneId());
             if(null==requiredFile){
                 logger.info("--文件id错误--");
