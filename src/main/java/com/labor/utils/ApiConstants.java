@@ -60,4 +60,8 @@ public class ApiConstants {
 	//重复考勤组名
 	public final static String ERROR_REPEAT_ATT_TEXT = "当前考勤组已存在!";
 
+	//删除接口返回
+	public final static int ERROR_402 = 402;
+	public final static String ERROR_402_TEXT = "账号或者密码错误！";
+
 }
