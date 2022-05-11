@@ -191,12 +191,12 @@ public class UserController {
      * @return 返回结果
      */
     @PostMapping(value="/updateUser")
-    public ResultModel<String>  updateUser(User user, @RequestPart(value = "contractFileId") MultipartFile contractFileId,@RequestPart(value = "headImgId") MultipartFile headImgId){
+    public ResultModel<String>  updateUser(User user,@RequestPart(value = "contractFile", required=false) MultipartFile contractFile,@RequestPart(value = "headImg",required=false) MultipartFile headImg){
         ResultModel<String> resultModel = new ResultModel<>();
         logger.info("updateUser:===>start");
         if(user != null) {
             user.setCreateAt(new Date());
-            resultModel.setData(userService.updateUser(user, contractFileId) ? "修改成功" : "修改失败");
+            resultModel.setData(userService.updateUser(user, contractFile,headImg) ? "修改成功" : "修改失败");
             resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
             resultModel.setCode(ManageConstants.SUCCESS_200);
         }else {

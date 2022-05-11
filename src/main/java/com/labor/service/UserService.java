@@ -40,10 +40,10 @@ public interface UserService {
     /**
      * 修改用户信息
      * @param user
-     * @param file
+     * @param contractFile
      * @return
      */
-    boolean updateUser(User user, MultipartFile file);
+    boolean updateUser(User user, MultipartFile contractFile, MultipartFile headImg);
 
     User findUserById(Long id);
 

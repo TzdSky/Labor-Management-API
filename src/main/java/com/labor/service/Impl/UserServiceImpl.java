@@ -208,26 +208,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateUser(User user, MultipartFile fileName) {
+    public boolean updateUser(User user, MultipartFile contractFile, MultipartFile headImg) {
         AttachmentLog attachmentLog=new AttachmentLog();
-        if(!fileName.isEmpty()){
+        if(null!=contractFile&&!contractFile.equals("")){
             AttachmentLog contractAtt=attachmentLogMapper.selectByConFile(user.getContractFileId());
             String rootPath =contractAtt.getSavePath();
             //清空文件夹文件
             //String requireFileName=requiredFile.getFileName();
             FileUtil.delAllFile(rootPath);
             //文件名
-            String fileNames = fileName.getOriginalFilename();
+            String fileNames = contractFile.getOriginalFilename();
             //文件大小
-            long size = fileName.getSize();
+            long size = contractFile.getSize();
             //文件类型
-            String type = fileName.getContentType();
+            String type = contractFile.getContentType();
 
             if (null != fileNames && !"".equals(fileNames)) {
                 //文件存放路径
 
                 try {
-                    FileUtil.uploadFile(fileName.getBytes(), rootPath, fileNames);//文件处理
+                    FileUtil.uploadFile(contractFile.getBytes(), rootPath, fileNames);//文件处理
                     logger.info("--文件上传成功--");
                 } catch (Exception ex) {
                     logger.info("--文件上传失败--");
@@ -245,6 +245,48 @@ public class UserServiceImpl implements UserService {
                 logger.info("--文件信息保存成功--");
                 attachmentLogMapper.deleteByContractFileId(user.getContractFileId());
                 user.setContractFileId(attachmentLog.getID());
+
+            }else{
+                logger.info("--文件信息保存失败--");
+            }
+
+        }
+
+        if(null!=headImg&&!headImg.equals("")){
+            AttachmentLog contractAtt=attachmentLogMapper.selectByConFile(user.getHeadImgId());
+            String rootPath =contractAtt.getSavePath();
+            //清空文件夹文件
+            //String requireFileName=requiredFile.getFileName();
+            FileUtil.delAllFile(rootPath);
+            //文件名
+            String fileNames = headImg.getOriginalFilename();
+            //文件大小
+            long size = headImg.getSize();
+            //文件类型
+            String type = headImg.getContentType();
+
+            if (null != fileNames && !"".equals(fileNames)) {
+                //文件存放路径
+
+                try {
+                    FileUtil.uploadFile(headImg.getBytes(), rootPath, fileNames);//文件处理
+                    logger.info("--文件上传成功--");
+                } catch (Exception ex) {
+                    logger.info("--文件上传失败--");
+                    ex.printStackTrace();
+                }
+                attachmentLog.setFileName(fileNames);
+                attachmentLog.setSavePath(rootPath);
+            }
+            attachmentLog.setFileSize((int) size);
+            attachmentLog.setFileType(type);
+            attachmentLog.setCreateAt(new Date());
+            attachmentLog.setUpdateAt(new Date());
+            Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
+            if(count>0){
+                logger.info("--文件信息保存成功--");
+                attachmentLogMapper.deleteByContractFileId(user.getContractFileId());
+                user.setHeadImgId(attachmentLog.getID());
 
             }else{
                 logger.info("--文件信息保存失败--");
