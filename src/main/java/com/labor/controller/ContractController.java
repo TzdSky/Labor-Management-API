@@ -127,7 +127,7 @@ public class ContractController {
      * @return 返回结果
      */
     @PostMapping(value="/insertContract")
-    public ResultModel<String>  insertContract(Contract contract,@RequestPart(value = "file") MultipartFile file){
+    public ResultModel<String>  insertContract(Contract contract,@RequestPart(value = "fileOne",required=false) MultipartFile fileOne,@RequestPart(value = "fileTwo",required=false) MultipartFile fileTwo){
         ResultModel<String> resultModel = new ResultModel<>();
         logger.info("insertSubcontract:===>start");
         /**
@@ -140,7 +140,7 @@ public class ContractController {
                 resultModel.setCode(ManageConstants.ERROR_500);
             } else {
                 contract.setCreateAt(new Date());
-                resultModel.setData(contractService.insertContract(contract,file)?"新增成功":"新增失败");
+                resultModel.setData(contractService.insertContract(contract,fileOne,fileTwo)?"新增成功":"新增失败");
                 resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
                 resultModel.setCode(ManageConstants.SUCCESS_200);
             }
@@ -156,12 +156,12 @@ public class ContractController {
      * @return 返回结果
      */
     @PostMapping(value="/updateContract")
-    public ResultModel<String>  updateContract(Contract subcontract, @RequestPart(value = "file") MultipartFile file){
+    public ResultModel<String>  updateContract(Contract subcontract, @RequestPart(value = "fileOne",required=false) MultipartFile fileOne,@RequestPart(value = "fileTwo",required=false) MultipartFile fileTwo){
         ResultModel<String> resultModel = new ResultModel<>();
         logger.info("updateContract:===>start");
         if(subcontract != null) {
             subcontract.setUpdateAt(new Date());
-            resultModel.setData(contractService.updateContract(subcontract, file) ? "修改成功" : "修改失败");
+            resultModel.setData(contractService.updateContract(subcontract,fileOne,fileTwo) ? "修改成功" : "修改失败");
             resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
             resultModel.setCode(ManageConstants.SUCCESS_200);
         }else {

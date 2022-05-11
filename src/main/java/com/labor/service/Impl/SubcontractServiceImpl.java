@@ -64,7 +64,7 @@ public class SubcontractServiceImpl implements SubcontracService {
     @Override
     public boolean insertSubcontract(Subcontract subcontract, MultipartFile fileName) {
         AttachmentLog attachmentLog=new AttachmentLog();
-        if(!fileName.isEmpty()){
+        if(null != fileName && !"".equals(fileName)){
             //文件名
             String fileNames = fileName.getOriginalFilename();
             //文件大小
@@ -120,6 +120,19 @@ public class SubcontractServiceImpl implements SubcontracService {
 
     @Override
     public void deleteByID(Long id) {
+        Subcontract subcontract=subcontractMapper.findSubcontractByID(id);
+        //删除文件1
+        if(null!=subcontract.getRequiredFileId()){
+            AttachmentLog attachmentLogOne=attachmentLogMapper.selectByConFile(subcontract.getRequiredFileId());
+            String requireFileUrl=attachmentLogOne.getSavePath();
+            //删除文件夹内文件
+            FileUtil.delAllFile(requireFileUrl);
+            //删除文件夹
+            Boolean falg=FileUtil.delFolder(requireFileUrl.substring(0,requireFileUrl.length()-1));
+            if(falg){
+                attachmentLogMapper.deleteByContractFileId(subcontract.getRequiredFileId());
+            }
+        }
          subcontractMapper.deleteByID(id);
     }
 
@@ -130,8 +143,8 @@ public class SubcontractServiceImpl implements SubcontracService {
 
     @Override
     public boolean updateSubcontract(Subcontract subcontract, MultipartFile fileName) {
-        AttachmentLog attachmentLog=new AttachmentLog();
-        if(!fileName.isEmpty()){
+        if(null != fileName && !"".equals(fileName)){
+            AttachmentLog attachmentLog=new AttachmentLog();
             AttachmentLog requiredFile=attachmentLogMapper.selectByConFile(subcontract.getRequiredFileId());
             if(null==requiredFile){
                 logger.info("--文件id错误--");
@@ -177,7 +190,6 @@ public class SubcontractServiceImpl implements SubcontracService {
             }
 
         }
-
         return subcontractMapper.updateSubcontract(subcontract) == 1 ? true : false;
     }
 }

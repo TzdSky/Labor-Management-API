@@ -112,7 +112,7 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean insertContract(Contract contract, MultipartFile fileOne) {
+    public boolean insertContract(Contract contract, MultipartFile fileOne,MultipartFile fileTwo) {
         AttachmentLog attachmentLog=new AttachmentLog();
         if(null != fileOne && !"".equals(fileOne)){
             //文件名
@@ -166,13 +166,64 @@ public class ContractServiceImpl implements ContractService {
             }
         }
 
+        if(null != fileTwo && !"".equals(fileTwo)){
+            //文件名
+            String fileNames = fileTwo.getOriginalFilename();
+            //文件大小
+            long size = fileTwo.getSize();
+            //文件类型
+            String type = fileTwo.getContentType();
+
+            if (null != fileNames && !"".equals(fileNames)) {
+                //文件存放路径
+                String rootPath = attachRootPath.replace("\\", File.separator).replace("/", File.separator);
+                //文件存放
+                String urlStr = "ContractFile"+File.separator+"FileTwo";
+                //文件名前缀
+                String fileNamePrefix = UUID.randomUUID().toString();
+
+                //最终附件存放的目录
+                rootPath = rootPath + urlStr + File.separator;
+                StringBuilder fileFullName = new StringBuilder();
+                String randomCode = GenerateUtil.randomIn(6);
+                fileNamePrefix += randomCode;
+                StringBuilder realFileName = new StringBuilder();
+                realFileName.append(fileNamePrefix).append(File.separator);
+                fileFullName = fileFullName.append(rootPath).append(realFileName);
+                String filePath = fileFullName.toString();
+                try {
+                    //若文件夹不存在则先创建
+                    File fileDir = new File(filePath);
+                    if (!fileDir.exists()) {
+                        fileDir.mkdirs();
+                    }
+                    FileUtil.uploadFile(fileTwo.getBytes(), filePath, fileNames);//文件处理
+                } catch (Exception ex) {
+                    logger.info("--文件上传成功--");
+                    ex.printStackTrace();
+                }
+                attachmentLog.setFileName(fileNames);
+                attachmentLog.setSavePath(filePath);
+            }
+            attachmentLog.setFileSize((int) size);
+            attachmentLog.setFileType(type);
+            attachmentLog.setCreateAt(new Date());
+            Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
+            if(count>0){
+                logger.info("--文件信息保存成功--");
+                contract.setFileTwoId(attachmentLog.getID());
+                contract.setUploadTimeTwo(attachmentLog.getCreateAt());
+            }else{
+                logger.info("--文件信息保存失败--");
+            }
+        }
+
         return contractMapper.insertContract(contract) == 1 ? true : false;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateContract(Contract contract, MultipartFile fileOne) {
-
+    public boolean updateContract(Contract contract, MultipartFile fileOne,MultipartFile fileTwo) {
         if(null != fileOne && !"".equals(fileOne)){
             AttachmentLog attachmentLog=new AttachmentLog();
             AttachmentLog requiredFile=attachmentLogMapper.selectByConFile(contract.getFileOneId());
@@ -212,6 +263,50 @@ public class ContractServiceImpl implements ContractService {
                 attachmentLogMapper.deleteByContractFileId(contract.getFileOneId());
                 contract.setFileOneId(attachmentLog.getID());
                 contract.setUploadTimeOne(attachmentLog.getCreateAt());
+            }else{
+                logger.info("--FileOne文件信息保存失败--");
+            }
+        }
+
+        if(null != fileTwo && !"".equals(fileTwo)){
+            AttachmentLog attachmentLog=new AttachmentLog();
+            AttachmentLog requiredFile=attachmentLogMapper.selectByConFile(contract.getFileTwoId());
+            if(null==requiredFile){
+                logger.info("--文件id错误--");
+                return false;
+            }
+            String rootPath =requiredFile.getSavePath();
+            FileUtil.delAllFile(rootPath);
+            //文件名
+            String fileNames = fileTwo.getOriginalFilename();
+            //文件大小
+            long size = fileTwo.getSize();
+            //文件类型
+            String type = fileTwo.getContentType();
+
+            if (null != fileNames && !"".equals(fileNames)) {
+                //文件存放路径
+
+                try {
+                    FileUtil.uploadFile(fileTwo.getBytes(), rootPath, fileNames);//文件处理
+                    logger.info("--文件上传成功--");
+                } catch (Exception ex) {
+                    logger.info("--文件上传失败--");
+                    ex.printStackTrace();
+                }
+                attachmentLog.setFileName(fileNames);
+                attachmentLog.setSavePath(rootPath);
+            }
+            attachmentLog.setFileSize((int) size);
+            attachmentLog.setFileType(type);
+            attachmentLog.setCreateAt(new Date());
+            attachmentLog.setUpdateAt(new Date());
+            Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
+            if(count>0){
+                logger.info("--FileOne文件信息保存成功--");
+                attachmentLogMapper.deleteByContractFileId(contract.getFileTwoId());
+                contract.setFileTwoId(attachmentLog.getID());
+                contract.setUploadTimeTwo(attachmentLog.getCreateAt());
             }else{
                 logger.info("--FileOne文件信息保存失败--");
             }
