@@ -23,9 +23,9 @@ public interface ContractService {
 
     int getRecordsByName(String contractName);
 
-    boolean insertContract(Contract contract, MultipartFile file);
+    boolean insertContract(Contract contract, MultipartFile fileOne,MultipartFile fileTwo);
 
-    boolean updateContract(Contract contract, MultipartFile file);
+    boolean updateContract(Contract contract, MultipartFile fileOne,MultipartFile fileTwo);
 
     List<ProgameCompany> findProgameCompany();
 }
