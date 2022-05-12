@@ -83,6 +83,47 @@ public class Contract {
 
     private Long fileTwoId;
 
+    private String fileOneName;
+
+    private String fileOnePath;
+
+    private String fileTwoName;
+
+    private String fileTwoPath;
+
+
+    public String getFileOneName() {
+        return fileOneName;
+    }
+
+    public void setFileOneName(String fileOneName) {
+        this.fileOneName = fileOneName;
+    }
+
+    public String getFileOnePath() {
+        return fileOnePath;
+    }
+
+    public void setFileOnePath(String fileOnePath) {
+        this.fileOnePath = fileOnePath;
+    }
+
+    public String getFileTwoName() {
+        return fileTwoName;
+    }
+
+    public void setFileTwoName(String fileTwoName) {
+        this.fileTwoName = fileTwoName;
+    }
+
+    public String getFileTwoPath() {
+        return fileTwoPath;
+    }
+
+    public void setFileTwoPath(String fileTwoPath) {
+        this.fileTwoPath = fileTwoPath;
+    }
+
     public Long getFileOneId() {
         return fileOneId;
     }

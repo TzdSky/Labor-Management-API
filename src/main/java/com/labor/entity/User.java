@@ -121,6 +121,47 @@ public class User {
 
      private Integer approachStatus;
 
+     //头像路径
+     private String headPath;
+     //头像名称
+     private String headName;
+     //文件路径
+     private String filePath;
+     //文件名称
+     private String fileName;
+
+     public String getHeadPath() {
+          return headPath;
+     }
+
+     public void setHeadPath(String headPath) {
+          this.headPath = headPath;
+     }
+
+     public String getHeadName() {
+          return headName;
+     }
+
+     public void setHeadName(String headName) {
+          this.headName = headName;
+     }
+
+     public String getFilePath() {
+          return filePath;
+     }
+
+     public void setFilePath(String filePath) {
+          this.filePath = filePath;
+     }
+
+     public String getFileName() {
+          return fileName;
+     }
+
+     public void setFileName(String fileName) {
+          this.fileName = fileName;
+     }
+
      public String getAttGroupId() {
           return attGroupId;
      }

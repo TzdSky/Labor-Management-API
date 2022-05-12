@@ -27,12 +27,15 @@
         select count(t.ID) from (
         SELECT t.id, t.name,t.age, t.certificate_type, t.certificate_number, t.gender, t.nation, t.birthday, t.address, t.project_id, t.company_id, t.goup_id, t.work_type_id,t.att_group_id, p.project_name, s.company_name, g.group_name, w.work_type_name,
         t.user_type, t.is_sick, t.phone, t.card_number, t.is_contract, t.head_img_id, t.contract_file_id, t.work_age, t.work_certificate, t.health,
-        t.danger_operate, t.irregular_record, t.criticism, t.absence_work, t.creater, t.create_at, t.update_at
+        t.danger_operate, t.irregular_record, t.criticism, t.absence_work, t.creater, t.create_at, t.update_at,
+        a1.file_name headName,a1.save_path headPath,a2.file_name fileName,a2.save_path filePath
         FROM t_user t
         LEFT JOIN t_project p ON t.project_id = p.project_id
         LEFT JOIN t_subcontract s ON t.company_id = s.id
         LEFT JOIN t_group g ON t.goup_id = g.id
         LEFT JOIN t_work_type w ON t.work_type_id = w.id
+        LEFT JOIN t_attachment_log a1 ON t.head_img_id =a1.id
+        LEFT JOIN t_attachment_log a2 ON t.contract_file_id =a2.id
         where 1 = 1
         <if test="queryParams.name != null and queryParams.name != ''">
             and UPPER(t.name) like UPPER(CONCAT('%',#{queryParams.name,jdbcType=VARCHAR}, '%'))
@@ -55,12 +58,16 @@
     <select id="getPage" resultType="com.labor.entity.User">
         SELECT t.id, t.name,t.age, t.certificate_type, t.certificate_number, t.gender, t.nation, t.birthday, t.address, t.project_id, t.company_id, t.goup_id, t.work_type_id,att_group_id, p.project_name, s.company_name, g.group_name, w.work_type_name,
         t.user_type, t.is_sick, t.phone, t.card_number, t.is_contract, t.contract_file_id, t.head_img_id, t.work_age, t.work_certificate, t.health,
-        t.danger_operate, t.irregular_record, t.criticism, t.absence_work, t.creater, t.create_at, t.update_at
+        t.danger_operate, t.irregular_record, t.criticism, t.absence_work, t.creater, t.create_at, t.update_at,
+        a1.file_name headName,a1.save_path headPath,a2.file_name fileName,a2.save_path filePath
         FROM t_user t
         LEFT JOIN t_project p ON t.project_id = p.project_id
         LEFT JOIN t_subcontract s ON t.company_id = s.id
         LEFT JOIN t_group g ON t.goup_id = g.id
-        LEFT JOIN t_work_type w ON t.work_type_id = w.id where 1 = 1
+        LEFT JOIN t_work_type w ON t.work_type_id = w.id
+        LEFT JOIN t_attachment_log a1 ON t.head_img_id =a1.id
+        LEFT JOIN t_attachment_log a2 ON t.contract_file_id =a2.id
+        where 1 = 1
         <if test="queryParams.name != null and queryParams.name != ''">
             and UPPER(t.name) like UPPER(CONCAT('%',#{queryParams.name,jdbcType=VARCHAR}, '%'))
         </if>
@@ -99,11 +106,14 @@
     <select id="findUserById" resultType="com.labor.entity.User">
         SELECT t.id, t.name,t.age, t.certificate_type, t.certificate_number, t.gender, t.nation, t.birthday, t.address, t.project_id, t.company_id, t.goup_id, t.work_type_id,t.att_group_id, p.project_name, s.company_name, g.group_name, w.work_type_name,
         t.user_type, t.is_sick, t.phone, t.card_number, t.is_contract, t.contract_file_id, t.head_img_id, t.work_age, t.work_certificate, t.health,
-        t.danger_operate, t.irregular_record, t.criticism, t.absence_work, t.creater, t.create_at, t.update_at
+        t.danger_operate, t.irregular_record, t.criticism, t.absence_work, t.creater, t.create_at, t.update_at,
+        a1.file_name headName,a1.save_path headPath,a2.file_name fileName,a2.save_path filePath
         FROM t_user t
         LEFT JOIN t_project p ON t.project_id = p.project_id
         LEFT JOIN t_subcontract s ON t.company_id = s.id
         LEFT JOIN t_group g ON t.goup_id = g.id
+        LEFT JOIN t_attachment_log a1 ON t.head_img_id =a1.id
+        LEFT JOIN t_attachment_log a2 ON t.contract_file_id =a2.id
         LEFT JOIN t_work_type w ON t.work_type_id = w.id where t.id=#{ID}
     </select>
 

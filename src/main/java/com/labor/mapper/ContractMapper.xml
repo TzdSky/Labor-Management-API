@@ -49,9 +49,13 @@
     <select id="findContractByID" resultType="com.labor.entity.Contract">
         select t1.id,contract_name,contract_type,company_id,DATE_FORMAT(t1.create_at, '%Y-%m-%d') create_at,DATE_FORMAT(begin_date, '%Y-%m-%d') begin_date,DATE_FORMAT(end_date, '%Y-%m-%d') end_date,status,
         t1.file_one_id,t1.file_two_id,sign_company,t2.company_name,
-        DATE_FORMAT(t1.update_at, '%Y-%m-%d') update_at, DATE_FORMAT(upload_time_one, '%Y-%m-%d') upload_time_one,DATE_FORMAT(upload_time_two, '%Y-%m-%d') upload_time_two,t1.creater
+        DATE_FORMAT(t1.update_at, '%Y-%m-%d') update_at, DATE_FORMAT(upload_time_one, '%Y-%m-%d') upload_time_one,DATE_FORMAT(upload_time_two, '%Y-%m-%d') upload_time_two,t1.creater,
+        a1.file_name fileOneName,a1.save_path fileOnePath,a2.file_name fileTwoName,a2.save_path fileTwoPath
         from t_contract t1
-        LEFT JOIN t_subcontract t2 on  t1.company_id =t2.id where t1.id=#{ID}
+        LEFT JOIN t_attachment_log a1 ON t1.file_one_id =a1.id
+        LEFT JOIN t_attachment_log a2 ON t1.file_two_id =a2.id
+        LEFT JOIN t_subcontract t2 on  t1.company_id =t2.id
+        where t1.id=#{ID}
     </select>
 
     <select id="findFileID" resultType="com.labor.entity.Contract">
