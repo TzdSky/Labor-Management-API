@@ -16,12 +16,12 @@ public class Contract {
      */
     private Long ID;
     /**
-     * 文件名称
+     * 合同名称
      */
     private String contractName;
 
     /**
-     *合同类型
+     *合同类型 1 劳务合同 2租赁合同
      */
     private Integer contractType;
     /**
