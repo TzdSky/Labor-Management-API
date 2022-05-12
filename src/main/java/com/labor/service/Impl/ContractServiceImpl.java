@@ -44,8 +44,8 @@ public class ContractServiceImpl implements ContractService {
         Map<String, Object> queryParams = new HashMap<>();
         String contractName = request.getParameter("contractName");
         String contractType = request.getParameter("contractType");
-        String beginTime = request.getParameter("beginTime");
-        String endTime = request.getParameter("endTime");
+        String beginTime = request.getParameter("beginDate");
+        String endTime = request.getParameter("endDate");
         if (StringUtils.isNotEmpty(contractName)) {
             queryParams.put("contractName", contractName);
         }
