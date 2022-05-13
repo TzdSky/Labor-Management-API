@@ -70,7 +70,6 @@ public class SubcontractController {
                 resultModel.setText(ManageConstants.ERROR_REPEAT_Company_TEXT);
                 resultModel.setCode(ManageConstants.ERROR_500);
             } else {
-                subcontract.setCreateAt(new Date());
                 resultModel.setData(subcontracService.insertSubcontract(subcontract,file)?"新增成功":"新增失败");
                 resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
                 resultModel.setCode(ManageConstants.SUCCESS_200);
@@ -140,7 +139,6 @@ public class SubcontractController {
         ResultModel<String> resultModel = new ResultModel<>();
         logger.info("updateSubcontract:===>start");
         if(subcontract != null) {
-            subcontract.setUpdateAt(new Date());
             resultModel.setData(subcontracService.updateSubcontract(subcontract, file) ? "修改成功" : "修改失败");
             resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
             resultModel.setCode(ManageConstants.SUCCESS_200);

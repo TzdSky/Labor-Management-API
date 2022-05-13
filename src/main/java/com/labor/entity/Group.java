@@ -1,8 +1,9 @@
 package com.labor.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -55,6 +56,7 @@ public class Group {
     /**
      * 出场时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date outTime;
 
     /**
@@ -73,10 +75,12 @@ public class Group {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date createAt;
     /**
      * 修改时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date updateAt;
 
     /**

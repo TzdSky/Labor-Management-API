@@ -8,7 +8,7 @@
               select LAST_INSERT_ID()
           </selectKey>
           insert into `t_attachment_log` (`file_name`, `file_type`, `file_size`, `save_path`, `creater`,  `create_at`, `update_at`)
-          values(#{fileName},#{fileType},#{fileSize},#{savePath},#{creater},#{createAt},#{updateAt});
+          values(#{fileName},#{fileType},#{fileSize},#{savePath},#{creater},NOW(),NOW());
       </insert>
 
       <select id="selectByConFile" resultType="com.labor.entity.AttachmentLog">
