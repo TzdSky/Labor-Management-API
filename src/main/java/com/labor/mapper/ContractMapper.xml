@@ -76,7 +76,7 @@
         </selectKey>
         insert into `t_contract` (`contract_name`, `contract_type`, `company_id`, `begin_date`, `end_date`,
         `status`, `file_one_id`, `file_two_id`, `sign_company`, `upload_time_one`,`upload_time_two`,`creater`, `create_at`, `update_at`)
-        values(#{contractName},#{contractType},#{companyId},#{beginDate},#{endDate},#{status},#{fileOneId},#{fileTwoId},#{signCompany},#{uploadTimeOne},#{uploadTimeTwo},#{creater},#{createAt},#{updateAt});
+        values(#{contractName},#{contractType},#{companyId},#{beginDate},#{endDate},#{status},#{fileOneId},#{fileTwoId},#{signCompany},#{uploadTimeOne},#{uploadTimeTwo},#{creater},NOW(),NOW());
     </insert>
 
     <update id="updateContract">

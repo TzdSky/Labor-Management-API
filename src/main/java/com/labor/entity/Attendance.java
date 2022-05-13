@@ -1,8 +1,11 @@
 package com.labor.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -10,6 +13,7 @@ import java.util.List;
  * @date 2022/5/9
  */
 @TableName("t_attendance_group")
+@Data
 public class Attendance {
     private static final long serialVersionUID = 1L;
     //主键
@@ -22,9 +26,11 @@ public class Attendance {
     private String location;
 
     //修改时间
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date updateAt;
 
     //创建时间
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date createAt;
 
     //页面输入修改考勤组的userid集合

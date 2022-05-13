@@ -132,7 +132,6 @@ public class UserController {
                 resultModel.setText(ManageConstants.ERROR_REPEAT_TEXT);
                 resultModel.setCode(ManageConstants.ERROR_500);
             } else {
-                user.setCreateAt(new Date());
                 resultModel.setData(userService.insertNewUser(user,contractFile,headImg)?"新增成功":"新增失败");
                 resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
                 resultModel.setCode(ManageConstants.SUCCESS_200);
@@ -195,7 +194,6 @@ public class UserController {
         ResultModel<String> resultModel = new ResultModel<>();
         logger.info("updateUser:===>start");
         if(user != null) {
-            user.setCreateAt(new Date());
             resultModel.setData(userService.updateUser(user, contractFile,headImg) ? "修改成功" : "修改失败");
             resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
             resultModel.setCode(ManageConstants.SUCCESS_200);

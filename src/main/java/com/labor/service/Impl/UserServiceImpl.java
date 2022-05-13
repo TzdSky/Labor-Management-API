@@ -1,15 +1,11 @@
 package com.labor.service.Impl;
 
 
-
-
 import com.labor.controller.UserController;
 import com.labor.entity.*;
-import com.labor.enums.DateStyleEnum;
 import com.labor.mapper.AttachmentLogMapper;
 import com.labor.mapper.UserMapper;
 import com.labor.service.UserService;
-import com.labor.utils.DateUtil;
 import com.labor.utils.FileUtil;
 import com.labor.utils.GenerateUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author BoCong
@@ -119,7 +118,6 @@ public class UserServiceImpl implements UserService {
             }
             attachmentLog.setFileSize((int) size);
             attachmentLog.setFileType(type);
-            attachmentLog.setCreateAt(new Date());
             Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
             if(count>0){
                 logger.info("--文件信息保存成功--");
@@ -172,7 +170,6 @@ public class UserServiceImpl implements UserService {
             }
             attachmentLog.setFileSize((int) size);
             attachmentLog.setFileType(type);
-            attachmentLog.setCreateAt(new Date());
             Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
             if(count>0){
                 logger.info("--文件信息保存成功--");
@@ -238,8 +235,6 @@ public class UserServiceImpl implements UserService {
             }
             attachmentLog.setFileSize((int) size);
             attachmentLog.setFileType(type);
-            attachmentLog.setCreateAt(new Date());
-            attachmentLog.setUpdateAt(new Date());
             Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
             if(count>0){
                 logger.info("--文件信息保存成功--");
@@ -280,8 +275,6 @@ public class UserServiceImpl implements UserService {
             }
             attachmentLog.setFileSize((int) size);
             attachmentLog.setFileType(type);
-            attachmentLog.setCreateAt(new Date());
-            attachmentLog.setUpdateAt(new Date());
             Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
             if(count>0){
                 logger.info("--文件信息保存成功--");
