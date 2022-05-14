@@ -2,7 +2,6 @@ package com.labor.controller;
 
 import com.labor.entity.Attendance;
 import com.labor.entity.AttendanceSearch;
-import com.labor.entity.Group;
 import com.labor.service.AttendanceService;
 import com.labor.service.GroupService;
 import com.labor.utils.DataPage;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 
 /**
  * @author Tian
@@ -156,5 +154,6 @@ public class AttendanceController {
         logger.info("findAttendByID:===>end");
         return resultModel;
     }
+
 
 }

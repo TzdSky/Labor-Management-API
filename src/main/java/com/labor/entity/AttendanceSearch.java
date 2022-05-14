@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Tian
@@ -138,7 +139,16 @@ public class AttendanceSearch {
      //打卡状态 搜索月份第31天
      private String clockStatus31;
 
-     private List<String> headers;
+     //表头
+     private  List<Map<String,String>> headers;
+
+     public List<Map<String, String>> getHeaders() {
+          return headers;
+     }
+
+     public void setHeaders(List<Map<String, String>> headers) {
+          this.headers = headers;
+     }
 
      public Integer getAttCounts() {
           return attCounts;
@@ -148,13 +158,6 @@ public class AttendanceSearch {
           this.attCounts = attCounts;
      }
 
-     public List<String> getHeaders() {
-          return headers;
-     }
-
-     public void setHeaders(List<String> headers) {
-          this.headers = headers;
-     }
 
      public Long getID() {
           return ID;

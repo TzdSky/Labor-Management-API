@@ -1,6 +1,8 @@
 package com.labor.service.Impl;
 
 import com.labor.entity.Group;
+import com.labor.entity.User;
+import com.labor.entity.UserForWorkType;
 import com.labor.mapper.GroupMapper;
 import com.labor.service.GroupService;
 import org.apache.commons.lang3.StringUtils;
@@ -94,7 +96,18 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group findGroupByID(Long ID) {
-        return groupMapper.findGroupByID(ID);
+        Group group = groupMapper.findGroupByID(ID);
+        if(group != null) {
+            List<UserForWorkType> userList = groupMapper.getGroupUsers(ID);
+            group.setUserList(userList);
+        }
+
+        return group;
+    }
+
+    @Override
+    public List<UserForWorkType> getUserByCondition(String condition) {
+        return groupMapper.getUserByCondition(condition);
     }
 
 

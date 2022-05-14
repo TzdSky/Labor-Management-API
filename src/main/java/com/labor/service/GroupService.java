@@ -1,6 +1,7 @@
 package com.labor.service;
 
 import com.labor.entity.Group;
+import com.labor.entity.UserForWorkType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -38,5 +39,12 @@ public interface GroupService {
     List<Group> groupList();
 
     Group findGroupByID(Long ID);
+
+    /**
+     * 根据条件查询没分组的工人
+     * @param condition
+     * @return
+     */
+    List<UserForWorkType> getUserByCondition(String condition);
 
 }
