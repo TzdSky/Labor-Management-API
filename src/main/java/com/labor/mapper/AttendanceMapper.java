@@ -3,7 +3,7 @@ package com.labor.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.labor.entity.Attendance;
 import com.labor.entity.AttendanceSearch;
-import com.labor.entity.User;
+import com.labor.entity.UserForWorkType;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -80,6 +80,9 @@ public interface AttendanceMapper extends BaseMapper<Attendance> {
 
     Attendance findGroupByID (@Param("ID") Long ID);
 
-    List<User>  getUserByAttID(@Param("ID") Long ID);
+    List<UserForWorkType>  getUserByAttID(@Param("ID") Long ID);
+
+
+
 
 }

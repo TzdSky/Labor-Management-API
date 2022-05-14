@@ -1,6 +1,9 @@
 package com.labor.controller;
 
+import com.labor.entity.Attendance;
 import com.labor.entity.Group;
+import com.labor.entity.UserForWorkType;
+import com.labor.entity.WorkType;
 import com.labor.service.GroupService;
 import com.labor.utils.DataPage;
 import com.labor.utils.ManageConstants;
@@ -172,5 +175,24 @@ public class GroupController {
         logger.info("findContractByID:===>end");
         return resultModel;
     }
+
+
+
+    /**
+     * 根据条件查询没有分组的工人
+     * @param  condition
+     */
+    @GetMapping("/getUserByCondition")
+    public ResultModel<List<UserForWorkType>> getUserByCondition(@RequestParam(value = "condition", required = true) String condition) {
+        logger.info("getUserByCondition:===>start");
+        ResultModel<List<UserForWorkType>> result = new ResultModel<>();
+        List<UserForWorkType> userForWorkTypes = groupService.getUserByCondition(condition);
+        result.setCode(ManageConstants.SUCCESS_200);
+        result.setText(ManageConstants.SUCCESS_200_TEXT);
+        result.setData(userForWorkTypes);
+        logger.info("getUserByCondition:===>end");
+        return result;
+    }
+
 
 }

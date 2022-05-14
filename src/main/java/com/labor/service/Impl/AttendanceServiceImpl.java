@@ -1,9 +1,6 @@
 package com.labor.service.Impl;
 
-import com.labor.entity.Attendance;
-import com.labor.entity.AttendanceSearch;
-import com.labor.entity.Group;
-import com.labor.entity.User;
+import com.labor.entity.*;
 import com.labor.mapper.AttendanceMapper;
 import com.labor.mapper.GroupMapper;
 import com.labor.service.AttendanceService;
@@ -168,11 +165,13 @@ public class AttendanceServiceImpl implements AttendanceService {
     public Attendance findGroupByID(Long ID) {
         Attendance attendance = attendanceMapper.findGroupByID(ID);
         if(attendance != null) {
-          List<User> userList =  attendanceMapper.getUserByAttID(ID);
+          List<UserForWorkType> userList =  attendanceMapper.getUserByAttID(ID);
             attendance.setUserList(userList);
         }
         return attendance;
     }
+
+
 
 
 }

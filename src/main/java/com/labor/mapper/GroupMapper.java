@@ -1,10 +1,8 @@
 package com.labor.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.labor.entity.Group;
-import com.labor.entity.User;
+import com.labor.entity.UserForWorkType;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -55,4 +53,8 @@ public interface GroupMapper extends BaseMapper<Group> {
 
 
     Group findGroupByID(@Param("ID")Long ID);
+
+    List<UserForWorkType> getGroupUsers(@Param("ID")Long ID);
+
+    List<UserForWorkType> getUserByCondition (@Param("condition") String condition);
 }
