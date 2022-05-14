@@ -43,19 +43,19 @@
             select LAST_INSERT_ID()
         </selectKey>
         insert into `t_subcontract` (`company_name`, `principal`, `phone`, `subcontrac_content`, `required_file_id`,
-        `address`, `telephone`, `account_bank`, `identification_number`, `subcontract_type`,`remark`,`creater`, `create_at`, `update_at`)
-        values(#{companyName},#{principal},#{phone},#{subcontracContent},#{requiredFileId},#{address},#{telephone},#{accountBank},#{identificationNumber},#{subcontractType},#{remark},#{creater},NOW(),NOW());
+        `address`, `telephone`, `account_bank`, `identification_number`, `subcontract_type`,`remark`,`creater`, `create_at`, `update_at`,account_number)
+        values(#{companyName},#{principal},#{phone},#{subcontracContent},#{requiredFileId},#{address},#{telephone},#{accountBank},#{identificationNumber},#{subcontractType},#{remark},#{creater},NOW(),NOW(),#{accountNumber});
     </insert>
 
     <select id="findSubcontractByID" resultType="com.labor.entity.Subcontract">
-        select id,`company_name`, `principal`, `phone`, `subcontrac_content`, `required_file_id`, `address`,`subcontract_type`, `creater`, `create_at`, `update_at`
+        select id,`company_name`, `principal`, `phone`, `subcontrac_content`, `required_file_id`, `address`,`subcontract_type`, `creater`, `create_at`, `update_at`,identification_number,remark,telephone,account_bank,account_number
         from t_subcontract where id = #{ID}
     </select>
 
     <update id="updateSubcontract">
  UPDATE t_subcontract SET company_name = #{companyName}, principal = #{principal}, phone = #{phone},subcontrac_content = #{subcontracContent},
         required_file_id = #{requiredFileId},address = #{address}, telephone = #{telephone},account_bank = #{accountBank},
-        identification_number = #{identificationNumber}, subcontract_type = #{subcontractType},remark = #{remark},update_at = NOW()
+        identification_number = #{identificationNumber}, subcontract_type = #{subcontractType},remark = #{remark},update_at = NOW(),account_number=#{accountNumber}
         WHERE id = #{ID}
     </update>
 </mapper>
