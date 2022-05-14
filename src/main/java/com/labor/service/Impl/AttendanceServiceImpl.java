@@ -124,7 +124,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         System.err.println("attDate = "+queryParams.get("attDate"));
         List<AttendanceSearch> attGroupList = attendanceMapper.getAttSearchList(queryParams);
         if(attGroupList != null && attGroupList.size() > 0) {
-            Map<String,String> headers =  setHeader(attDate, days);
+            List<Map<String,String>> headers =  setHeader(attDate, days);
             attGroupList.get(0).setHeaders(headers);
         }
         return new PageImpl<>(attGroupList, PageRequest.of(page.getPageNumber() - 1, page.getPageSize()), total);
@@ -143,23 +143,43 @@ public class AttendanceServiceImpl implements AttendanceService {
 
 
     //传入年月以及当月天数设置表头
-    public static Map<String,String> setHeader (String yearMonth, Integer days){
+    public static  List<Map<String,String>> setHeader (String yearMonth, Integer days){
+        //label放中文 ，value放属性名称 [{}]
+        List<Map<String,String>> list = new ArrayList<>();
         Map<String,String> maps = new LinkedHashMap<>();
-        maps.put("ID","序号");
-        maps.put("name","名称");
-        maps.put("companyName","所属公司");
-        maps.put("groupName","所在班组");
+        maps.put("label","ID");
+        maps.put("value","序号");
+        list.add(maps);
+
+        maps = new LinkedHashMap<>();
+        maps.put("label","name");
+        maps.put("value","名称");
+        list.add(maps);
+
+        maps = new LinkedHashMap<>();
+        maps.put("label","companyName");
+        maps.put("value","所属公司");
+        list.add(maps);
+
+        maps = new LinkedHashMap<>();
+        maps.put("label","groupName");
+        maps.put("value","所在班组");
+        list.add(maps);
+
         String temp ="";
         //小于10的时候前面加个0  eg:2022-11-1 ==>022-11-01
         for (int i = 1; i <= days; i++) {
+            maps = new LinkedHashMap<>();
             temp = "-" + i;
             if (i < 10){
                 temp = "-0" + i;
             }
             temp = yearMonth + temp;
-            maps.put("clockStatus"+i,temp);
+            maps.put("label","clockStatus"+i);
+            maps.put("value",temp);
+            list.add(maps);
         }
-        return maps;
+        return list;
     }
 
 
