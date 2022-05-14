@@ -38,6 +38,16 @@ public class Attendance {
 
     private String userLists;
 
+    //页面输入修改考勤组的userid集合
+    private List<User> userList;
+
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
 
     //统计人数
     private Integer userCounts;

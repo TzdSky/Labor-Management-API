@@ -3,6 +3,7 @@ package com.labor.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.labor.entity.Attendance;
 import com.labor.entity.AttendanceSearch;
+import com.labor.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -76,5 +77,9 @@ public interface AttendanceMapper extends BaseMapper<Attendance> {
      * 根据考勤组名称查询考勤列表  按日显示
      */
     List<AttendanceSearch> getAttSearchList(@Param("queryParams")Map<String, Object> queryParams);
+
+    Attendance findGroupByID (@Param("ID") Long ID);
+
+    List<User>  getUserByAttID(@Param("ID") Long ID);
 
 }

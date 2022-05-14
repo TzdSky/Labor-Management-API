@@ -69,4 +69,8 @@ public interface AttendanceService {
      * 根据考勤组名称查询考勤列表  按日显示
      */
     Page<AttendanceSearch> getAttSearchList(HttpServletRequest request, Pageable page);
+
+
+    Attendance findGroupByID (Long ID);
+
 }

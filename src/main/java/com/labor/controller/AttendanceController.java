@@ -2,6 +2,7 @@ package com.labor.controller;
 
 import com.labor.entity.Attendance;
 import com.labor.entity.AttendanceSearch;
+import com.labor.entity.Group;
 import com.labor.service.AttendanceService;
 import com.labor.service.GroupService;
 import com.labor.utils.DataPage;
@@ -140,6 +141,20 @@ public class AttendanceController {
         return new ResultModel<>(new DataPage<>(attGroupList));
     }
 
-
+    /**
+     * 根据id查看考勤组
+     * @param  ID
+     */
+    @GetMapping(value = "/findAttendByID")
+    public ResultModel<Attendance> findGroupByID(@RequestParam(value = "ID", required = true) Long ID){
+        logger.info("findAttendByID:===>start");
+        ResultModel<Attendance> resultModel = new ResultModel<>();
+        Attendance attendance=attendanceService.findGroupByID(ID);
+        resultModel.setData(attendance);
+        resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
+        resultModel.setCode(ManageConstants.SUCCESS_200);
+        logger.info("findAttendByID:===>end");
+        return resultModel;
+    }
 
 }

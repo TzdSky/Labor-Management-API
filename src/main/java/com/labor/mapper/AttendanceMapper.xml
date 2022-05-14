@@ -173,4 +173,17 @@
     </select>
 
 
+
+    <select id="findGroupByID" resultType="com.labor.entity.Attendance">
+        SELECT a.id,a.att_group_name,a.location,a.update_at,a.create_at from t_attendance_group a where a.id =#{ID}
+    </select>
+
+    <select id="getUserByAttID" resultType="com.labor.entity.User">
+        select t.id,t.name,a1.file_name headName,a1.save_path headPath,a2.file_name fileName,a2.save_path filePath
+        FROM t_user t
+                 LEFT JOIN t_attachment_log a1 ON t.head_img_id =a1.id
+                 LEFT JOIN t_attachment_log a2 ON t.contract_file_id =a2.id
+        where t.att_group_id = #{ID}
+    </select>
+
 </mapper>

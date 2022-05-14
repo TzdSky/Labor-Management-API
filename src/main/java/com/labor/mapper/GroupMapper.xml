@@ -106,4 +106,26 @@
         from t_group
     </select>
 
+
+    <select id="findGroupByID" resultType="com.labor.entity.Group">
+        SELECT
+            gp.id,
+            gp.group_name,
+            gp.group_principal,
+            gp.principal_id,
+            gp.company_id,
+            gp.company_name,
+            gp.enter_attachment,
+            DATE_FORMAT(gp.enter_time, '%Y-%m-%d' ) AS enter_time,
+            DATE_FORMAT(gp.out_time, '%Y-%m-%d' ) AS out_time,
+            gp.remark,
+            gp.creater,
+            DATE_FORMAT(gp.create_at, '%Y-%m-%d' ) as create_at,
+            DATE_FORMAT(gp.update_at, '%Y-%m-%d' ) AS update_at
+        FROM
+            t_group gp
+        where gp.id=#{ID}
+
+    </select>
+
 </mapper>
