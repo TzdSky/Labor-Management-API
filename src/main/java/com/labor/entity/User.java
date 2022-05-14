@@ -1,6 +1,8 @@
 package com.labor.entity;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.sql.Date;
 
 /**
  * @author BoCong
@@ -27,6 +29,7 @@ public class User {
      private String nation;
 
      //出生日期
+     @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
      private Date birthday;
 
      //地址
@@ -108,9 +111,11 @@ public class User {
      private String creater;
 
      //创建时间
+     @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
      private Date createAt;
 
      //修改时间
+     @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
      private Date updateAt;
 
      //年龄

@@ -85,7 +85,6 @@ public class GroupController {
                 resultModel.setText(ManageConstants.ERROR_REPEAT_TEXT);
                 resultModel.setCode(ManageConstants.ERROR_500);
             } else {
-                group.setCreateAt(new Date());
                 Long group1 = groupService.insertNewGroup(group);
                 if(group.getUserInGroup() != null && group.getUserInGroup().size() > 0){
                     //新增完，根据返回的id批量修改user表的 user班组id

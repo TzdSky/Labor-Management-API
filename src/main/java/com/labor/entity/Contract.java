@@ -1,8 +1,9 @@
 package com.labor.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * @author BoCong
@@ -32,11 +33,13 @@ public class Contract {
     /**
      * 开始时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date beginDate;
 
     /**
      * 结束时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date endDate;
 
     /**
@@ -49,11 +52,13 @@ public class Contract {
     /**
      * 文件1上传时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date uploadTimeOne;
 
     /**
      *  文件2上传时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date uploadTimeTwo;
 
     /**
@@ -68,10 +73,12 @@ public class Contract {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date createAt;
     /**
      * 修改时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date updateAt;
 
     /**

@@ -105,7 +105,6 @@ public class SubcontractServiceImpl implements SubcontracService {
             }
             attachmentLog.setFileSize((int) size);
             attachmentLog.setFileType(type);
-            attachmentLog.setCreateAt(new Date());
             Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
             if(count>0){
                 logger.info("--文件信息保存成功--");
@@ -177,8 +176,6 @@ public class SubcontractServiceImpl implements SubcontracService {
             }
             attachmentLog.setFileSize((int) size);
             attachmentLog.setFileType(type);
-            attachmentLog.setCreateAt(new Date());
-            attachmentLog.setUpdateAt(new Date());
             Integer count=attachmentLogMapper.insertAttachLog(attachmentLog);
             if(count>0){
                 logger.info("--文件信息保存成功--");

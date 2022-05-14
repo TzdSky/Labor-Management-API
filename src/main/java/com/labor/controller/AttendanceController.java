@@ -85,7 +85,6 @@ public class AttendanceController {
                 resultModel.setText(ManageConstants.ERROR_REPEAT_TEXT);
                 resultModel.setCode(ManageConstants.ERROR_500);
             } else {
-                attendance.setCreateAt(new Date());
                 Long group1 = attendanceService.insertAttendanceGroup(attendance);
                 if(attendance.getUserInAttGroup() != null && attendance.getUserInAttGroup().size() > 0){
                     //新增完，根据返回的id批量修改user表的user考勤组id

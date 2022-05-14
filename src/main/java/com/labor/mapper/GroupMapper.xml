@@ -15,7 +15,7 @@
         </selectKey>
         insert into `t_group` (`group_name`, `group_principal`, `grade`, `principal_id`, `company_id`,
         `enter_attachment`, `enter_time`, `out_time`, `remark`, `creater`, `create_at`, `update_at`)
-        values(#{groupName},#{groupPrincipal},#{grade},#{principalId},#{companyId},#{enterAttachment},#{enterTime},#{outTime},#{remark},#{creater},#{createAt},#{updateAt});
+        values(#{groupName},#{groupPrincipal},#{grade},#{principalId},#{companyId},#{enterAttachment},#{enterTime},#{outTime},#{remark},#{creater},NOW(),NOW());
     </insert>
 
 

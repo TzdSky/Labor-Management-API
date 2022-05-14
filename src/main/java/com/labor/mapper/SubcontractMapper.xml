@@ -44,7 +44,7 @@
         </selectKey>
         insert into `t_subcontract` (`company_name`, `principal`, `phone`, `subcontrac_content`, `required_file_id`,
         `address`, `telephone`, `account_bank`, `identification_number`, `subcontract_type`,`remark`,`creater`, `create_at`, `update_at`)
-        values(#{companyName},#{principal},#{phone},#{subcontracContent},#{requiredFileId},#{address},#{telephone},#{accountBank},#{identificationNumber},#{subcontractType},#{remark},#{creater},#{createAt},#{updateAt});
+        values(#{companyName},#{principal},#{phone},#{subcontracContent},#{requiredFileId},#{address},#{telephone},#{accountBank},#{identificationNumber},#{subcontractType},#{remark},#{creater},NOW(),NOW());
     </insert>
 
     <select id="findSubcontractByID" resultType="com.labor.entity.Subcontract">

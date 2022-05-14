@@ -1,6 +1,8 @@
 package com.labor.entity;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -37,6 +39,7 @@ public class AttendanceSearch {
      private String attGroupID;
 
      //考勤月份 页面传过来
+     @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
      private Date attDate;
 
      //搜索月份考勤总天数
