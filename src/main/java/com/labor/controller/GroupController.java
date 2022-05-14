@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -158,6 +157,20 @@ public class GroupController {
         return resultModel;
     }
 
-
+    /**
+     * 根据id查看合同
+     * @param  ID
+     */
+    @GetMapping(value = "/findGroupByID")
+    public ResultModel<Group> findGroupByID(@RequestParam(value = "ID", required = true) Long ID){
+        logger.info("findContractByID:===>start");
+        ResultModel<Group> resultModel = new ResultModel<>();
+        Group group=groupService.findGroupByID(ID);
+        resultModel.setData(group);
+        resultModel.setText(ManageConstants.SUCCESS_200_TEXT);
+        resultModel.setCode(ManageConstants.SUCCESS_200);
+        logger.info("findContractByID:===>end");
+        return resultModel;
+    }
 
 }

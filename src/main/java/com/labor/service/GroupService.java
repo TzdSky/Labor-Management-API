@@ -36,4 +36,7 @@ public interface GroupService {
     int updateGroup(Group group);
 
     List<Group> groupList();
+
+    Group findGroupByID(Long ID);
+
 }

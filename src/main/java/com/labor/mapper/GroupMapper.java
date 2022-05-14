@@ -52,4 +52,7 @@ public interface GroupMapper extends BaseMapper<Group> {
     int updateGroup(Group group);
 
     List<Group> groupList();
+
+
+    Group findGroupByID(@Param("ID")Long ID);
 }

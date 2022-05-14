@@ -48,9 +48,6 @@ public class GroupServiceImpl implements GroupService {
         Integer total = groupMapper.getCount(queryParams);
         queryParams.put("page", (page.getPageNumber() - 1) * page.getPageSize());
         queryParams.put("size", page.getPageSize());
-        System.err.println("page.total() = "+total);
-        System.err.println("page.getPageNumber() = "+page.getPageNumber());
-        System.err.println("page.getPageSize() = "+page.getPageSize());
         List<Group> groupList = groupMapper.getPage(queryParams);
         return new PageImpl<>(groupList, PageRequest.of(page.getPageNumber() - 1, page.getPageSize()), total);
     }
@@ -94,5 +91,11 @@ public class GroupServiceImpl implements GroupService {
     public List<Group> groupList() {
         return groupMapper.groupList();
     }
+
+    @Override
+    public Group findGroupByID(Long ID) {
+        return groupMapper.findGroupByID(ID);
+    }
+
 
 }

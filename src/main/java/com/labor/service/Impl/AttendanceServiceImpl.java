@@ -3,6 +3,7 @@ package com.labor.service.Impl;
 import com.labor.entity.Attendance;
 import com.labor.entity.AttendanceSearch;
 import com.labor.entity.Group;
+import com.labor.entity.User;
 import com.labor.mapper.AttendanceMapper;
 import com.labor.mapper.GroupMapper;
 import com.labor.service.AttendanceService;
@@ -132,7 +133,9 @@ public class AttendanceServiceImpl implements AttendanceService {
         return new PageImpl<>(attGroupList, PageRequest.of(page.getPageNumber() - 1, page.getPageSize()), total);
     }
 
-        //将天数 转为天数数组 eg:30 ==> list(1,2,,,,30)
+
+
+    //将天数 转为天数数组 eg:30 ==> list(1,2,,,,30)
         public static List<Integer> condition (int days){
             List <Integer> dayList = new ArrayList<>();
             for (int i = 1; i <= days; i++) {
@@ -159,5 +162,17 @@ public class AttendanceServiceImpl implements AttendanceService {
         }
         return headers;
     }
+
+
+    @Override
+    public Attendance findGroupByID(Long ID) {
+        Attendance attendance = attendanceMapper.findGroupByID(ID);
+        if(attendance != null) {
+          List<User> userList =  attendanceMapper.getUserByAttID(ID);
+            attendance.setUserList(userList);
+        }
+        return attendance;
+    }
+
 
 }
