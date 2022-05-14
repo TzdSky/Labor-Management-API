@@ -39,13 +39,13 @@ public class Attendance {
     private String userLists;
 
     //页面输入修改考勤组的userid集合
-    private List<User> userList;
+    private List<UserForWorkType> userList;
 
-    public List<User> getUserList() {
+    public List<UserForWorkType> getUserList() {
         return userList;
     }
 
-    public void setUserList(List<User> userList) {
+    public void setUserList(List<UserForWorkType> userList) {
         this.userList = userList;
     }
 

@@ -128,4 +128,28 @@
 
     </select>
 
+    <select id="getGroupUsers" resultType="com.labor.entity.UserForWorkType">
+        select t.id as userID,t.name as userName,a1.file_name headName,a1.save_path headPath,a2.file_name fileName,a2.save_path filePath
+        FROM t_user t
+                 LEFT JOIN t_attachment_log a1 ON t.head_img_id =a1.id
+                 LEFT JOIN t_attachment_log a2 ON t.contract_file_id =a2.id
+        where t.goup_id = #{ID}
+    </select>
+
+    <select id="getUserByCondition" resultType="com.labor.entity.UserForWorkType">
+        select t.id as userID,t.name as userName,a1.file_name headName,a1.save_path headPath,a2.file_name fileName,a2.save_path filePath
+        FROM t_user t
+        LEFT JOIN t_attachment_log a1 ON t.head_img_id =a1.id
+        LEFT JOIN t_attachment_log a2 ON t.contract_file_id =a2.id
+        where ISNULL(t.goup_id)
+
+        <if test="condition != null and condition != ''">
+            and
+            (t.name like UPPER(CONCAT('%',#{condition}, '%'))
+            OR t.certificate_number like UPPER(CONCAT('%',#{condition}, '%'))
+            OR t.phone like UPPER(CONCAT('%',#{condition}, '%'))
+            )
+        </if>
+    </select>
+
 </mapper>

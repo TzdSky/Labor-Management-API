@@ -88,6 +88,16 @@ public class Group {
      */
     private List<Long> userInGroup;
 
+    private List<UserForWorkType> userList;
+
+    public List<UserForWorkType> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<UserForWorkType> userList) {
+        this.userList = userList;
+    }
+
     public List<Long> getUserInGroup() {
         return userInGroup;
     }
