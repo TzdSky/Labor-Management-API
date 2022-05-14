@@ -6,8 +6,8 @@
 
 
     <insert id="inertNewUser">
-        INSERT INTO t_user (`name`, `certificate_type`, `certificate_number`, `gender`, `nation`, `birthday`, `address`, `project_id`, `company_id`, `goup_id`, `work_type_id`, `user_type`,`att_group_id`, `is_sick`, `phone`, `card_number`, `is_contract`, `head_img_id`, `contract_file_id`, `work_age`, `work_certificate`, `health`, `danger_operate`, `irregular_record`, `criticism`,`age`, `absence_work`, `creater`, `create_at`, `update_at`)
-         VALUES (#{name}, #{certificateType}, #{certificateNumber}, #{gender}, #{nation}, #{birthday}, #{address}, #{projectID}, #{companyID}, #{goupID}, #{workTypeId}, #{userType},#{attGroupId}, #{isSick}, #{phone}, #{cardNumber}, #{isContract}, #{headImgId}, #{contractFileId}, #{workAge}, #{workCertificate}, #{health}, #{dangerOperate}, #{irregularRecord}, #{criticism}, #{age}, #{absenceWork}, #{creater}, NOW(), NOW());
+        INSERT INTO t_user (`name`, `certificate_type`, `certificate_number`, `gender`, `nation`, `birthday`, `address`, `project_id`, `company_id`, `goup_id`, `work_type_id`, `user_type`,`att_group_id`, `is_sick`, `phone`, `card_number`, `is_contract`, `head_img_id`, `contract_file_id`, `work_age`, `work_certificate`, `health`, `danger_operate`, `irregular_record`, `criticism`,`age`, `absence_work`, `creater`, `create_at`, `update_at`, native_Place)
+         VALUES (#{name}, #{certificateType}, #{certificateNumber}, #{gender}, #{nation}, #{birthday}, #{address}, #{projectID}, #{companyID}, #{goupID}, #{workTypeId}, #{userType},#{attGroupId}, #{isSick}, #{phone}, #{cardNumber}, #{isContract}, #{headImgId}, #{contractFileId}, #{workAge}, #{workCertificate}, #{health}, #{dangerOperate}, #{irregularRecord}, #{criticism}, #{age}, #{absenceWork}, #{creater}, NOW(), NOW(),#{nativePlace});
     </insert>
 
 
