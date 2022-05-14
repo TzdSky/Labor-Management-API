@@ -69,6 +69,11 @@ public class Subcontract {
     private Integer subcontractType;
 
     /**
+     * 银行卡号
+     */
+    private Integer accountNumber;
+
+    /**
      * 备注
      */
     private String remark;
@@ -87,6 +92,14 @@ public class Subcontract {
      */
     @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date updateAt;
+
+    public Integer getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(Integer accountNumber) {
+        this.accountNumber = accountNumber;
+    }
 
     public Long getID() {
         return ID;

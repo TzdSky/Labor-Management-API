@@ -24,7 +24,7 @@
     </select>
 
     <select id="getCount" resultType="java.lang.Integer">
-        select count(t.ID) from (
+        select count(*) from (
         SELECT t.id, t.name,t.age, t.certificate_type, t.certificate_number, t.gender, t.nation, t.birthday, t.address, t.project_id, t.company_id, t.goup_id, t.work_type_id,t.att_group_id, p.project_name, s.company_name, g.group_name, w.work_type_name,
         t.user_type, t.is_sick, t.phone, t.card_number, t.is_contract, t.head_img_id, t.contract_file_id, t.work_age, t.work_certificate, t.health,
         t.danger_operate, t.irregular_record, t.criticism, t.absence_work, t.creater, t.create_at, t.update_at,
@@ -40,10 +40,10 @@
         <if test="queryParams.name != null and queryParams.name != ''">
             and UPPER(t.name) like UPPER(CONCAT('%',#{queryParams.name,jdbcType=VARCHAR}, '%'))
         </if>
-        <if test="queryParams.certificateNumber != 0 and queryParams.certificateNumber != ''">
+        <if test="queryParams.certificateNumber != null and queryParams.certificateNumber != ''">
             and t.certificate_number = #{queryParams.certificateNumber,jdbcType=INTEGER}
         </if>
-        <if test="queryParams.phone != 0 and queryParams.phone != ''">
+        <if test="queryParams.phone != null and queryParams.phone != ''">
             and t.phone = #{queryParams.phone,jdbcType=INTEGER}
         </if>
         <if test="queryParams.goupID != null and queryParams.goupID != ''">
@@ -98,9 +98,8 @@
     <update id="updateUser">
         UPDATE t_user SET NAME = #{name}, nation = #{nation}, gender = #{gender},age = #{age},birthday  = STR_TO_DATE(#{birthday},'%Y-%m-%d %H:%i:%s'),
         certificate_number = #{certificateNumber},native_Place = #{nativePlace}, address = #{address},project_id = #{projectID},
-        company_id = #{companyID}, goup_id = #{goupID},user_type = #{userType},work_type_id = #{workTypeId},user_type = #{userType},contract_file_id = #{contractFileId},head_img_id=#{headImgId},work_age=#{workAge}
-        att_group_id = #{attGroupId},
-        is_contract = #{isContract},approach_status = #{approachStatus},phone = #{phone},update_at = NOW()
+        company_id = #{companyID}, goup_id = #{goupID},user_type = #{userType},work_type_id = #{workTypeId},user_type = #{userType},contract_file_id = #{contractFileId},head_img_id=#{headImgId},work_age=#{workAge},
+        att_group_id = #{attGroupId},is_contract = #{isContract},approach_status = #{approachStatus},phone = #{phone},update_at = NOW()
         WHERE id = #{ID}
     </update>
     <select id="findUserById" resultType="com.labor.entity.User">
