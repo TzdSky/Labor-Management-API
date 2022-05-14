@@ -124,4 +124,9 @@
     <select id="getProjectList" resultType="com.labor.entity.Project">
         select project_id,project_name,company_id from t_project
     </select>
+
+    <select id="getUserForWorkType" resultType="com.labor.entity.UserForWorkType">
+        select u.id as userID,u.name as userName from t_user u WHERE ISNULL(u.goup_id) and u.work_type_id = #{workTypeID}
+    </select>
+
 </mapper>

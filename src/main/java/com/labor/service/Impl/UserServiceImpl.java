@@ -22,10 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author BoCong
@@ -297,7 +294,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<WorkType> getWorkType() {
-        return userMapper.getWorkType();
+        List<WorkType> workTypeList = userMapper.getWorkType();
+        //将没有组别的人员塞进去
+        if(workTypeList != null && workTypeList.size() > 0){
+            WorkType workType = null;
+            List <UserForWorkType> userForWorkTypes = new ArrayList<>();
+            for (int i = 0; i < workTypeList.size(); i++) {
+                workType = workTypeList.get(i);
+                userForWorkTypes = userMapper.getUserForWorkType(workType.getId());
+                workTypeList.get(i).setUserList(userForWorkTypes);
+            }
+        }
+
+        return workTypeList;
     }
 
     @Override
