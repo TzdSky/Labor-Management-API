@@ -72,4 +72,7 @@ public interface UserMapper extends BaseMapper<User> {
     List<WorkType> getWorkType();
 
     List<Project> getProjectList();
+
+
+    List<UserForWorkType> getUserForWorkType(@Param("workTypeID") Long workTypeID);
 }
