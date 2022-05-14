@@ -111,7 +111,7 @@ public class SubcontractController {
      * @param  ID
      */
     @GetMapping(value = "/deleteSubcontractOne")
-    public ResultModel<String> deleteSubcontractOne(@RequestParam(value = "ID", required = true) Long ID){
+    public ResultModel<String> deleteSubcontractOne(@RequestParam(value = "ID", required = false) Long ID){
         logger.info("deleteSubcontractOne:===>start");
         ResultModel<String> resultModel = new ResultModel<>();
         try {
