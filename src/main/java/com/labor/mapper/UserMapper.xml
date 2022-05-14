@@ -44,13 +44,13 @@
             and t.certificate_number = #{queryParams.certificateNumber,jdbcType=INTEGER}
         </if>
         <if test="queryParams.phone != null and queryParams.phone != ''">
-            and t.phone = #{queryParams.phone,jdbcType=INTEGER}
+            and UPPER(t.phone) like UPPER(CONCAT('%',#{queryParams.phone}, '%'))
         </if>
         <if test="queryParams.goupID != null and queryParams.goupID != ''">
-            and UPPER(t.goup_id) like UPPER(CONCAT('%',#{queryParams.goupID}, '%'))
+            and t.goup_id=#{queryParams.goupID}
         </if>
         <if test="queryParams.workTypeId != null and queryParams.workTypeId != ''">
-            and UPPER(t.work_type_id) like UPPER(CONCAT('%',#{queryParams.workType}, '%'))
+            and t.work_type_id=#{queryParams.workType}
         </if>
         ) t
     </select>
@@ -75,13 +75,13 @@
             and t.certificate_number = #{queryParams.certificateNumber,jdbcType=INTEGER}
         </if>
         <if test="queryParams.phone != null and queryParams.phone != ''">
-            and t.phone = #{queryParams.phone,jdbcType=INTEGER}
+            and UPPER(t.phone) like UPPER(CONCAT('%',#{queryParams.phone}, '%'))
         </if>
         <if test="queryParams.goupID != null and queryParams.goupID != ''">
-            and UPPER(t.goup_id) =#{queryParams.goupID}
+            and t.goup_id=#{queryParams.goupID}
         </if>
         <if test="queryParams.workTypeId != null and queryParams.workTypeId != ''">
-            and UPPER(t.work_type_id) = #{queryParams.workTypeId}
+            and t.work_type_id=#{queryParams.workType}
         </if>
         order by ID desc
         limit #{queryParams.page,jdbcType=INTEGER},#{queryParams.size,jdbcType=INTEGER}
